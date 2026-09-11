@@ -1,0 +1,81 @@
+{
+  "entities": {
+    "businesses": {
+      "title": "Businesses",
+      "description": "Auto repair shops and service businesses registered in DURUMU NE?.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "address": { "type": "string" },
+        "ownerUid": { "type": "string" },
+        "plan": { "type": "string", "enum": ["free", "pro"] },
+        "active": { "type": "boolean" },
+        "ownerName": { "type": "string" },
+        "ownerEmail": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name", "phone", "ownerUid", "plan", "active"]
+    },
+    "users": {
+      "title": "Users",
+      "description": "User profiles for business owners and system administrator.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "name": { "type": "string" },
+        "businessId": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "owner"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["uid", "email", "businessId", "role"]
+    },
+    "vehicles": {
+      "title": "Vehicles",
+      "description": "Vehicles registered by business owners for repair and status tracking.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "businessId": { "type": "string" },
+        "plate": { "type": "string" },
+        "brand": { "type": "string" },
+        "model": { "type": "string" },
+        "year": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "currentStatus": {
+          "type": "string",
+          "enum": ["received", "diagnosis", "waiting_parts", "repair", "testing", "ready"]
+        },
+        "estimatedDelivery": { "type": "string" },
+        "publicToken": { "type": "string" },
+        "serviceDescription": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["businessId", "plate", "brand", "model", "customerPhone", "currentStatus", "publicToken"]
+    },
+    "publicVehicles": {
+      "title": "Public Vehicles",
+      "description": "Sanitized, secure public status data accessed by vehicle owners without login.",
+      "type": "object",
+      "properties": {
+        "publicToken": { "type": "string" },
+        "businessId": { "type": "string" },
+        "plate": { "type": "string" },
+        "brand": { "type": "string" },
+        "model": { "type": "string" },
+        "year": { "type": "string" },
+        "currentStatus": { "type": "string" },
+        "estimatedDelivery": { "type": "string" },
+        "serviceDescription": { "type": "string" },
+        "statusHistory": { "type": "array" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["publicToken", "businessId", "plate", "brand", "model", "currentStatus"]
+    }
+  }
+}

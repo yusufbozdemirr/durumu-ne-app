@@ -1,0 +1,6 @@
+{
+  "name": "DURUMU NE?",
+  "description": "Oto servisler, tamirhaneler ve çekiciler için modern araç durum takip ve QR sorgulama yönetim sistemi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
