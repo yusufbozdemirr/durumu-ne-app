@@ -5,7 +5,7 @@ export const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    navigate('/login', { replace: true });
+    navigate('/hosgeldiniz', { replace: true });
   }, [navigate]);
 
   return null;

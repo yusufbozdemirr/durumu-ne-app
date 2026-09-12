@@ -62,7 +62,7 @@ export const AppLayout: React.FC = () => {
   const headerInfo = getHeaderInfo();
 
   return (
-    <div className="min-h-screen bg-slate-50 flex text-slate-900">
+    <div className="min-h-screen bg-[#070d19] flex text-slate-100">
       {/* Desktop Sidebar (Fixed Left) */}
       <div className="hidden lg:block w-64 h-screen sticky top-0 shrink-0">
         <Sidebar />
@@ -71,11 +71,11 @@ export const AppLayout: React.FC = () => {
       {/* Mobile Drawer Overlay */}
       {mobileSidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-xs lg:hidden animate-in fade-in duration-150"
+          className="fixed inset-0 z-40 bg-black/70 backdrop-blur-xs lg:hidden animate-in fade-in duration-150"
           onClick={() => setMobileSidebarOpen(false)}
         >
           <div
-            className="w-64 h-full bg-white animate-in slide-in-from-left duration-200"
+            className="w-64 h-full bg-[#0c152a] animate-in slide-in-from-left duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             <Sidebar onCloseMobile={() => setMobileSidebarOpen(false)} />

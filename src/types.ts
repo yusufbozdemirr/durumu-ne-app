@@ -68,11 +68,18 @@ export interface Business {
   address: string;
   ownerUid: string;
   plan: 'free' | 'pro' | 'trial';
-  accountStatus?: 'active' | 'trial_expired' | 'suspended';
-  trialStartDate?: string;
-  trialEndDate?: string;
-  proStartDate?: string;
-  proEndDate?: string;
+  paketTuru?: 'deneme' | 'pro';
+  onayDurumu?: 'bekliyor' | 'onay_bekliyor' | 'onaylandi' | 'reddedildi';
+  talepTarihi?: string;
+  denemeBaslangicTarihi?: string | null;
+  denemeBitisTarihi?: string | null;
+  proBaslangicTarihi?: string | null;
+  proBitisTarihi?: string | null;
+  accountStatus?: 'active' | 'trial_expired' | 'suspended' | 'pending_approval';
+  trialStartDate?: string | null;
+  trialEndDate?: string | null;
+  proStartDate?: string | null;
+  proEndDate?: string | null;
   active: boolean;
   createdAt: string;
   updatedAt: string;
@@ -94,17 +101,18 @@ export interface UserProfile {
 
 export interface PlanStatus {
   plan: 'free' | 'pro' | 'trial';
-  accountStatus: 'active' | 'trial_expired' | 'suspended';
+  accountStatus: 'active' | 'trial_expired' | 'suspended' | 'pending_approval';
   isTrial: boolean;
   isPro: boolean;
   isExpired: boolean;
+  isPendingApproval?: boolean;
   canAccessDashboard: boolean;
   daysRemaining: number;
   hoursRemaining: number;
-  warningState: 'none' | 'urgent_2_days' | 'urgent_1_day' | 'urgent_hours' | 'expired';
+  warningState: 'none' | 'urgent_2_days' | 'urgent_1_day' | 'urgent_hours' | 'expired' | 'pending_approval';
   warningMessage?: string;
-  trialStartDate?: string;
-  trialEndDate?: string;
+  trialStartDate?: string | null;
+  trialEndDate?: string | null;
 }
 
 export interface FilterState {

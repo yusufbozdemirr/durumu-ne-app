@@ -15,6 +15,7 @@ import {
   Headphones,
   ArrowLeft,
   Zap,
+  AlertTriangle,
 } from 'lucide-react';
 import {
   getProUpgradeWhatsAppUrl,
@@ -24,27 +25,39 @@ import {
 
 export const PackagesPage: React.FC = () => {
   const navigate = useNavigate();
-  const { business, planStatus, logout, userProfile, isAdmin, isAuthenticated } = useApp();
+  const {
+    business,
+    planStatus,
+    logout,
+    isAdmin,
+    isAuthenticated,
+  } = useApp();
 
   const handleLogout = async () => {
     await logout();
     navigate('/login');
   };
 
-  const isUserExpired = isAuthenticated && !isAdmin && planStatus.isExpired;
-  const canReturnToDashboard = isAuthenticated && (isAdmin || planStatus.canAccessDashboard);
+  const isExpiredUserLoggedIn = Boolean(
+    isAuthenticated && !isAdmin && business && planStatus?.isExpired
+  );
+
+  const canReturnToDashboard =
+    isAuthenticated && (isAdmin || planStatus.canAccessDashboard);
   const upgradeWhatsAppUrl = getProUpgradeWhatsAppUrl(business?.name);
-  const generalWhatsAppUrl = getWhatsAppDirectUrl('Merhaba, Durumu Ne? paketleri ve fiyatlandırma hakkında bilgi almak istiyorum.');
+  const generalWhatsAppUrl = getWhatsAppDirectUrl(
+    'Merhaba, Durumu Ne? paketleri ve lisanslama hakkında bilgi almak istiyorum.'
+  );
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between">
+    <div className="min-h-screen bg-[#070d19] text-white flex flex-col justify-between">
       {/* Top Header */}
-      <header className="h-16 bg-white border-b border-slate-200/80 px-4 sm:px-8 flex items-center justify-between">
+      <header className="h-16 bg-[#0a1122] border-b border-slate-800 px-4 sm:px-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link
             to="/"
             id="link-packages-back-home"
-            className="p-2 -ml-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+            className="p-2 -ml-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
             title="Geri Dön"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -60,7 +73,7 @@ export const PackagesPage: React.FC = () => {
                   type="button"
                   onClick={() => navigate('/dashboard')}
                   id="btn-packages-return-dashboard"
-                  className="px-3.5 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors inline-flex items-center gap-1.5"
+                  className="px-3.5 py-2 text-xs font-semibold text-slate-200 bg-slate-800 hover:bg-slate-700 hover:text-white rounded-xl transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>Panele Dön</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -70,7 +83,7 @@ export const PackagesPage: React.FC = () => {
                 type="button"
                 onClick={handleLogout}
                 id="btn-packages-logout"
-                className="px-3 py-1.5 text-xs font-medium text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors inline-flex items-center gap-1.5"
+                className="px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-rose-400 hover:bg-rose-950/40 rounded-xl transition-colors inline-flex items-center gap-1.5 cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Çıkış Yap</span>
@@ -81,14 +94,14 @@ export const PackagesPage: React.FC = () => {
               <Link
                 to="/login"
                 id="btn-packages-dealer-login"
-                className="px-3.5 py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+                className="px-3.5 py-1.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors"
               >
                 Bayi Girişi
               </Link>
               <Link
                 to="/hosgeldiniz"
                 id="btn-packages-try-free"
-                className="px-3.5 py-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-colors shadow-xs"
+                className="px-3.5 py-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl transition-colors shadow-md shadow-emerald-600/30"
               >
                 7 Gün Ücretsiz Dene
               </Link>
@@ -99,148 +112,135 @@ export const PackagesPage: React.FC = () => {
 
       {/* Main Container */}
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-10 sm:py-14 flex flex-col items-center">
-        {/* Scenario 1: Only for authenticated users whose trial is ACTUALLY EXPIRED */}
-        {isUserExpired ? (
-          <div className="text-center max-w-2xl mx-auto">
-            <div className="relative w-20 h-20 mx-auto mb-6 flex items-center justify-center">
-              <div className="absolute inset-0 rounded-full bg-amber-100/70 animate-ping opacity-25" />
-              <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 text-white shadow-md flex items-center justify-center">
-                <Sparkles className="w-8 h-8" />
+        {/* Expired alert banner */}
+        {isExpiredUserLoggedIn ? (
+          <div className="w-full max-w-xl mx-auto mb-8 bg-amber-950/60 border border-amber-800/80 rounded-2xl p-5 shadow-xl text-left space-y-3">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center shrink-0 font-bold">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-amber-900/80 text-amber-200 border border-amber-700/60">
+                    Süre Sonu Bildirimi
+                  </span>
+                </div>
+                <h2 className="text-base sm:text-lg font-bold text-white">
+                  Ücretsiz deneme süreniz sona erdi.
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-300 mt-1 leading-relaxed">
+                  Durumu Ne? hesabınızı kullanmaya devam etmek için Pro pakete geçebilirsiniz. Servis süreçlerinizi kesintisiz yönetmek için hemen lisansınızı yenileyin.
+                </p>
               </div>
             </div>
 
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-200 mb-3">
-              <span>Deneme Süresi Durumu</span>
-            </div>
-
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
-              Ücretsiz deneme süreniz sona erdi.
-            </h1>
-
-            <p className="mt-2 text-sm sm:text-base font-medium text-slate-700">
-              Durumu Ne? hesabınızı kullanmaya devam etmek için Pro pakete geçebilirsiniz.
-            </p>
-
-            <p className="mt-3 text-xs sm:text-sm text-slate-500 leading-relaxed max-w-xl mx-auto">
-              İşletmenizdeki servis süreçlerini kesintisiz yönetmeye ve müşterilerinize canlı durum bilgisi sunmaya devam etmek için Pro lisans hakkında bilgi alabilirsiniz.
-            </p>
-
             {business && (
-              <div className="mt-8 w-full max-w-lg mx-auto bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex items-center justify-between gap-4 text-left">
-                <div className="min-w-0">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                    Kayıtlı İşletmeniz
-                  </span>
-                  <h4 className="text-sm font-bold text-slate-900 truncate">
-                    {business.name}
-                  </h4>
-                  <p className="text-xs text-slate-500 truncate">
-                    {userProfile?.email || business.ownerEmail || ''}
-                  </p>
+              <div className="pt-3 border-t border-amber-850 flex items-center justify-between text-xs">
+                <div>
+                  <span className="text-slate-400">İşletme:</span>{' '}
+                  <span className="font-bold text-white">{business.name}</span>
                 </div>
-                <div className="text-right shrink-0">
-                  <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200">
-                    Süresi Doldu
-                  </span>
-                </div>
+                <span className="text-rose-400 font-bold bg-rose-950/80 border border-rose-800 px-2 py-0.5 rounded">
+                  Deneme Bitti
+                </span>
               </div>
             )}
           </div>
-        ) : (
-          /* Scenario 2: Standard public view or active trial user */
-          <div className="text-center max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-xs font-bold mb-4">
-              <Zap className="w-3.5 h-3.5 text-emerald-600" />
-              <span>7 Gün Boyunca Kredi Kartsız Ücretsiz Deneyin</span>
-            </div>
+        ) : null}
 
-            <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-              Paketler & Lisanslama
-            </h1>
-
-            <p className="mt-3 text-sm sm:text-base text-slate-600 max-w-xl mx-auto leading-relaxed">
-              Oto servisiniz için telefon trafiğini sıfırlayan, müşteri güvenini katlayan ve işlerinizi kolaylaştıran şeffaf çözüm.
-            </p>
+        {/* Standard view header */}
+        <div className="text-center max-w-2xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/70 border border-emerald-800/70 text-emerald-300 text-xs font-bold mb-4 shadow-sm">
+            <Zap className="w-3.5 h-3.5 text-emerald-400" />
+            <span>7 Gün Boyunca Kredi Kartsız Ücretsiz Deneyin</span>
           </div>
-        )}
+
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Paketler & Lisanslama
+          </h1>
+
+          <p className="mt-3 text-sm sm:text-base text-slate-400 max-w-xl mx-auto leading-relaxed">
+            Oto servisiniz için telefon trafiğini sıfırlayan, müşteri güvenini katlayan ve işlerinizi kolaylaştıran şeffaf çözüm.
+          </p>
+        </div>
 
         {/* Pro Package Features Card */}
-        <div className="mt-8 w-full max-w-xl bg-white border border-emerald-200/80 rounded-2xl p-6 sm:p-8 shadow-xs relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none" />
+        <div className="mt-8 w-full max-w-xl bg-[#0c152a] border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none" />
 
-          <div className="flex items-center justify-between border-b border-slate-100 pb-5">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-5">
             <div>
-              <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">
+              <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
                 Yıllık / Aylık Servis Lisansı
               </span>
-              <h2 className="text-xl font-bold text-slate-900 mt-0.5">
+              <h2 className="text-xl font-bold text-white mt-0.5">
                 Durumu Ne? PRO
               </h2>
             </div>
-            <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-600 text-white shadow-xs">
+            <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-600 text-white shadow-md shadow-emerald-600/30">
               TAM ERİŞİM
             </span>
           </div>
 
           {/* Features Checklist */}
           <div className="py-6 space-y-3.5">
-            <div className="flex items-start gap-3 text-xs sm:text-sm text-slate-700">
-              <div className="w-5 h-5 rounded-md bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+            <div className="flex items-start gap-3 text-xs sm:text-sm text-slate-300">
+              <div className="w-5 h-5 rounded-md bg-emerald-950/80 border border-emerald-800 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
                 <CheckCircle2 className="w-3.5 h-3.5" />
               </div>
               <div>
-                <span className="font-semibold text-slate-900">Sınırsız Araç ve Servis Kaydı:</span> İşletmenize gelen tüm araçları arşivleme sınırı olmaksızın kaydedin.
+                <span className="font-semibold text-white">Sınırsız Araç ve Servis Kaydı:</span> İşletmenize gelen tüm araçları arşivleme sınırı olmaksızın kaydedin.
               </div>
             </div>
 
-            <div className="flex items-start gap-3 text-xs sm:text-sm text-slate-700">
-              <div className="w-5 h-5 rounded-md bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+            <div className="flex items-start gap-3 text-xs sm:text-sm text-slate-300">
+              <div className="w-5 h-5 rounded-md bg-emerald-950/80 border border-emerald-800 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
                 <Smartphone className="w-3.5 h-3.5" />
               </div>
               <div>
-                <span className="font-semibold text-slate-900">WhatsApp Tek Tıkla Canlı Takip:</span> Müşterilerinize şifresiz, anında açılan canlı takip linki iletin.
+                <span className="font-semibold text-white">WhatsApp Tek Tıkla Canlı Takip:</span> Müşterilerinize şifresiz, anında açılan canlı takip linki iletin.
               </div>
             </div>
 
-            <div className="flex items-start gap-3 text-xs sm:text-sm text-slate-700">
-              <div className="w-5 h-5 rounded-md bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+            <div className="flex items-start gap-3 text-xs sm:text-sm text-slate-300">
+              <div className="w-5 h-5 rounded-md bg-emerald-950/80 border border-emerald-800 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
                 <QrCode className="w-3.5 h-3.5" />
               </div>
               <div>
-                <span className="font-semibold text-slate-900">Yazdırılabilir QR Kod Kartları:</span> Araç kabul fişlerine QR kod basarak müşterilerinizin kolayca okutmasını sağlayın.
+                <span className="font-semibold text-white">Yazdırılabilir QR Kod Kartları:</span> Araç kabul fişlerine QR kod basarak müşterilerinizin kolayca okutmasını sağlayın.
               </div>
             </div>
 
-            <div className="flex items-start gap-3 text-xs sm:text-sm text-slate-700">
-              <div className="w-5 h-5 rounded-md bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+            <div className="flex items-start gap-3 text-xs sm:text-sm text-slate-300">
+              <div className="w-5 h-5 rounded-md bg-emerald-950/80 border border-emerald-800 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
                 <Car className="w-3.5 h-3.5" />
               </div>
               <div>
-                <span className="font-semibold text-slate-900">6 Aşamalı Şeffaf Durum Çizelgesi:</span> Arıza tespiti, parça bekleme ve onarım aşamalarını tek dokunuşla güncelleyin.
+                <span className="font-semibold text-white">6 Aşamalı Şeffaf Durum Çizelgesi:</span> Arıza tespiti, parça bekleme ve onarım aşamalarını tek dokunuşla güncelleyin.
               </div>
             </div>
 
-            <div className="flex items-start gap-3 text-xs sm:text-sm text-slate-700">
-              <div className="w-5 h-5 rounded-md bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5">
+            <div className="flex items-start gap-3 text-xs sm:text-sm text-slate-300">
+              <div className="w-5 h-5 rounded-md bg-emerald-950/80 border border-emerald-800 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
                 <Headphones className="w-3.5 h-3.5" />
               </div>
               <div>
-                <span className="font-semibold text-slate-900">Öncelikli WhatsApp Destek:</span> Lisans süreniz boyunca doğrudan teknik yardım ve danışmanlık alın.
+                <span className="font-semibold text-white">Öncelikli WhatsApp Destek:</span> Lisans süreniz boyunca doğrudan teknik yardım ve danışmanlık alın.
               </div>
             </div>
           </div>
 
           {/* Action Buttons */}
           <div className="pt-2 space-y-2.5">
-            {isUserExpired ? (
+            {isExpiredUserLoggedIn ? (
               <a
                 href={upgradeWhatsAppUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 id="btn-packages-whatsapp-upgrade"
-                className="w-full py-3.5 px-6 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 rounded-xl transition-all shadow-xs flex items-center justify-center gap-2.5 text-center group"
+                className="w-full py-3.5 px-6 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-2xl transition-all shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2.5 text-center group cursor-pointer"
               >
-                <MessageCircle className="w-5 h-5 fill-white/20 group-hover:scale-110 transition-transform" />
+                <MessageCircle className="w-5 h-5 fill-white group-hover:scale-110 transition-transform" />
                 <span>Pro Paket İçin WhatsApp'tan İletişime Geç</span>
               </a>
             ) : (
@@ -248,7 +248,7 @@ export const PackagesPage: React.FC = () => {
                 <Link
                   to="/hosgeldiniz"
                   id="btn-packages-start-trial"
-                  className="py-3 px-4 text-xs sm:text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-colors shadow-xs flex items-center justify-center gap-2"
+                  className="py-3 px-4 text-xs sm:text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl transition-colors shadow-md shadow-emerald-600/30 flex items-center justify-center gap-2"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>7 Gün Ücretsiz Başla</span>
@@ -258,38 +258,38 @@ export const PackagesPage: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   id="btn-packages-whatsapp-info"
-                  className="py-3 px-4 text-xs sm:text-sm font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/80 rounded-xl transition-colors flex items-center justify-center gap-2"
+                  className="py-3 px-4 text-xs sm:text-sm font-bold text-emerald-400 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <MessageCircle className="w-4 h-4 text-emerald-600" />
+                  <MessageCircle className="w-4 h-4 text-emerald-400" />
                   <span>WhatsApp ile Bilgi Al</span>
                 </a>
               </div>
             )}
-            <p className="text-center text-[11px] text-slate-400 mt-2">
-              WhatsApp destek numaramız: <span className="font-bold text-slate-700">{SUPPORT_PHONE_DISPLAY}</span>
+            <p className="text-center text-[11px] text-slate-500 mt-2">
+              WhatsApp destek numaramız: <span className="font-bold text-slate-300">{SUPPORT_PHONE_DISPLAY}</span>
             </p>
           </div>
         </div>
 
         {/* Direct WhatsApp Callout */}
-        <div className="mt-8 text-center text-xs text-slate-500">
+        <div className="mt-8 text-center text-xs text-slate-400">
           Kurulum ve sorularınız için WhatsApp hattımız:{' '}
           <a
             href={generalWhatsAppUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1 ml-1"
+            className="font-bold text-emerald-400 hover:underline inline-flex items-center gap-1 ml-1"
           >
-            <MessageCircle className="w-3.5 h-3.5" />
+            <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
             <span>{SUPPORT_PHONE_DISPLAY}</span>
           </a>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="py-6 border-t border-slate-200/80 bg-white text-center text-xs text-slate-400">
+      <footer className="py-6 border-t border-slate-800 bg-[#0a1122] text-center text-xs text-slate-500">
         <div className="flex items-center justify-center gap-1.5 text-[11px]">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+          <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
           <span>© 2026 Durumu Ne? Tüm hakları saklıdır.</span>
         </div>
       </footer>

@@ -29,14 +29,17 @@ export const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles }) => {
       : `90${cleanPhone}`;
 
     const text = `Merhaba, aracınızın servis durumunu buradan takip edebilirsiniz: ${trackingUrl}`;
-    window.open(`https://wa.me/${phoneWithCountry}?text=${encodeURIComponent(text)}`, '_blank');
+    window.open(
+      `https://wa.me/${phoneWithCountry}?text=${encodeURIComponent(text)}`,
+      '_blank'
+    );
   };
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-left border-collapse text-sm">
+      <table className="w-full text-left border-collapse text-xs">
         <thead>
-          <tr className="border-b border-slate-200/80 bg-slate-50/60 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+          <tr className="border-b border-slate-800 bg-[#070d19] text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
             <th className="py-3 px-4">Plaka</th>
             <th className="py-3 px-4">Araç</th>
             <th className="py-3 px-4">Müşteri</th>
@@ -46,12 +49,12 @@ export const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles }) => {
             <th className="py-3 px-4 text-right">İşlemler</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100 font-normal text-slate-800">
+        <tbody className="divide-y divide-slate-800 font-normal text-slate-200">
           {vehicles.map((v) => (
             <tr
               key={v.id}
               onClick={() => navigate(`/vehicles/${v.id}`)}
-              className="hover:bg-slate-50/80 cursor-pointer transition-colors group"
+              className="hover:bg-slate-800/40 cursor-pointer transition-colors group"
             >
               {/* Plaka */}
               <td className="py-3.5 px-4 whitespace-nowrap">
@@ -60,11 +63,11 @@ export const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles }) => {
 
               {/* Araç */}
               <td className="py-3.5 px-4 whitespace-nowrap">
-                <div className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                <div className="font-bold text-white group-hover:text-emerald-400 transition-colors">
                   {v.brand} {v.model}
                 </div>
                 {v.year && (
-                  <div className="text-xs text-slate-400 font-mono">
+                  <div className="text-[11px] text-slate-500 font-mono">
                     {v.year}
                   </div>
                 )}
@@ -72,8 +75,12 @@ export const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles }) => {
 
               {/* Müşteri */}
               <td className="py-3.5 px-4 whitespace-nowrap">
-                <div className="font-medium text-slate-800">{v.customerName || '-'}</div>
-                <div className="text-xs text-slate-400 font-mono">{v.customerPhone}</div>
+                <div className="font-medium text-slate-200">
+                  {v.customerName || '-'}
+                </div>
+                <div className="text-[11px] text-slate-400 font-mono">
+                  {v.customerPhone}
+                </div>
               </td>
 
               {/* Durum */}
@@ -83,14 +90,14 @@ export const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles }) => {
 
               {/* Tahmini Teslim */}
               <td className="py-3.5 px-4 whitespace-nowrap">
-                <div className="flex items-center gap-1.5 text-xs text-slate-700 font-medium">
-                  <Clock className="w-3.5 h-3.5 text-slate-400" />
+                <div className="flex items-center gap-1.5 text-xs text-slate-300 font-medium">
+                  <Clock className="w-3.5 h-3.5 text-slate-500" />
                   <span>{v.estimatedDelivery || 'Belirtilmedi'}</span>
                 </div>
               </td>
 
               {/* Son Güncelleme */}
-              <td className="py-3.5 px-4 whitespace-nowrap text-xs text-slate-500 hidden md:table-cell">
+              <td className="py-3.5 px-4 whitespace-nowrap text-[11px] text-slate-400 hidden md:table-cell font-mono">
                 {formatTimeAgo(v.updatedAt)}
               </td>
 
@@ -103,7 +110,7 @@ export const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles }) => {
                   <button
                     type="button"
                     onClick={() => openQRModal(v)}
-                    className="p-1.5 text-slate-400 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-emerald-400 hover:bg-slate-800 rounded-lg transition-colors"
                     title="QR Kodu Göster"
                   >
                     <QrCode className="w-4 h-4" />
@@ -112,7 +119,7 @@ export const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles }) => {
                   <button
                     type="button"
                     onClick={(e) => handleWhatsAppNotify(v, e)}
-                    className="p-1.5 text-slate-400 hover:text-[#25D366] hover:bg-emerald-50 rounded-lg transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-emerald-400 hover:bg-emerald-950/60 rounded-lg transition-colors"
                     title="WhatsApp'tan Bildir"
                   >
                     <WhatsAppIcon className="w-4 h-4" />
@@ -121,7 +128,7 @@ export const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles }) => {
                   <button
                     type="button"
                     onClick={() => navigate(`/vehicles/${v.id}`)}
-                    className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
                     title="Detay Görüntüle"
                   >
                     <Eye className="w-4 h-4" />
@@ -130,7 +137,7 @@ export const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles }) => {
                   <button
                     type="button"
                     onClick={() => navigate(`/vehicles/${v.id}/edit`)}
-                    className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
                     title="Düzenle"
                   >
                     <Edit2 className="w-4 h-4" />

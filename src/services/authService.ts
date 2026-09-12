@@ -161,11 +161,35 @@ export const authService = {
       );
     }
 
+    // Check business approval status
+    try {
+      const bizRef = doc(db, 'businesses', profile.businessId);
+      const bizSnap = await getDoc(bizRef);
+      if (bizSnap.exists()) {
+        const bizData = bizSnap.data();
+        if (
+          bizData.onayDurumu === 'bekliyor' ||
+          bizData.onayDurumu === 'onay_bekliyor' ||
+          bizData.accountStatus === 'pending_approval'
+        ) {
+          await fbSignOut(auth);
+          throw new Error(
+            'Deneme sürümü talebiniz incelenmektedir. Müşteri temsilcimiz talebinizi onayladıktan sonra 7 günlük deneme süreniz başlatılacak ve giriş yapabileceksiniz.'
+          );
+        }
+      }
+    } catch (bizErr: any) {
+      if (bizErr.message?.includes('Deneme sürümü talebiniz')) {
+        throw bizErr;
+      }
+      console.warn('Could not verify business approval status:', bizErr);
+    }
+
     return profile;
   },
 
   /**
-   * Register a new business owner account with a 7-day free trial
+   * Register a new business owner account with a 7-day free trial request (pending admin approval)
    */
   async registerTrial(params: {
     firstName: string;
@@ -182,14 +206,12 @@ export const authService = {
     const uid = cred.user.uid;
 
     try {
-      // 2. Compute 7-day trial dates
       const businessId = `biz_${uid.slice(0, 8)}_${Date.now().toString(36)}`;
       const now = new Date();
-      const trialStartDate = now.toISOString();
-      const trialEndDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString();
+      const talepTarihi = now.toISOString();
       const fullName = `${firstName.trim()} ${lastName.trim()}`.trim();
 
-      // 3. Create User Document FIRST
+      // 2. Create User Document FIRST
       const userRef = doc(db, 'users', uid);
       const userProfile: UserProfile = {
         uid,
@@ -200,7 +222,7 @@ export const authService = {
         phone: (phone || '').trim(),
         businessId,
         role: 'owner',
-        createdAt: trialStartDate,
+        createdAt: talepTarihi,
       };
 
       await setDoc(userRef, {
@@ -208,7 +230,7 @@ export const authService = {
         createdAt: serverTimestamp(),
       });
 
-      // 4. Create Business Document with plan: 'trial' and trial dates
+      // 3. Create Business Document in Turkish & English with pending approval status
       const businessRef = doc(db, 'businesses', businessId);
       await setDoc(businessRef, {
         id: businessId,
@@ -219,13 +241,21 @@ export const authService = {
         ownerName: fullName,
         ownerEmail: email.trim(),
         plan: 'trial',
-        accountStatus: 'active',
-        trialStartDate,
-        trialEndDate,
-        active: true,
+        paketTuru: 'deneme',
+        onayDurumu: 'bekliyor',
+        accountStatus: 'pending_approval',
+        talepTarihi,
+        denemeBaslangicTarihi: null,
+        denemeBitisTarihi: null,
+        trialStartDate: null,
+        trialEndDate: null,
+        active: false,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
+
+      // 4. Sign out immediately so user cannot access dashboard until admin approves
+      await fbSignOut(auth);
 
       return userProfile;
     } catch (firestoreError) {

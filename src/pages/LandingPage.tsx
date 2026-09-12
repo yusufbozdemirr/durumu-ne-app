@@ -21,7 +21,6 @@ import {
   Layers,
   Zap,
   HelpCircle,
-  Car,
 } from 'lucide-react';
 import {
   SUPPORT_PHONE_DISPLAY,
@@ -138,10 +137,17 @@ export const LandingPage: React.FC = () => {
   const currentDemo = DEMO_STAGES[selectedStageIdx];
 
   // Truly authenticated user check (requires valid profile or admin)
-  const isTrulyAuthenticated = isAuthenticated && currentUser && (isAdmin || (userProfile && userProfile.businessId));
+  const isTrulyAuthenticated =
+    isAuthenticated &&
+    currentUser &&
+    (isAdmin || (userProfile && userProfile.businessId));
 
-  const whatsappHeroUrl = getWhatsAppDirectUrl('Merhaba, Durumu Ne? sistemi hakkında bilgi almak istiyorum.');
-  const whatsappFloatingUrl = getWhatsAppDirectUrl('Merhaba, Durumu Ne? hakkında görüşmek istiyorum.');
+  const whatsappHeroUrl = getWhatsAppDirectUrl(
+    'Merhaba, Durumu Ne? sistemi hakkında bilgi almak istiyorum.'
+  );
+  const whatsappFloatingUrl = getWhatsAppDirectUrl(
+    'Merhaba, Durumu Ne? hakkında görüşmek istiyorum.'
+  );
 
   const faqs = [
     {
@@ -167,32 +173,32 @@ export const LandingPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-emerald-500 selection:text-white relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#070d19] text-slate-100 flex flex-col selection:bg-emerald-500/30 selection:text-white relative overflow-x-hidden">
       {/* Background ambient lighting */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[550px] bg-gradient-to-b from-emerald-600/15 via-emerald-900/5 to-transparent blur-3xl pointer-events-none" />
-      <div className="absolute top-[800px] -left-48 w-96 h-96 bg-emerald-700/10 blur-[130px] pointer-events-none rounded-full" />
-      <div className="absolute top-[1600px] -right-48 w-96 h-96 bg-emerald-600/10 blur-[130px] pointer-events-none rounded-full" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[550px] bg-gradient-to-b from-emerald-500/10 via-emerald-900/10 to-transparent blur-3xl pointer-events-none" />
+      <div className="absolute top-[800px] -left-48 w-96 h-96 bg-emerald-500/5 blur-[130px] pointer-events-none rounded-full" />
+      <div className="absolute top-[1600px] -right-48 w-96 h-96 bg-blue-600/5 blur-[130px] pointer-events-none rounded-full" />
 
       {/* Modern Top Header */}
-      <header className="sticky top-0 z-40 backdrop-blur-md bg-slate-950/80 border-b border-emerald-900/40">
+      <header className="sticky top-0 z-40 backdrop-blur-md bg-[#0a1122]/90 border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           {/* Logo with large favicon */}
           <Link to="/" className="flex items-center gap-3.5 group">
             <img
               src="/favicon.png"
               alt="Durumu Ne? Logo"
-              className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl p-1 bg-slate-900 border border-emerald-500/40 shadow-lg shadow-emerald-950/60 object-contain group-hover:border-emerald-400 transition-colors shrink-0"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl p-1 bg-[#0c152a] border border-slate-700 shadow-md object-contain group-hover:border-emerald-500 transition-colors shrink-0"
             />
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
-                <span className="font-black text-lg sm:text-xl tracking-tight text-white group-hover:text-emerald-300 transition-colors">
+                <span className="font-black text-lg sm:text-xl tracking-tight text-white group-hover:text-emerald-400 transition-colors">
                   DURUMU NE?
                 </span>
-                <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-700/60">
+                <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-700">
                   PRO
                 </span>
               </div>
-              <span className="text-[11px] text-emerald-400/80 font-medium hidden sm:inline">
+              <span className="text-[11px] text-slate-400 font-medium hidden sm:inline">
                 Canlı Araç Durum Takip Platformu
               </span>
             </div>
@@ -221,10 +227,10 @@ export const LandingPage: React.FC = () => {
               href={whatsappHeroUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold text-emerald-300 bg-emerald-950/80 hover:bg-emerald-900/90 border border-emerald-700/60 transition-colors shadow-xs"
+              className="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold text-emerald-400 bg-emerald-950/70 hover:bg-emerald-900/80 border border-emerald-800 transition-colors shadow-sm cursor-pointer"
               title="WhatsApp Destek Hattı"
             >
-              <MessageCircle className="w-4 h-4 text-emerald-400 fill-emerald-400/20" />
+              <MessageCircle className="w-4 h-4 text-emerald-400" />
               <span>{SUPPORT_PHONE_DISPLAY}</span>
             </a>
 
@@ -232,7 +238,7 @@ export const LandingPage: React.FC = () => {
               <Link
                 to={isAdmin ? '/admin' : '/dashboard'}
                 id="btn-nav-dashboard"
-                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-xl transition-colors shadow-lg shadow-emerald-900/30"
+                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl transition-colors shadow-md shadow-emerald-600/30"
               >
                 <span>Yönetim Paneline Git</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -242,16 +248,16 @@ export const LandingPage: React.FC = () => {
                 <Link
                   to="/login"
                   id="btn-nav-dealer-login"
-                  className="px-3.5 py-2 text-xs font-bold text-slate-200 hover:text-white bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded-xl transition-colors"
+                  className="px-3.5 py-2 text-xs font-bold text-slate-200 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl transition-colors"
                 >
                   Bayi Girişi
                 </Link>
                 <Link
                   to="/hosgeldiniz"
                   id="btn-nav-try-free"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-xl transition-all shadow-md shadow-emerald-900/40"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl transition-all shadow-md shadow-emerald-600/30"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-slate-950" />
+                  <Sparkles className="w-3.5 h-3.5 text-white" />
                   <span>7 Gün Ücretsiz</span>
                 </Link>
               </div>
@@ -271,13 +277,13 @@ export const LandingPage: React.FC = () => {
                 <img
                   src="/favicon.png"
                   alt="Durumu Ne?"
-                  className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-3xl p-2 bg-slate-900 border-2 border-emerald-500/50 shadow-2xl shadow-emerald-900/60 object-contain"
+                  className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-3xl p-2 bg-[#0c152a] border-2 border-emerald-500/40 shadow-2xl object-contain"
                 />
               </div>
             </div>
 
             {/* Pill Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-700/70 text-emerald-300 text-xs font-bold shadow-xs">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-950/70 border border-emerald-800 text-emerald-300 text-xs font-bold shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
               <span>Oto Servisler İçin Canlı Araç Durum Takip Platformu</span>
             </div>
@@ -300,9 +306,9 @@ export const LandingPage: React.FC = () => {
               <Link
                 to="/hosgeldiniz"
                 id="btn-hero-start-free"
-                className="w-full sm:w-auto px-7 py-3.5 text-sm font-extrabold text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-xl transition-all shadow-xl shadow-emerald-950/80 flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto px-7 py-3.5 text-sm font-extrabold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl transition-all shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 cursor-pointer"
               >
-                <Sparkles className="w-4 h-4 text-slate-950" />
+                <Sparkles className="w-4 h-4 text-white" />
                 <span>7 Gün Ücretsiz Deneyin</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
@@ -310,7 +316,7 @@ export const LandingPage: React.FC = () => {
               <Link
                 to="/login"
                 id="btn-hero-dealer-login"
-                className="w-full sm:w-auto px-6 py-3.5 text-sm font-bold text-slate-200 hover:text-white bg-slate-900/90 hover:bg-slate-800 border border-slate-700 rounded-xl transition-colors flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-6 py-3.5 text-sm font-bold text-slate-200 hover:text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Building2 className="w-4 h-4 text-slate-400" />
                 <span>Bayi Girişi</span>
@@ -321,7 +327,7 @@ export const LandingPage: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 id="btn-hero-whatsapp-info"
-                className="w-full sm:w-auto px-6 py-3.5 text-sm font-bold text-emerald-300 bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-700/60 rounded-xl transition-colors flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-6 py-3.5 text-sm font-bold text-emerald-300 bg-emerald-950/70 hover:bg-emerald-900/80 border border-emerald-800 rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
                 <MessageCircle className="w-4 h-4 text-emerald-400" />
                 <span>WhatsApp İletişim</span>
@@ -348,22 +354,22 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* CANLI SİMÜLASYON BÖLÜMÜ (MÜŞTERİ TAKİP EKRANI CANLI ÖNİZLEME) */}
-      <section id="canli-simulasyon" className="py-16 sm:py-24 border-t border-emerald-900/30 relative">
+      <section id="canli-simulasyon" className="py-16 sm:py-24 border-t border-slate-800 bg-[#0c152a]/60 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs font-bold mb-3">
-              <Smartphone className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-800 text-xs font-bold mb-3 shadow-sm">
+              <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
               <span>Gerçek Müşteri Deneyimi</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
               Müşterinizin Telefonunda Gördüğü Canlı Takip Ekranı
             </h2>
             <p className="mt-2 text-sm text-slate-400">
-              Aşağıdaki butonlara tıklayarak müşterinizin aşamaları anlık olarak nasıl izlediğini deneyimleyin.
+              Aşağıdaki aşama butonlarına tıklayarak müşterinizin aşamaları anlık olarak nasıl izlediğini deneyimleyin.
             </p>
           </div>
 
-          {/* Interactive Stage Selector Buttons (No slider, clean interactive tabs) */}
+          {/* Interactive Stage Selector Buttons */}
           <div className="max-w-3xl mx-auto mb-8">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
               {DEMO_STAGES.map((st, idx) => {
@@ -375,11 +381,11 @@ export const LandingPage: React.FC = () => {
                     onClick={() => setSelectedStageIdx(idx)}
                     className={`py-2.5 px-2 rounded-xl text-xs font-bold transition-all text-center border cursor-pointer ${
                       isActive
-                        ? 'bg-emerald-500 text-slate-950 border-emerald-400 shadow-md shadow-emerald-900/50 scale-[1.02]'
-                        : 'bg-slate-900/90 hover:bg-slate-850 text-slate-300 border-slate-800 hover:border-slate-700'
+                        ? 'bg-emerald-600 text-white border-emerald-500 shadow-lg shadow-emerald-600/30 scale-[1.02]'
+                        : 'bg-[#0c152a] hover:bg-slate-800 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white'
                     }`}
                   >
-                    <span className="block text-[10px] opacity-75 uppercase tracking-wider mb-0.5">
+                    <span className="block text-[10px] opacity-80 uppercase tracking-wider mb-0.5">
                       {idx + 1}. Aşama
                     </span>
                     <span className="truncate block">{st.badge}</span>
@@ -391,40 +397,40 @@ export const LandingPage: React.FC = () => {
 
           {/* Real Customer Phone Frame Mockup */}
           <div className="max-w-md mx-auto">
-            <div className="bg-slate-900 rounded-[36px] p-3 sm:p-4 border-4 border-slate-800 shadow-2xl shadow-emerald-950/50 relative">
+            <div className="bg-[#0a1122] rounded-[38px] p-3 sm:p-4 border-4 border-slate-700 shadow-2xl relative">
               {/* Phone Speaker Notch */}
               <div className="w-28 h-4 bg-slate-800 rounded-full mx-auto mb-3 flex items-center justify-center">
                 <div className="w-3 h-3 rounded-full bg-slate-900 mr-2" />
                 <div className="w-12 h-1 bg-slate-700 rounded-full" />
               </div>
 
-              {/* Screen Inner Container (Styled like TrackVehiclePage) */}
-              <div className="bg-slate-950 rounded-[28px] border border-slate-800 p-4 sm:p-5 space-y-4 text-slate-100">
+              {/* Screen Inner Container (Dark navy customer tracking interface) */}
+              <div className="bg-[#070d19] rounded-[28px] border border-slate-800 p-4 sm:p-5 space-y-4 text-slate-100">
                 {/* Header in phone */}
-                <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                   <div className="flex items-center gap-2">
                     <img
                       src="/favicon.png"
                       alt="Logo"
-                      className="w-7 h-7 rounded-lg object-contain border border-emerald-500/30"
+                      className="w-8 h-8 rounded-lg object-contain border border-emerald-500/40 bg-[#0c152a] p-0.5"
                     />
                     <div className="text-left">
                       <h4 className="text-xs font-bold text-white leading-tight">
                         Örnek Oto Servis & Bakım
                       </h4>
-                      <span className="text-[10px] text-emerald-400 flex items-center gap-1 font-medium">
+                      <span className="text-[10px] text-emerald-400 flex items-center gap-1 font-semibold">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                         Canlı Araç Durumu
                       </span>
                     </div>
                   </div>
-                  <span className="text-[10px] font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded-full border border-slate-800">
+                  <span className="text-[10px] font-mono text-slate-400 bg-[#0c152a] px-2 py-0.5 rounded-full border border-slate-700 shadow-sm">
                     Şifresiz
                   </span>
                 </div>
 
                 {/* Real Turkish License Plate Box in Customer View */}
-                <div className="bg-slate-900/90 rounded-2xl border border-slate-800/90 p-4 text-center space-y-2.5">
+                <div className="bg-[#0c152a] rounded-2xl border border-slate-800 p-4 text-center space-y-2.5 shadow-md">
                   <div className="flex justify-center">
                     <PlateDisplay plate="34 ABC 789" size="lg" />
                   </div>
@@ -439,13 +445,13 @@ export const LandingPage: React.FC = () => {
                   </div>
 
                   {/* Dynamic Status Banner */}
-                  <div className={`p-3.5 rounded-xl border ${currentDemo.badgeBg} ${currentDemo.badgeBorder} flex flex-col items-center justify-center gap-1 text-center`}>
-                    <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
+                  <div className="p-3.5 rounded-xl border border-emerald-800/80 bg-emerald-950/70 flex flex-col items-center justify-center gap-1 text-center">
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-400">
                       Mevcut Aşama ({currentDemo.stepNumber} / 6)
                     </span>
                     <div className="flex items-center gap-2">
-                      <span className={`w-2.5 h-2.5 rounded-full ${currentDemo.dotColor} animate-ping`} />
-                      <span className={`text-base font-black ${currentDemo.badgeText}`}>
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+                      <span className="text-base font-black text-emerald-200">
                         {currentDemo.label}
                       </span>
                     </div>
@@ -456,7 +462,7 @@ export const LandingPage: React.FC = () => {
 
                   {/* Estimated Delivery & Update */}
                   <div className="grid grid-cols-2 gap-2 text-left pt-1">
-                    <div className="p-2 bg-slate-950 rounded-xl border border-slate-800">
+                    <div className="p-2.5 bg-[#070d19] rounded-xl border border-slate-800">
                       <span className="text-[10px] text-slate-400 font-semibold uppercase flex items-center gap-1">
                         <Clock className="w-3 h-3 text-emerald-400" />
                         Tahmini Teslim
@@ -466,7 +472,7 @@ export const LandingPage: React.FC = () => {
                       </p>
                     </div>
 
-                    <div className="p-2 bg-slate-950 rounded-xl border border-slate-800">
+                    <div className="p-2.5 bg-[#070d19] rounded-xl border border-slate-800">
                       <span className="text-[10px] text-slate-400 font-semibold uppercase flex items-center gap-1">
                         <RefreshCw className="w-3 h-3 text-emerald-400" />
                         Son Güncelleme
@@ -478,18 +484,18 @@ export const LandingPage: React.FC = () => {
                   </div>
 
                   {/* Technician Note */}
-                  <div className="p-2.5 bg-slate-950/70 rounded-xl border border-slate-800/80 text-left text-xs">
-                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-0.5">
+                  <div className="p-2.5 bg-amber-950/50 rounded-xl border border-amber-800/60 text-left text-xs">
+                    <span className="text-[10px] text-amber-300 font-bold uppercase tracking-wider block mb-0.5">
                       Usta Notu:
                     </span>
-                    <p className="text-slate-300 font-mono text-[11px] leading-relaxed">
+                    <p className="text-amber-100 font-mono text-[11px] leading-relaxed">
                       "{currentDemo.note}"
                     </p>
                   </div>
                 </div>
 
                 {/* 6 Stages Timeline Simulation */}
-                <div className="bg-slate-900/70 rounded-2xl border border-slate-800/80 p-3.5 space-y-2">
+                <div className="bg-[#0c152a] rounded-2xl border border-slate-800 p-3.5 space-y-2 shadow-md">
                   <div className="flex items-center justify-between pb-1.5 border-b border-slate-800">
                     <span className="text-xs font-bold text-white uppercase tracking-wider">
                       Aşama Çizelgesi
@@ -499,7 +505,7 @@ export const LandingPage: React.FC = () => {
                     </span>
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     {DEMO_STAGES.map((st, i) => {
                       const isPast = i < selectedStageIdx;
                       const isCurrent = i === selectedStageIdx;
@@ -508,20 +514,20 @@ export const LandingPage: React.FC = () => {
                           key={st.key}
                           className={`flex items-center justify-between p-2 rounded-xl text-xs transition-colors ${
                             isCurrent
-                              ? 'bg-emerald-950/80 border border-emerald-600/80 text-emerald-200 font-bold'
+                              ? 'bg-emerald-950/80 border border-emerald-700 text-white font-bold shadow-sm'
                               : isPast
-                              ? 'bg-slate-950/60 text-slate-300'
-                              : 'bg-transparent text-slate-600'
+                              ? 'bg-slate-900/60 text-slate-300'
+                              : 'bg-transparent text-slate-500'
                           }`}
                         >
                           <div className="flex items-center gap-2">
                             <div
                               className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
                                 isPast
-                                  ? 'bg-emerald-600 text-slate-950'
+                                  ? 'bg-emerald-600 text-white'
                                   : isCurrent
-                                  ? 'bg-emerald-400 text-slate-950 animate-pulse'
-                                  : 'bg-slate-800 text-slate-500'
+                                  ? 'bg-emerald-500 text-white animate-pulse'
+                                  : 'bg-slate-800 text-slate-400'
                               }`}
                             >
                               {isPast ? <Check className="w-3 h-3" /> : i + 1}
@@ -529,7 +535,7 @@ export const LandingPage: React.FC = () => {
                             <span>{st.label}</span>
                           </div>
 
-                          <span className="text-[10px] opacity-75 font-mono">
+                          <span className="text-[10px] opacity-80 font-mono">
                             {isPast ? 'Tamamlandı' : isCurrent ? 'İşlemde' : 'Sırada'}
                           </span>
                         </div>
@@ -542,7 +548,7 @@ export const LandingPage: React.FC = () => {
                 <div className="grid grid-cols-2 gap-2 pt-1">
                   <a
                     href="tel:05415266022"
-                    className="py-2.5 px-3 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-xs font-bold text-white flex items-center justify-center gap-1.5 transition-colors"
+                    className="py-2.5 px-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-xs font-bold text-white flex items-center justify-center gap-1.5 transition-colors shadow-sm cursor-pointer"
                   >
                     <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
                     <span>Servisi Ara</span>
@@ -551,9 +557,9 @@ export const LandingPage: React.FC = () => {
                     href={whatsappHeroUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-xs font-bold text-white flex items-center justify-center gap-1.5 transition-colors shadow-xs"
+                    className="py-2.5 px-3 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-xs font-bold text-white flex items-center justify-center gap-1.5 transition-colors shadow-sm cursor-pointer"
                   >
-                    <MessageCircle className="w-3.5 h-3.5" />
+                    <MessageCircle className="w-3.5 h-3.5 fill-white" />
                     <span>WhatsApp</span>
                   </a>
                 </div>
@@ -569,11 +575,11 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* ÜRÜN ÖZELLİKLERİ BÖLÜMÜ */}
-      <section id="urun-ozellikleri" className="py-16 sm:py-24 border-t border-emerald-900/30 bg-slate-950/60 relative">
+      <section id="urun-ozellikleri" className="py-16 sm:py-24 border-t border-slate-800 bg-[#070d19] relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs font-bold mb-3">
-              <Layers className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/70 text-emerald-300 border border-emerald-800 text-xs font-bold mb-3 shadow-sm">
+              <Layers className="w-3.5 h-3.5 text-emerald-400" />
               <span>Modern Servis Yönetimi</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
@@ -587,8 +593,8 @@ export const LandingPage: React.FC = () => {
           {/* 4 Feature Bento Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             {/* Feature 1 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 transition-all shadow-lg space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shadow-xs">
+            <div className="p-6 sm:p-8 rounded-3xl bg-[#0c152a] border border-slate-800 hover:border-emerald-500/60 hover:shadow-xl transition-all shadow-md space-y-4">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shadow-sm">
                 <Send className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-white tracking-tight">
@@ -597,7 +603,7 @@ export const LandingPage: React.FC = () => {
               <p className="text-sm text-slate-300 leading-relaxed">
                 Her araca özel benzersiz, şifresiz bir canlı takip bağlantısı üretilir. Servis panelinden tek bir tuşla müşterinizin telefonuna hazır WhatsApp mesajı gönderilir.
               </p>
-              <ul className="space-y-2 text-xs text-slate-400 pt-2 border-t border-slate-800/80">
+              <ul className="space-y-2 text-xs text-slate-400 pt-2 border-t border-slate-800">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                   <span>SMS veya kontör ücreti ödemezsiniz</span>
@@ -610,8 +616,8 @@ export const LandingPage: React.FC = () => {
             </div>
 
             {/* Feature 2 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 transition-all shadow-lg space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shadow-xs">
+            <div className="p-6 sm:p-8 rounded-3xl bg-[#0c152a] border border-slate-800 hover:border-emerald-500/60 hover:shadow-xl transition-all shadow-md space-y-4">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shadow-sm">
                 <Wrench className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-white tracking-tight">
@@ -620,7 +626,7 @@ export const LandingPage: React.FC = () => {
               <p className="text-sm text-slate-300 leading-relaxed">
                 Araç kabul, arıza tespiti, parça bekleme, bakım onarım, test ve teslime hazır aşamalarını saniyeler içinde güncelleyin. Müşteriniz aracın nerede olduğunu bilerek güvenir.
               </p>
-              <ul className="space-y-2 text-xs text-slate-400 pt-2 border-t border-slate-800/80">
+              <ul className="space-y-2 text-xs text-slate-400 pt-2 border-t border-slate-800">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                   <span>Tahmini teslim saati ve usta notları</span>
@@ -633,8 +639,8 @@ export const LandingPage: React.FC = () => {
             </div>
 
             {/* Feature 3 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 transition-all shadow-lg space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shadow-xs">
+            <div className="p-6 sm:p-8 rounded-3xl bg-[#0c152a] border border-slate-800 hover:border-emerald-500/60 hover:shadow-xl transition-all shadow-md space-y-4">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shadow-sm">
                 <QrCode className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-white tracking-tight">
@@ -643,7 +649,7 @@ export const LandingPage: React.FC = () => {
               <p className="text-sm text-slate-300 leading-relaxed">
                 Her yeni araç kabulünde sistem otomatik olarak QR kodlu takip kartı hazırlar. Yazıcıdan tek tıkla çıktı alıp araç kabul fişi olarak müşterinize verin.
               </p>
-              <ul className="space-y-2 text-xs text-slate-400 pt-2 border-t border-slate-800/80">
+              <ul className="space-y-2 text-xs text-slate-400 pt-2 border-t border-slate-800">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                   <span>Müşteri kamerasını tuttuğunda durum hemen açılır</span>
@@ -656,8 +662,8 @@ export const LandingPage: React.FC = () => {
             </div>
 
             {/* Feature 4 */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 transition-all shadow-lg space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shadow-xs">
+            <div className="p-6 sm:p-8 rounded-3xl bg-[#0c152a] border border-slate-800 hover:border-emerald-500/60 hover:shadow-xl transition-all shadow-md space-y-4">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center shadow-sm">
                 <Clock className="w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold text-white tracking-tight">
@@ -666,7 +672,7 @@ export const LandingPage: React.FC = () => {
               <p className="text-sm text-slate-300 leading-relaxed">
                 "Ustam benim araba ne oldu, parça geldi mi?" soruları %85 oranında azalır. Ustalarınız ve siz telefon yanıtlamak yerine servisteki araçları tamamlamaya odaklanırsınız.
               </p>
-              <ul className="space-y-2 text-xs text-slate-400 pt-2 border-t border-slate-800/80">
+              <ul className="space-y-2 text-xs text-slate-400 pt-2 border-t border-slate-800">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                   <span>Daha az bölünme, daha yüksek iş tamamlama hızı</span>
@@ -682,11 +688,11 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* NASIL ÇALIŞIR BÖLÜMÜ */}
-      <section id="nasil-calisir" className="py-16 sm:py-24 border-t border-emerald-900/30 relative">
+      <section id="nasil-calisir" className="py-16 sm:py-24 border-t border-slate-800 bg-[#0c152a]/50 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs font-bold mb-3">
-              <Zap className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/70 text-emerald-300 border border-emerald-800 text-xs font-bold mb-3 shadow-sm">
+              <Zap className="w-3.5 h-3.5 text-emerald-400" />
               <span>3 Kolay Adım</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
@@ -698,32 +704,32 @@ export const LandingPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-slate-900/80 rounded-3xl p-6 sm:p-8 border border-slate-800 text-center space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-slate-950 font-black text-lg flex items-center justify-center mx-auto shadow-md shadow-emerald-900/40">
+            <div className="bg-[#0c152a] rounded-3xl p-6 sm:p-8 border border-slate-800 text-center space-y-4 shadow-md">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white font-black text-lg flex items-center justify-center mx-auto shadow-md shadow-emerald-600/30">
                 1
               </div>
               <h3 className="text-lg font-bold text-white">Aracı Kaydedin</h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Servise gelen aracın plakasını, marka ve modelini yazın. Sistem anında araca özel güvenli takip sayfası oluşturur.
               </p>
             </div>
 
-            <div className="bg-slate-900/80 rounded-3xl p-6 sm:p-8 border border-slate-800 text-center space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-slate-950 font-black text-lg flex items-center justify-center mx-auto shadow-md shadow-emerald-900/40">
+            <div className="bg-[#0c152a] rounded-3xl p-6 sm:p-8 border border-slate-800 text-center space-y-4 shadow-md">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white font-black text-lg flex items-center justify-center mx-auto shadow-md shadow-emerald-600/30">
                 2
               </div>
               <h3 className="text-lg font-bold text-white">Aşamayı Güncelleyin</h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Araç onarımdayken veya parça beklerken tek tıkla yeni aşamaya geçirin, dilerseniz kısa bir usta notu ekleyin.
               </p>
             </div>
 
-            <div className="bg-slate-900/80 rounded-3xl p-6 sm:p-8 border border-slate-800 text-center space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-slate-950 font-black text-lg flex items-center justify-center mx-auto shadow-md shadow-emerald-900/40">
+            <div className="bg-[#0c152a] rounded-3xl p-6 sm:p-8 border border-slate-800 text-center space-y-4 shadow-md">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white font-black text-lg flex items-center justify-center mx-auto shadow-md shadow-emerald-600/30">
                 3
               </div>
               <h3 className="text-lg font-bold text-white">Müşteriniz Canlı İzlesin</h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Müşteriniz WhatsApp linkinden veya QR koddan aracının durumunu canlı izler. İş bittiğinde "Hazır" bildirimi gider.
               </p>
             </div>
@@ -732,11 +738,11 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* SIKÇA SORULAN SORULAR (SSS) */}
-      <section className="py-16 sm:py-20 border-t border-emerald-900/30 bg-slate-950/60 relative">
+      <section className="py-16 sm:py-20 border-t border-slate-800 bg-[#070d19] relative">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 text-xs font-bold mb-3">
-              <HelpCircle className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/70 text-emerald-300 border border-emerald-800 text-xs font-bold mb-3 shadow-sm">
+              <HelpCircle className="w-3.5 h-3.5 text-emerald-400" />
               <span>Merak Edilenler</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
@@ -750,12 +756,12 @@ export const LandingPage: React.FC = () => {
               return (
                 <div
                   key={idx}
-                  className="rounded-2xl bg-slate-900/90 border border-slate-800 overflow-hidden transition-all"
+                  className="rounded-2xl bg-[#0c152a] border border-slate-800 overflow-hidden transition-all shadow-sm"
                 >
                   <button
                     type="button"
                     onClick={() => setOpenFaq(isOpen ? null : idx)}
-                    className="w-full py-4 px-5 sm:px-6 flex items-center justify-between text-left text-sm sm:text-base font-bold text-white hover:text-emerald-300 transition-colors cursor-pointer"
+                    className="w-full py-4 px-5 sm:px-6 flex items-center justify-between text-left text-sm sm:text-base font-bold text-white hover:text-emerald-400 transition-colors cursor-pointer"
                   >
                     <span>{faq.q}</span>
                     <ChevronDown
@@ -765,7 +771,7 @@ export const LandingPage: React.FC = () => {
                     />
                   </button>
                   {isOpen && (
-                    <div className="px-5 sm:px-6 pb-4 pt-1 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-slate-800/60">
+                    <div className="px-5 sm:px-6 pb-4 pt-1 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-slate-800">
                       {faq.a}
                     </div>
                   )}
@@ -777,7 +783,7 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* DIRECT WHATSAPP CALLOUT BANNER */}
-      <section className="py-12 border-t border-emerald-900/40 relative bg-gradient-to-r from-emerald-950/60 via-slate-900 to-emerald-950/60">
+      <section className="py-12 border-t border-slate-800 relative bg-gradient-to-r from-emerald-950/50 via-[#0c152a] to-emerald-950/50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
           <div>
             <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider block mb-1">
@@ -795,25 +801,25 @@ export const LandingPage: React.FC = () => {
             href={whatsappHeroUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-3.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-sm flex items-center gap-2.5 transition-all shadow-lg shadow-emerald-950/80 shrink-0"
+            className="px-6 py-3.5 rounded-2xl bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-sm flex items-center gap-2.5 transition-all shadow-lg shadow-emerald-700/30 shrink-0 cursor-pointer"
           >
-            <MessageCircle className="w-5 h-5 fill-slate-950" />
+            <MessageCircle className="w-5 h-5 fill-white" />
             <span>WhatsApp ile Mesaj Gönder</span>
           </a>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-slate-800/80 bg-slate-950 py-12 text-slate-400 text-xs">
+      <footer className="border-t border-slate-800 bg-[#0a1122] py-12 text-slate-400 text-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 pb-8 border-b border-slate-800/80">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 pb-8 border-b border-slate-800">
             {/* Brand column with logo */}
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <img
                   src="/favicon.png"
                   alt="Durumu Ne? Logo"
-                  className="w-10 h-10 rounded-xl p-1 bg-slate-900 border border-emerald-500/40 object-contain"
+                  className="w-10 h-10 rounded-xl p-1 bg-[#0c152a] border border-slate-700 object-contain shadow-sm"
                 />
                 <span className="font-black text-base text-white tracking-tight">
                   DURUMU NE?
@@ -822,7 +828,7 @@ export const LandingPage: React.FC = () => {
               <p className="text-xs text-slate-400 leading-relaxed">
                 Oto servisler için canlı araç durum takip ve müşteri bilgilendirme yazılımı.
               </p>
-              <p className="text-xs text-emerald-400 font-semibold">
+              <p className="text-xs text-emerald-400 font-bold">
                 WhatsApp: {SUPPORT_PHONE_DISPLAY}
               </p>
             </div>
@@ -905,7 +911,7 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
             <div className="flex items-center gap-1.5">
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
               <span>© 2026 Durumu Ne? Tüm hakları saklıdır.</span>
@@ -921,10 +927,10 @@ export const LandingPage: React.FC = () => {
         target="_blank"
         rel="noopener noreferrer"
         id="floating-whatsapp-btn"
-        className="fixed bottom-6 right-6 z-50 p-3.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-2xl shadow-emerald-900/80 flex items-center justify-center transition-transform hover:scale-110 group cursor-pointer"
+        className="fixed bottom-6 right-6 z-50 p-3.5 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white shadow-xl shadow-emerald-900/40 flex items-center justify-center transition-transform hover:scale-110 group cursor-pointer"
         title="WhatsApp Destek Hattı (0541 526 60 22)"
       >
-        <MessageCircle className="w-6 h-6 fill-slate-950" />
+        <MessageCircle className="w-6 h-6 fill-white" />
         <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out text-xs font-extrabold pl-0 group-hover:pl-2">
           WhatsApp Destek
         </span>

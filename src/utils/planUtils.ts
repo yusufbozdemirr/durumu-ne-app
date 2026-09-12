@@ -35,6 +35,29 @@ export function getPlanStatus(business: Business | null, userRole?: string): Pla
     };
   }
 
+  // Check if waiting for admin approval
+  if (
+    business.onayDurumu === 'bekliyor' ||
+    business.onayDurumu === 'onay_bekliyor' ||
+    business.accountStatus === 'pending_approval'
+  ) {
+    return {
+      plan: 'trial',
+      accountStatus: 'pending_approval',
+      isTrial: true,
+      isPro: false,
+      isExpired: false,
+      isPendingApproval: true,
+      canAccessDashboard: false,
+      daysRemaining: 7,
+      hoursRemaining: 168,
+      warningState: 'pending_approval',
+      warningMessage: 'Deneme sürümü talebiniz onay bekliyor.',
+      trialStartDate: business.trialStartDate || business.denemeBaslangicTarihi,
+      trialEndDate: business.trialEndDate || business.denemeBitisTarihi,
+    };
+  }
+
   // Check accountStatus suspension
   if (business.accountStatus === 'suspended' || business.active === false) {
     return {
@@ -47,14 +70,14 @@ export function getPlanStatus(business: Business | null, userRole?: string): Pla
       daysRemaining: 0,
       hoursRemaining: 0,
       warningState: 'expired',
-      warningMessage: 'Hesabınız yönetici tarafından askıya alınmıştır.',
-      trialStartDate: business.trialStartDate,
-      trialEndDate: business.trialEndDate,
+      warningMessage: 'Hesabınız askıya alınmıştır.',
+      trialStartDate: business.trialStartDate || business.denemeBaslangicTarihi,
+      trialEndDate: business.trialEndDate || business.denemeBitisTarihi,
     };
   }
 
   // If explicit Pro plan
-  if (business.plan === 'pro') {
+  if (business.plan === 'pro' || business.paketTuru === 'pro') {
     return {
       plan: 'pro',
       accountStatus: 'active',
@@ -65,8 +88,8 @@ export function getPlanStatus(business: Business | null, userRole?: string): Pla
       daysRemaining: 365,
       hoursRemaining: 365 * 24,
       warningState: 'none',
-      trialStartDate: business.trialStartDate,
-      trialEndDate: business.trialEndDate,
+      trialStartDate: business.trialStartDate || business.denemeBaslangicTarihi,
+      trialEndDate: business.trialEndDate || business.denemeBitisTarihi,
     };
   }
 
@@ -83,43 +106,31 @@ export function getPlanStatus(business: Business | null, userRole?: string): Pla
       hoursRemaining: 0,
       warningState: 'expired',
       warningMessage: 'Ücretsiz deneme süreniz sona erdi.',
-      trialStartDate: business.trialStartDate,
-      trialEndDate: business.trialEndDate,
+      trialStartDate: business.trialStartDate || business.denemeBaslangicTarihi,
+      trialEndDate: business.trialEndDate || business.denemeBitisTarihi,
     };
   }
 
-  // Calculate based on trialEndDate
+  // Calculate based on trialEndDate or denemeBitisTarihi
   const now = Date.now();
   let trialEndMs = 0;
 
-  if (business.trialEndDate) {
-    trialEndMs = new Date(business.trialEndDate).getTime();
-  } else if (business.trialStartDate) {
-    // If only startDate is saved, default is 7 days
-    trialEndMs = new Date(business.trialStartDate).getTime() + 7 * 24 * 60 * 60 * 1000;
-  } else if (business.createdAt) {
-    // Legacy fallback for trial calculation
-    trialEndMs = new Date(business.createdAt).getTime() + 7 * 24 * 60 * 60 * 1000;
-  }
+  const rawEndDate = business.trialEndDate || business.denemeBitisTarihi;
+  const rawStartDate = business.trialStartDate || business.denemeBaslangicTarihi;
 
-  // If this is a legacy free business with no trial timestamps and plan is 'free', keep backward compatible access
-  if (business.plan === 'free' && !business.trialEndDate && !business.trialStartDate) {
-    return {
-      plan: 'free',
-      accountStatus: 'active',
-      isTrial: false,
-      isPro: false,
-      isExpired: false,
-      canAccessDashboard: true,
-      daysRemaining: 30,
-      hoursRemaining: 30 * 24,
-      warningState: 'none',
-    };
+  if (rawEndDate) {
+    trialEndMs = new Date(rawEndDate).getTime();
+  } else if (rawStartDate) {
+    // If only startDate is saved, default is 7 days
+    trialEndMs = new Date(rawStartDate).getTime() + 7 * 24 * 60 * 60 * 1000;
+  } else if (business.createdAt) {
+    // Fallback based on creation time: 7 days
+    trialEndMs = new Date(business.createdAt).getTime() + 7 * 24 * 60 * 60 * 1000;
   }
 
   const diffMs = trialEndMs - now;
 
-  // Trial has expired
+  // Trial or Free period has expired (no free bypass if 7 days has passed!)
   if (diffMs <= 0) {
     return {
       plan: 'trial',
@@ -132,8 +143,8 @@ export function getPlanStatus(business: Business | null, userRole?: string): Pla
       hoursRemaining: 0,
       warningState: 'expired',
       warningMessage: 'Ücretsiz deneme süreniz sona erdi.',
-      trialStartDate: business.trialStartDate,
-      trialEndDate: business.trialEndDate,
+      trialStartDate: rawStartDate,
+      trialEndDate: rawEndDate,
     };
   }
 
@@ -170,7 +181,7 @@ export function getPlanStatus(business: Business | null, userRole?: string): Pla
     hoursRemaining,
     warningState,
     warningMessage,
-    trialStartDate: business.trialStartDate,
-    trialEndDate: business.trialEndDate,
+    trialStartDate: rawStartDate,
+    trialEndDate: rawEndDate,
   };
 }

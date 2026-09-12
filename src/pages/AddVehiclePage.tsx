@@ -20,7 +20,6 @@ export const AddVehiclePage: React.FC = () => {
         serviceDescription: data.serviceDescription,
         initialNote: data.initialNote,
       });
-      // Return to the vehicle list
       navigate('/vehicles');
     } catch (error) {
       console.error('Error in handleCreate:', error);
@@ -29,9 +28,9 @@ export const AddVehiclePage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="border-b border-slate-200/80 pb-4">
-        <h2 className="text-xl font-bold text-slate-900 tracking-tight">Yeni Araç Girişi</h2>
-        <p className="text-xs text-slate-500 mt-1">
+      <div className="border-b border-slate-800 pb-4">
+        <h2 className="text-xl font-bold text-white tracking-tight">Yeni Araç Girişi</h2>
+        <p className="text-xs text-slate-400 mt-1">
           Servise kabul edilen aracın detaylarını girin. Müşteri takip bağlantısı ve QR kod otomatik oluşturulacaktır.
         </p>
       </div>

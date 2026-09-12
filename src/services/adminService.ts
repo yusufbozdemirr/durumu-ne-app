@@ -24,8 +24,10 @@ export interface CreateBusinessInput {
   ownerName: string;
   email: string;
   password: string;
-  plan?: 'free' | 'pro' | 'trial';
-  accountStatus?: 'active' | 'trial_expired' | 'suspended';
+  plan?: 'pro' | 'trial';
+  paketTuru?: 'pro' | 'deneme';
+  accountStatus?: 'active' | 'trial_expired' | 'suspended' | 'pending_approval';
+  endDate?: string;
 }
 
 export const adminService = {
@@ -39,13 +41,26 @@ export const adminService = {
     const list: Business[] = [];
     snapshot.forEach((d) => {
       const data = d.data();
+      const planVal = data.plan || (data.paketTuru === 'pro' ? 'pro' : 'trial');
       list.push({
         id: d.id,
         name: data.name || '',
         phone: data.phone || '',
         address: data.address || '',
         ownerUid: data.ownerUid || '',
-        plan: data.plan || 'free',
+        plan: planVal,
+        paketTuru: data.paketTuru || (planVal === 'pro' ? 'pro' : 'deneme'),
+        onayDurumu: data.onayDurumu || 'onaylandi',
+        talepTarihi: data.talepTarihi || null,
+        denemeBaslangicTarihi: data.denemeBaslangicTarihi || data.trialStartDate || null,
+        denemeBitisTarihi: data.denemeBitisTarihi || data.trialEndDate || null,
+        proBaslangicTarihi: data.proBaslangicTarihi || data.proStartDate || null,
+        proBitisTarihi: data.proBitisTarihi || data.proEndDate || null,
+        trialStartDate: data.trialStartDate || data.denemeBaslangicTarihi || null,
+        trialEndDate: data.trialEndDate || data.denemeBitisTarihi || null,
+        proStartDate: data.proStartDate || data.proBaslangicTarihi || null,
+        proEndDate: data.proEndDate || data.proBitisTarihi || null,
+        accountStatus: data.accountStatus || (data.active === false ? 'suspended' : 'active'),
         active: data.active !== false,
         createdAt: data.createdAt?.toDate
           ? data.createdAt.toDate().toISOString()
@@ -114,25 +129,56 @@ export const adminService = {
       // 2. Generate unique businessId
       const businessId = `biz_${customerUid.substring(0, 8)}_${Date.now().toString(36)}`;
       const nowIso = new Date().toISOString();
+      const isProPlan = input.plan === 'pro' || input.paketTuru === 'pro';
 
-      const businessData = {
+      const trialStartDate = !isProPlan ? nowIso : null;
+      const trialEndDate = !isProPlan
+        ? (input.endDate || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString())
+        : null;
+
+      const proStartDate = isProPlan ? nowIso : null;
+      const proEndDate = isProPlan
+        ? (input.endDate || new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString())
+        : null;
+
+      const businessData: Record<string, any> = {
         id: businessId,
         name: input.businessName.trim(),
         phone: input.phone.trim(),
         address: input.address.trim(),
         ownerUid: customerUid,
-        plan: 'free' as const,
+        plan: isProPlan ? 'pro' : 'trial',
+        paketTuru: isProPlan ? 'pro' : 'deneme',
+        onayDurumu: 'onaylandi',
+        talepTarihi: nowIso,
+        accountStatus: 'active',
         active: true,
         ownerName: input.ownerName.trim(),
         ownerEmail: input.email.trim(),
+        trialStartDate,
+        trialEndDate,
+        denemeBaslangicTarihi: trialStartDate,
+        denemeBitisTarihi: trialEndDate,
+        proStartDate,
+        proEndDate,
+        proBaslangicTarihi: proStartDate,
+        proBitisTarihi: proEndDate,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       };
 
+      // Sanitize undefined fields
+      const cleanBusinessData: Record<string, any> = {};
+      for (const [k, v] of Object.entries(businessData)) {
+        if (v !== undefined) {
+          cleanBusinessData[k] = v;
+        }
+      }
+
       try {
         // 3. Create businesses/{businessId}
         const businessDocRef = doc(db, 'businesses', businessId);
-        await setDoc(businessDocRef, businessData);
+        await setDoc(businessDocRef, cleanBusinessData);
 
         // 4. Create users/{customerUid}
         const userDocRef = doc(db, 'users', customerUid);
@@ -140,6 +186,7 @@ export const adminService = {
           uid: customerUid,
           email: input.email.trim(),
           name: input.ownerName.trim(),
+          phone: input.phone.trim(),
           businessId: businessId,
           role: 'owner',
           createdAt: serverTimestamp(),
@@ -147,14 +194,25 @@ export const adminService = {
 
         return {
           id: businessId,
-          name: businessData.name,
-          phone: businessData.phone,
-          address: businessData.address,
+          name: input.businessName.trim(),
+          phone: input.phone.trim(),
+          address: input.address.trim(),
           ownerUid: customerUid,
-          plan: 'free',
+          plan: isProPlan ? 'pro' : 'trial',
+          paketTuru: isProPlan ? 'pro' : 'deneme',
+          onayDurumu: 'onaylandi',
+          accountStatus: 'active',
+          trialStartDate,
+          trialEndDate,
+          denemeBaslangicTarihi: trialStartDate,
+          denemeBitisTarihi: trialEndDate,
+          proStartDate,
+          proEndDate,
+          proBaslangicTarihi: proStartDate,
+          proBitisTarihi: proEndDate,
           active: true,
-          ownerName: businessData.ownerName,
-          ownerEmail: businessData.ownerEmail,
+          ownerName: input.ownerName.trim(),
+          ownerEmail: input.email.trim(),
           createdAt: nowIso,
           updatedAt: nowIso,
         };
@@ -182,32 +240,40 @@ export const adminService = {
     }
   },
 
-
   /**
    * Update existing business details
    */
   async updateBusiness(
     businessId: string,
-    updates: Partial<{
-      name: string;
-      phone: string;
-      address: string;
-      plan: 'free' | 'pro' | 'trial';
-      accountStatus: 'active' | 'trial_expired' | 'suspended';
-      active: boolean;
-      ownerName?: string;
-      ownerEmail?: string;
-      trialStartDate?: string;
-      trialEndDate?: string;
-      proStartDate?: string;
-      proEndDate?: string;
-    }>
+    updates: Record<string, any>
   ): Promise<void> {
     const ref = doc(db, 'businesses', businessId);
+
+    // CRITICAL: Strip any undefined fields so Firestore updateDoc never throws Unsupported field value: undefined
+    const cleanUpdates: Record<string, any> = {};
+    for (const [key, val] of Object.entries(updates)) {
+      if (val !== undefined) {
+        cleanUpdates[key] = val;
+      }
+    }
+
     await updateDoc(ref, {
-      ...updates,
+      ...cleanUpdates,
       updatedAt: serverTimestamp(),
     });
+
+    // If ownerName or phone was updated and ownerUid is known, also sync users document
+    if (cleanUpdates.ownerUid && (cleanUpdates.ownerName || cleanUpdates.phone)) {
+      try {
+        const userRef = doc(db, 'users', cleanUpdates.ownerUid);
+        const userUpdates: Record<string, any> = {};
+        if (cleanUpdates.ownerName) userUpdates.name = cleanUpdates.ownerName;
+        if (cleanUpdates.phone) userUpdates.phone = cleanUpdates.phone;
+        await updateDoc(userRef, userUpdates);
+      } catch (userErr) {
+        console.warn('Could not sync user profile doc:', userErr);
+      }
+    }
   },
 
   /**

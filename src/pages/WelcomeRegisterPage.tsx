@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
-import { BrandLogo } from '../components/common/BrandLogo';
 import { PlateDisplay } from '../components/common/PlateDisplay';
+import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import {
   ArrowRight,
   Lock,
@@ -18,9 +18,13 @@ import {
   Sparkles,
   ArrowLeft,
   Smartphone,
-  Zap,
+  Check,
+  MessageCircle,
 } from 'lucide-react';
-import { SUPPORT_PHONE_DISPLAY } from '../utils/constants';
+import {
+  SUPPORT_PHONE_DISPLAY,
+  getWhatsAppDirectUrl,
+} from '../utils/constants';
 
 export const WelcomeRegisterPage: React.FC = () => {
   const navigate = useNavigate();
@@ -35,6 +39,14 @@ export const WelcomeRegisterPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Only accept numeric digits
+    const digitsOnly = e.target.value.replace(/\D/g, '');
+    setPassword(digitsOnly);
+    setError('');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +63,11 @@ export const WelcomeRegisterPage: React.FC = () => {
       return;
     }
     if (!password) {
-      setError('Lütfen bir şifre belirleyiniz.');
+      setError('Lütfen sadece sayılardan oluşan şifrenizi giriniz.');
+      return;
+    }
+    if (password.length < 6) {
+      setError('Şifreniz en az 6 haneli bir sayı olmalıdır (Örn: 123456).');
       return;
     }
 
@@ -67,29 +83,36 @@ export const WelcomeRegisterPage: React.FC = () => {
         phone: phone.trim(),
       });
 
-      // Navigate to dashboard after successful account & business registration
-      navigate('/dashboard');
+      // Show approval waiting dialog
+      setShowSuccessModal(true);
     } catch (err: any) {
       console.error('Registration failed:', err);
-      setError(err?.message || 'Kayıt işlemi gerçekleştirilemedi. Lütfen bilgilerinizi kontrol ediniz.');
+      setError(
+        err?.message ||
+          'Kayıt işlemi gerçekleştirilemedi. Lütfen bilgilerinizi kontrol ediniz.'
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  const whatsappRepUrl = getWhatsAppDirectUrl(
+    `Merhaba, ${businessName || 'işletmem'} için 7 günlük deneme sürümü talebinde bulundum. Onay hakkında bilgi alabilir miyim?`
+  );
+
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-emerald-500 selection:text-white relative overflow-x-hidden">
+    <div className="min-h-screen bg-[#070d19] text-slate-100 flex flex-col justify-between selection:bg-emerald-500/30 selection:text-white relative overflow-x-hidden">
       {/* Background ambient lighting */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-600/10 blur-[120px] pointer-events-none rounded-full" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-emerald-800/10 blur-[120px] pointer-events-none rounded-full" />
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/10 blur-[130px] pointer-events-none rounded-full" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-600/10 blur-[140px] pointer-events-none rounded-full" />
 
       {/* Top Header */}
-      <header className="h-16 border-b border-slate-800/80 px-4 sm:px-8 flex items-center justify-between z-20 backdrop-blur-md bg-slate-950/70 sticky top-0">
+      <header className="h-16 border-b border-slate-800/80 px-4 sm:px-8 flex items-center justify-between z-20 backdrop-blur-md bg-[#0a1122]/90 sticky top-0">
         <div className="flex items-center gap-3">
           <Link
             to="/"
             id="btn-register-back"
-            className="p-2 -ml-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors"
+            className="p-2 -ml-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
             title="Geri Dön"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -98,7 +121,7 @@ export const WelcomeRegisterPage: React.FC = () => {
             <img
               src="/favicon.png"
               alt="Logo"
-              className="w-8 h-8 rounded-lg object-contain border border-emerald-500/30"
+              className="w-8 h-8 rounded-lg object-contain border border-emerald-500/30 p-0.5 bg-slate-900"
             />
             <span className="font-extrabold text-base tracking-tight text-white">
               DURUMU NE?
@@ -113,7 +136,7 @@ export const WelcomeRegisterPage: React.FC = () => {
           <Link
             to="/login"
             id="link-welcome-login"
-            className="text-xs font-bold text-emerald-400 hover:text-emerald-300 px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-emerald-500/40 transition-colors"
+            className="text-xs font-bold text-emerald-400 hover:text-emerald-300 px-3.5 py-2 rounded-xl bg-slate-800/80 border border-slate-700 hover:border-emerald-500/50 hover:bg-slate-800 transition-colors"
           >
             Bayi Girişi
           </Link>
@@ -125,61 +148,74 @@ export const WelcomeRegisterPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full">
           {/* Left Column: SaaS Value Proposition & Live Visual */}
           <div className="lg:col-span-6 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 text-xs font-bold shadow-xs">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 text-emerald-400 border border-emerald-800/80 text-xs font-bold shadow-2xs">
               <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
               <span>7 Gün Tam Özellikli Ücretsiz Deneme</span>
             </div>
 
             <div>
               <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                Servisinizi Tek Tıkla <span className="text-emerald-400">Dijitalleştirin</span>
+                Servisinizi Tek Tıkla{' '}
+                <span className="text-emerald-400">Dijitalleştirin</span>
               </h1>
               <p className="mt-3 text-sm sm:text-base text-slate-400 leading-relaxed max-w-lg">
-                Müşterilerinize telefonla laf anlatmaya son verin. Araç durumunu tek tıkla güncelleyin; müşteriniz cebinden canlı takip etsin.
+                Müşterilerinize sürekli telefonda durum anlatmaya son verin.
+                Aracın aşamasını tek dokunuşla güncelleyin, müşteriniz cebinden
+                canlı takip etsin.
               </p>
             </div>
 
             {/* Live Customer Simulation Card */}
-            <div className="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 shadow-xl space-y-4 backdrop-blur-sm">
-              <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+            <div className="bg-[#0c152a] rounded-2xl border border-slate-800/90 p-5 shadow-xl space-y-4">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div className="flex items-center gap-3">
                   <PlateDisplay plate="34 ABC 789" size="md" />
                   <div>
-                    <h4 className="text-xs font-bold text-white">Volkswagen Golf 1.5 TSI</h4>
-                    <p className="text-[11px] text-slate-400">Canlı Müşteri Görünümü</p>
+                    <h4 className="text-xs font-bold text-slate-200">
+                      Volkswagen Golf 1.5 TSI
+                    </h4>
+                    <p className="text-[11px] text-slate-400">
+                      Canlı Müşteri Görünümü
+                    </p>
                   </div>
                 </div>
-                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800">
+                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-700">
                   Onarım / Bakım
                 </span>
               </div>
 
               {/* Progress Steps Simulation */}
               <div className="grid grid-cols-4 gap-2 text-center text-xs">
-                <div className="p-2 rounded-xl bg-emerald-950/50 border border-emerald-800/60 text-emerald-300 font-semibold">
-                  <span className="text-[10px] uppercase block text-emerald-400 font-bold">1. Kabul</span>
+                <div className="p-2 rounded-xl bg-emerald-950/40 border border-emerald-800/60 text-emerald-300 font-semibold">
+                  <span className="text-[10px] uppercase block text-emerald-400 font-bold">
+                    1. Kabul
+                  </span>
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 mx-auto mt-1" />
                 </div>
-                <div className="p-2 rounded-xl bg-emerald-950/50 border border-emerald-800/60 text-emerald-300 font-semibold">
-                  <span className="text-[10px] uppercase block text-emerald-400 font-bold">2. Teşhis</span>
+                <div className="p-2 rounded-xl bg-emerald-950/40 border border-emerald-800/60 text-emerald-300 font-semibold">
+                  <span className="text-[10px] uppercase block text-emerald-400 font-bold">
+                    2. Teşhis
+                  </span>
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 mx-auto mt-1" />
                 </div>
-                <div className="p-2 rounded-xl bg-emerald-600 text-white font-bold shadow-md shadow-emerald-900/40">
+                <div className="p-2 rounded-xl bg-emerald-600 text-white font-bold shadow-xs">
                   <span className="text-[10px] uppercase block">3. Onarım</span>
                   <div className="w-2 h-2 rounded-full bg-white mx-auto mt-1.5 animate-ping" />
                 </div>
-                <div className="p-2 rounded-xl bg-slate-950 border border-slate-800 text-slate-500 font-medium">
+                <div className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-500 font-medium">
                   <span className="text-[10px] uppercase block">4. Teslim</span>
-                  <div className="w-1.5 h-1.5 rounded-full bg-slate-700 mx-auto mt-1.5" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-slate-600 mx-auto mt-1.5" />
                 </div>
               </div>
 
-              <div className="pt-2 flex items-center justify-between text-[11px] text-slate-400 border-t border-slate-800/80">
+              <div className="pt-2 flex items-center justify-between text-[11px] text-slate-400 border-t border-slate-800">
                 <span className="flex items-center gap-1.5">
                   <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
                   Müşteriye özel şifresiz takip bağlantısı
                 </span>
-                <span className="font-bold text-emerald-400">Kredi Kartı Gerekmez</span>
+                <span className="font-bold text-emerald-400">
+                  Kredi Kartı Gerekmez
+                </span>
               </div>
             </div>
 
@@ -191,7 +227,9 @@ export const WelcomeRegisterPage: React.FC = () => {
               </div>
               <div className="flex items-center gap-2.5 text-xs text-slate-300">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Tek tıkla WhatsApp üzerinden hazır durum mesajı gönderimi</span>
+                <span>
+                  Tek tıkla WhatsApp üzerinden hazır durum mesajı gönderimi
+                </span>
               </div>
               <div className="flex items-center gap-2.5 text-xs text-slate-300">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -202,18 +240,19 @@ export const WelcomeRegisterPage: React.FC = () => {
 
           {/* Right Column: Modern Registration Form */}
           <div className="lg:col-span-6">
-            <div className="bg-slate-900/90 p-6 sm:p-8 rounded-2xl border border-slate-800 shadow-2xl backdrop-blur-md">
+            <div className="bg-[#0c152a] p-6 sm:p-8 rounded-2xl border border-slate-800 shadow-2xl">
               <div className="mb-6">
                 <h2 className="text-xl font-bold text-white tracking-tight">
                   Ücretsiz Servis Hesabınızı Açın
                 </h2>
                 <p className="text-xs text-slate-400 mt-1">
-                  1 dakikada hesabınızı açın ve servisteki araçlarınızı kaydetmeye başlayın.
+                  1 dakikada başvurunuzu iletin, müşteri temsilcimiz onayladıktan
+                  sonra 7 günlük denemeniz başlasın.
                 </p>
               </div>
 
               {error && (
-                <div className="mb-5 p-3.5 bg-rose-950/80 border border-rose-800/80 rounded-xl text-xs text-rose-300 font-medium leading-relaxed">
+                <div className="mb-5 p-3.5 bg-rose-950/60 border border-rose-800/80 rounded-xl text-xs text-rose-300 font-medium leading-relaxed">
                   {error}
                 </div>
               )}
@@ -226,7 +265,7 @@ export const WelcomeRegisterPage: React.FC = () => {
                       Adınız <span className="text-emerald-400">*</span>
                     </label>
                     <div className="relative">
-                      <User className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                      <User className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
                       <input
                         type="text"
                         id="input-register-firstname"
@@ -237,7 +276,7 @@ export const WelcomeRegisterPage: React.FC = () => {
                           setFirstName(e.target.value);
                           setError('');
                         }}
-                        className="w-full pl-9 pr-3 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                        className="w-full pl-9 pr-3 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                       />
                     </div>
                   </div>
@@ -256,7 +295,7 @@ export const WelcomeRegisterPage: React.FC = () => {
                         setLastName(e.target.value);
                         setError('');
                       }}
-                      className="w-full px-3 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                      className="w-full px-3 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
                 </div>
@@ -264,10 +303,11 @@ export const WelcomeRegisterPage: React.FC = () => {
                 {/* Business Name */}
                 <div>
                   <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                    İşletme / Servis Adı <span className="text-emerald-400">*</span>
+                    İşletme / Servis Adı{' '}
+                    <span className="text-emerald-400">*</span>
                   </label>
                   <div className="relative">
-                    <Building2 className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Building2 className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       id="input-register-business-name"
@@ -278,28 +318,28 @@ export const WelcomeRegisterPage: React.FC = () => {
                         setBusinessName(e.target.value);
                         setError('');
                       }}
-                      className="w-full pl-9 pr-3 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                      className="w-full pl-9 pr-3 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
                 </div>
 
-                {/* Phone Number */}
+                {/* Phone Number with 0555 555 55 55 placeholder */}
                 <div>
                   <label className="block text-xs font-semibold text-slate-300 mb-1.5">
                     Telefon Numarası
                   </label>
                   <div className="relative">
-                    <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Phone className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
                     <input
                       type="tel"
                       id="input-register-phone"
-                      placeholder="0541 526 60 22"
+                      placeholder="0555 555 55 55"
                       value={phone}
                       onChange={(e) => {
                         setPhone(e.target.value);
                         setError('');
                       }}
-                      className="w-full pl-9 pr-3 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                      className="w-full pl-9 pr-3 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
                 </div>
@@ -310,7 +350,7 @@ export const WelcomeRegisterPage: React.FC = () => {
                     E-posta Adresi <span className="text-emerald-400">*</span>
                   </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
                     <input
                       type="email"
                       id="input-register-email"
@@ -321,29 +361,34 @@ export const WelcomeRegisterPage: React.FC = () => {
                         setEmail(e.target.value);
                         setError('');
                       }}
-                      className="w-full pl-9 pr-3 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder:text-slate-500 font-mono transition-colors focus:outline-hidden focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                      className="w-full pl-9 pr-3 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 font-mono transition-colors focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
                 </div>
 
-                {/* Password */}
+                {/* Password (NUMERIC ONLY) */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                    Şifre <span className="text-emerald-400">*</span>
-                  </label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-semibold text-slate-300">
+                      Şifre (Sadece Sayı){' '}
+                      <span className="text-emerald-400">*</span>
+                    </label>
+                    <span className="text-[11px] text-emerald-400 font-mono">
+                      En az 6 haneli PIN
+                    </span>
+                  </div>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       id="input-register-password"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       required
-                      placeholder="••••••••"
+                      placeholder="Örn: 123456"
                       value={password}
-                      onChange={(e) => {
-                        setPassword(e.target.value);
-                        setError('');
-                      }}
-                      className="w-full pl-9 pr-10 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder:text-slate-500 font-mono transition-colors focus:outline-hidden focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                      onChange={handlePasswordChange}
+                      className="w-full pl-9 pr-10 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 font-mono tracking-widest transition-colors focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                     />
                     <button
                       type="button"
@@ -358,6 +403,10 @@ export const WelcomeRegisterPage: React.FC = () => {
                       )}
                     </button>
                   </div>
+                  <p className="text-[10px] text-slate-400 mt-1">
+                    Girişinizi kolaylaştırmak için şifreniz yalnızca sayılardan
+                    oluşmalıdır.
+                  </p>
                 </div>
 
                 {/* Submit CTA */}
@@ -365,16 +414,16 @@ export const WelcomeRegisterPage: React.FC = () => {
                   type="submit"
                   id="btn-register-submit"
                   disabled={isSubmitting}
-                  className="w-full py-3.5 px-4 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 disabled:opacity-50 rounded-xl transition-all shadow-lg shadow-emerald-900/30 flex items-center justify-center gap-2 mt-4 cursor-pointer"
+                  className="w-full py-3.5 px-4 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 disabled:opacity-50 rounded-xl transition-all shadow-md shadow-emerald-600/30 flex items-center justify-center gap-2 mt-4 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Hesap Açılıyor...</span>
+                      <span>Talep Gönderiliyor...</span>
                     </>
                   ) : (
                     <>
-                      <span>7 Günlük Ücretsiz Denemeyi Başlat</span>
+                      <span>7 Günlük Deneme Talebini Gönder</span>
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
@@ -382,13 +431,19 @@ export const WelcomeRegisterPage: React.FC = () => {
               </form>
 
               {/* Terms hint */}
-              <p className="text-[11px] text-slate-500 text-center mt-4">
+              <p className="text-[11px] text-slate-400 text-center mt-4">
                 Kayıt olarak{' '}
-                <Link to="/kullanim-kosullari" className="text-emerald-400 hover:underline">
+                <Link
+                  to="/kullanim-kosullari"
+                  className="text-emerald-400 hover:underline"
+                >
                   Kullanım Koşulları
                 </Link>
                 'nı ve{' '}
-                <Link to="/gizlilik-politikasi" className="text-emerald-400 hover:underline">
+                <Link
+                  to="/gizlilik-politikasi"
+                  className="text-emerald-400 hover:underline"
+                >
                   Gizlilik Politikası
                 </Link>
                 'nı kabul etmiş olursunuz.
@@ -398,11 +453,88 @@ export const WelcomeRegisterPage: React.FC = () => {
         </div>
       </main>
 
+      {/* Success / Pending Approval Modal Dialog */}
+      {showSuccessModal && (
+        <div
+          id="dialog-pending-approval"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+        >
+          <div className="bg-[#0c152a] border border-emerald-500/50 rounded-2xl max-w-md w-full p-6 sm:p-7 shadow-2xl text-center relative space-y-5">
+            <div className="w-16 h-16 rounded-2xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto shadow-inner">
+              <CheckCircle2 className="w-8 h-8" />
+            </div>
+
+            <div>
+              <span className="inline-block text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 mb-2">
+                Talep Gönderildi
+              </span>
+              <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                Başvurunuz Başarıyla Alındı!
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
+                Müşteri temsilcimiz talebinizi onayladıktan sonra{' '}
+                <span className="text-emerald-400 font-semibold">
+                  7 günlük deneme süreniz
+                </span>{' '}
+                başlatılacaktır.
+              </p>
+            </div>
+
+            <div className="bg-[#070d19] rounded-xl p-3.5 border border-slate-800 text-left text-xs space-y-1.5 text-slate-300">
+              <div className="flex justify-between">
+                <span className="text-slate-500">İşletme Adı:</span>
+                <span className="font-semibold text-white">{businessName}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Yetkili Kişi:</span>
+                <span className="font-semibold text-white">
+                  {firstName} {lastName}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">E-posta:</span>
+                <span className="font-mono text-white">{email}</span>
+              </div>
+              {phone && (
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Telefon:</span>
+                  <span className="text-white">{phone}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-2.5 pt-1">
+              <a
+                href={whatsappRepUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 px-4 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors flex items-center justify-center gap-2 shadow-md shadow-emerald-600/30"
+              >
+                <WhatsAppIcon className="w-4 h-4" />
+                <span>WhatsApp'tan Hızlı Onay Al</span>
+              </a>
+
+              <button
+                type="button"
+                id="btn-dialog-close-home"
+                onClick={() => navigate('/')}
+                className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 transition-colors"
+              >
+                Anasayfaya Dön
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Footer */}
-      <footer className="py-6 border-t border-slate-800/80 bg-slate-950/80 text-center text-xs text-slate-500 z-10">
+      <footer className="py-6 border-t border-slate-800/80 bg-[#0a1122] text-center text-xs text-slate-400 z-10">
         <div className="flex items-center justify-center gap-1.5 text-[11px]">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-          <span>© 2026 Durumu Ne? Tüm hakları saklıdır. Destek Hattı: {SUPPORT_PHONE_DISPLAY}</span>
+          <span>
+            © 2026 Durumu Ne? Tüm hakları saklıdır. Destek Hattı:{' '}
+            {SUPPORT_PHONE_DISPLAY}
+          </span>
         </div>
       </footer>
     </div>

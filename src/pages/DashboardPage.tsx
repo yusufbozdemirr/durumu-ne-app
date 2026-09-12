@@ -6,6 +6,9 @@ import { VehicleTable } from '../components/vehicles/VehicleTable';
 import { VehicleCard } from '../components/vehicles/VehicleCard';
 import { EmptyState } from '../components/common/EmptyState';
 import { DashboardSkeleton } from '../components/common/LoadingSkeleton';
+import { TrialReminderModal } from '../components/common/TrialReminderModal';
+import { TrialWarningBanner } from '../components/common/TrialWarningBanner';
+import { OnboardingCard } from '../components/dashboard/OnboardingCard';
 import {
   Car,
   Package,
@@ -16,8 +19,6 @@ import {
   Search,
 } from 'lucide-react';
 import { VehicleStatus } from '../types';
-import { TrialWarningBanner } from '../components/common/TrialWarningBanner';
-import { OnboardingCard } from '../components/dashboard/OnboardingCard';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -29,9 +30,11 @@ export const DashboardPage: React.FC = () => {
     return <DashboardSkeleton />;
   }
 
-  // Calculate live counts based on actual vehicles list using our 6-status system
+  // Live counts based on 6-status system
   const activeCount = vehicles.length;
-  const waitingPartsCount = vehicles.filter((v) => v.currentStatus === 'waiting_parts').length;
+  const waitingPartsCount = vehicles.filter(
+    (v) => v.currentStatus === 'waiting_parts'
+  ).length;
   const inProgressCount = vehicles.filter(
     (v) => v.currentStatus === 'repair' || v.currentStatus === 'diagnosis'
   ).length;
@@ -40,7 +43,8 @@ export const DashboardPage: React.FC = () => {
   // Filter vehicles
   const filteredVehicles = vehicles
     .filter((v) => {
-      if (selectedFilter !== 'all' && v.currentStatus !== selectedFilter) return false;
+      if (selectedFilter !== 'all' && v.currentStatus !== selectedFilter)
+        return false;
       if (!searchTerm) return true;
       const term = searchTerm.toLowerCase();
       return (
@@ -55,25 +59,31 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Trial Expiration Warning Banner */}
+      {/* 7-Day Trial Reminder Modal Dialog (Pops up on dashboard entry) */}
+      <TrialReminderModal />
+
+      {/* Trial Expiration Warning Banner (For last 2 days) */}
       <TrialWarningBanner />
 
       {/* New User First-Time Onboarding Card */}
       <OnboardingCard />
 
       {/* Top Welcome / Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-xl border border-slate-200/80 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#0a1122] p-5 rounded-2xl border border-slate-800 shadow-xl">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">
+            <h2 className="text-xl font-bold text-white tracking-tight">
               {business?.name || 'Servis Paneli'}
             </h2>
-            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800">
               Canlı Servis Takibi
             </span>
           </div>
-          <p className="text-xs text-slate-500 mt-1">
-            <span className="font-semibold text-slate-700">{business?.name || 'Oto Servis'}</span> servis atölyesindeki araçların güncel aşamaları.
+          <p className="text-xs text-slate-400 mt-1">
+            <span className="font-semibold text-slate-300">
+              {business?.name || 'Oto Servis'}
+            </span>{' '}
+            servis atölyesindeki araçların güncel aşamaları.
           </p>
         </div>
 
@@ -81,10 +91,10 @@ export const DashboardPage: React.FC = () => {
           type="button"
           id="dashboard-btn-add-vehicle"
           onClick={() => navigate('/vehicles/new')}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 rounded-xl transition-colors shadow-xs"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 rounded-xl transition-colors shadow-md shadow-emerald-600/30 cursor-pointer"
         >
           <Plus className="w-4 h-4" />
-          Yeni Araç Ekle
+          <span>Yeni Araç Ekle</span>
         </button>
       </div>
 
@@ -145,12 +155,12 @@ export const DashboardPage: React.FC = () => {
       </div>
 
       {/* "Son Araçlar" Section */}
-      <div className="bg-white rounded-xl border border-slate-200/80 shadow-xs overflow-hidden">
+      <div className="bg-[#0c152a] rounded-2xl border border-slate-800 shadow-xl overflow-hidden">
         {/* Table Header Controls */}
-        <div className="p-4 sm:p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="p-4 sm:p-5 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <h3 className="text-base font-bold text-slate-900">Son Araçlar</h3>
-            <span className="text-xs text-slate-500 font-medium">
+            <h3 className="text-base font-bold text-white">Son Araçlar</h3>
+            <span className="text-xs text-slate-400 font-medium">
               ({filteredVehicles.length} kayıt)
             </span>
           </div>
@@ -158,13 +168,13 @@ export const DashboardPage: React.FC = () => {
           <div className="flex items-center gap-2.5">
             {/* Search Input */}
             <div className="relative">
-              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Plaka veya müşteri ara..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg w-44 sm:w-56 transition-colors focus:outline-hidden focus:bg-white focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
+                className="pl-8 pr-3 py-1.5 text-xs bg-[#070d19] border border-slate-700 rounded-xl w-44 sm:w-56 text-white placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-emerald-500"
               />
             </div>
 
@@ -172,7 +182,7 @@ export const DashboardPage: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate('/vehicles')}
-              className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 hover:text-emerald-800 hover:underline px-2 py-1"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-400 hover:text-emerald-300 hover:underline px-2 py-1 cursor-pointer"
             >
               <span>Tümünü Gör</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -182,7 +192,7 @@ export const DashboardPage: React.FC = () => {
 
         {/* Content list / Table */}
         {filteredVehicles.length === 0 ? (
-          <div className="p-8">
+          <div className="p-8 text-center text-slate-400">
             <EmptyState
               icon={Car}
               title="Kayıtlı araç bulunamadı"

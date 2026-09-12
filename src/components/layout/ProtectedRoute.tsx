@@ -6,14 +6,18 @@ interface ProtectedRouteProps {
   adminOnly?: boolean;
 }
 
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ adminOnly = false }) => {
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  adminOnly = false,
+}) => {
   const { isAuthenticated, isAdmin, isLoading, planStatus } = useApp();
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
-        <div className="w-9 h-9 border-3 border-emerald-600 border-t-transparent rounded-full animate-spin" />
-        <p className="text-xs text-slate-500 font-medium mt-3">Oturum kontrol ediliyor...</p>
+      <div className="min-h-screen bg-[#070d19] flex flex-col items-center justify-center p-4">
+        <div className="w-9 h-9 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs text-slate-400 font-medium mt-3">
+          Oturum kontrol ediliyor...
+        </p>
       </div>
     );
   }
@@ -32,9 +36,9 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ adminOnly = fals
     return <Navigate to="/admin" replace />;
   }
 
-  // Subscription / Plan trial guard for owner routes: redirect to /paketler if trial expired or suspended
+  // Subscription / Plan trial guard for owner routes: redirect to /deneme-suresi-doldu if trial expired or suspended
   if (!adminOnly && !isAdmin && !planStatus.canAccessDashboard) {
-    return <Navigate to="/paketler" replace />;
+    return <Navigate to="/deneme-suresi-doldu" replace />;
   }
 
   return <Outlet />;

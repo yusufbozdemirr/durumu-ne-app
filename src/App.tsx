@@ -16,6 +16,7 @@ import { AdminPage } from './pages/AdminPage';
 import { LandingPage } from './pages/LandingPage';
 import { PackagesPage } from './pages/PackagesPage';
 import { WelcomeRegisterPage } from './pages/WelcomeRegisterPage';
+import { TrialExpiredPage } from './pages/TrialExpiredPage';
 import { KvkkPage } from './pages/legal/KvkkPage';
 import { PrivacyPolicyPage } from './pages/legal/PrivacyPolicyPage';
 import { CookiePolicyPage } from './pages/legal/CookiePolicyPage';
@@ -50,6 +51,8 @@ export default function App() {
 
           {/* Authentication screens */}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/deneme-suresi-doldu" element={<TrialExpiredPage />} />
+          <Route path="/deneme-doldu" element={<TrialExpiredPage />} />
 
           {/* Protected Admin Routes (Only Admin UID) */}
           <Route element={<ProtectedRoute adminOnly />}>

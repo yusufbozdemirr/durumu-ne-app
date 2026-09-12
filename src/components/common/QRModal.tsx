@@ -61,7 +61,9 @@ export const QRModal: React.FC<QRModalProps> = ({ vehicle, onClose }) => {
         showToast('QR kod görseli indirildi.', 'success');
       };
 
-      img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+      img.src =
+        'data:image/svg+xml;base64,' +
+        btoa(unescape(encodeURIComponent(svgData)));
     } catch (e) {
       console.error('Download error', e);
       showToast('QR kod indirilirken hata oluştu.', 'error');
@@ -70,29 +72,32 @@ export const QRModal: React.FC<QRModalProps> = ({ vehicle, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-labelledby="qr-modal-title"
     >
       <div
-        className="bg-white rounded-2xl border border-slate-200 shadow-xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-200"
+        className="bg-[#0c152a] rounded-2xl border border-slate-800 shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-200 text-white"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/70">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#0a1122]">
           <div>
-            <h3 id="qr-modal-title" className="text-base font-bold text-slate-900">
+            <h3
+              id="qr-modal-title"
+              className="text-base font-bold text-white tracking-tight"
+            >
               Müşteri QR Takip Kodu
             </h3>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-slate-400 mt-0.5">
               Müşteriniz bu kodu tarayarak anlık durumu görebilir.
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
+            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
             title="Kapat"
           >
             <X className="w-5 h-5" />
@@ -104,44 +109,46 @@ export const QRModal: React.FC<QRModalProps> = ({ vehicle, onClose }) => {
           {/* Vehicle Info */}
           <div className="flex flex-col items-center justify-center mb-4">
             <PlateDisplay plate={vehicle.plate} size="lg" />
-            <div className="mt-2 text-sm font-semibold text-slate-900">
+            <div className="mt-2 text-sm font-bold text-white">
               {vehicle.brand} {vehicle.model}
             </div>
             {vehicle.customerName && (
-              <div className="text-xs text-slate-500">{vehicle.customerName}</div>
+              <div className="text-xs text-slate-400">
+                {vehicle.customerName}
+              </div>
             )}
           </div>
 
-          {/* QR Code Container */}
+          {/* QR Code Container (White high contrast for scanners) */}
           <div
             ref={qrRef}
-            className="inline-flex p-4 bg-white rounded-2xl border-2 border-emerald-100 shadow-xs mb-4"
+            className="inline-flex p-4 bg-white rounded-2xl border-4 border-emerald-500/40 shadow-lg mb-4"
           >
             <QRCodeSVG
               value={fullTrackingUrl}
               size={200}
               level="H"
               includeMargin={false}
-              fgColor="#0f172a"
+              fgColor="#070d19"
             />
           </div>
 
-          <div className="text-[11px] text-slate-500 font-medium mb-4">
+          <div className="text-[11px] text-slate-400 font-medium mb-4">
             {business?.name || 'DURUMU NE?'} • Giriş Yapılması Gerekmez
           </div>
 
           {/* Tracking URL Input & Copy */}
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 flex items-center gap-2 text-left mb-6">
-            <span className="text-xs font-mono text-slate-600 truncate flex-1 select-all pl-1">
+          <div className="bg-[#070d19] border border-slate-700 rounded-xl p-2.5 flex items-center gap-2 text-left mb-5">
+            <span className="text-xs font-mono text-slate-300 truncate flex-1 select-all pl-1">
               {fullTrackingUrl}
             </span>
             <button
               type="button"
               onClick={handleCopyLink}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold shrink-0 transition-colors ${
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold shrink-0 transition-colors cursor-pointer ${
                 copied
                   ? 'bg-emerald-600 text-white'
-                  : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
+                  : 'bg-slate-800 border border-slate-700 text-slate-200 hover:bg-slate-700 hover:text-white'
               }`}
             >
               {copied ? (
@@ -173,7 +180,7 @@ export const QRModal: React.FC<QRModalProps> = ({ vehicle, onClose }) => {
                 : `https://wa.me/?text=${text}`;
               window.open(waUrl, '_blank');
             }}
-            className="w-full mb-3 inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold rounded-xl bg-[#25D366] text-white hover:bg-[#20bd5a] active:bg-[#1da850] transition-colors shadow-xs"
+            className="w-full mb-3 inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold rounded-xl bg-emerald-600 text-white hover:bg-emerald-500 active:bg-emerald-700 transition-colors shadow-md shadow-emerald-600/30 cursor-pointer"
           >
             <WhatsAppIcon className="w-4 h-4" />
             <span>Müşteriye WhatsApp ile Gönder</span>
@@ -184,7 +191,7 @@ export const QRModal: React.FC<QRModalProps> = ({ vehicle, onClose }) => {
             <button
               type="button"
               onClick={handleDownloadQR}
-              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-colors shadow-xs"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl bg-slate-800 text-slate-200 hover:text-white hover:bg-slate-700 transition-colors shadow-xs cursor-pointer"
             >
               <Download className="w-4 h-4" />
               QR Kodunu İndir
@@ -193,7 +200,7 @@ export const QRModal: React.FC<QRModalProps> = ({ vehicle, onClose }) => {
               href={trackingPath}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors"
             >
               <ExternalLink className="w-4 h-4" />
               Sayfayı Aç

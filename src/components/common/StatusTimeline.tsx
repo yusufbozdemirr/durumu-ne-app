@@ -54,7 +54,7 @@ export const StatusTimeline: React.FC<StatusTimelineProps> = ({
             {idx !== steps.length - 1 && (
               <div
                 className={`absolute left-4 top-8 -bottom-1 w-0.5 -ml-px transition-colors duration-200 ${
-                  isCompleted ? 'bg-emerald-600' : isCurrent ? 'bg-emerald-200' : 'bg-slate-200'
+                  isCompleted ? 'bg-emerald-500' : isCurrent ? 'bg-emerald-700/60' : 'bg-slate-800'
                 }`}
                 aria-hidden="true"
               />
@@ -63,16 +63,16 @@ export const StatusTimeline: React.FC<StatusTimelineProps> = ({
             {/* Step Node Icon */}
             <div className="relative z-10 flex items-center justify-center w-8 h-8 rounded-full shrink-0">
               {isCompleted ? (
-                <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+                <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-md shadow-emerald-600/30">
                   <Check className="w-4 h-4 stroke-[2.5]" />
                 </div>
               ) : isCurrent ? (
-                <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 ring-4 ring-emerald-50 text-emerald-700">
-                  <div className="w-3.5 h-3.5 rounded-full bg-emerald-600 animate-pulse" />
+                <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-emerald-950 border border-emerald-500 ring-4 ring-emerald-900/50 text-emerald-400">
+                  <div className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse" />
                 </div>
               ) : (
-                <div className="w-8 h-8 rounded-full bg-slate-50 border-2 border-slate-200 text-slate-300 flex items-center justify-center">
-                  <Circle className="w-3.5 h-3.5 fill-transparent text-slate-300" />
+                <div className="w-8 h-8 rounded-full bg-[#070d19] border-2 border-slate-700 text-slate-500 flex items-center justify-center">
+                  <Circle className="w-3.5 h-3.5 fill-transparent text-slate-600" />
                 </div>
               )}
             </div>
@@ -83,23 +83,23 @@ export const StatusTimeline: React.FC<StatusTimelineProps> = ({
                 <p
                   className={`text-sm tracking-tight ${
                     isCurrent
-                      ? 'font-bold text-emerald-900 flex items-center gap-2'
+                      ? 'font-bold text-emerald-400 flex items-center gap-2'
                       : isCompleted
-                      ? 'font-semibold text-slate-800'
-                      : 'font-medium text-slate-400'
+                      ? 'font-semibold text-white'
+                      : 'font-medium text-slate-500'
                   }`}
                 >
                   {step.label}
                   {isCurrent && (
-                    <span className="inline-flex items-center text-[11px] font-medium bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
+                    <span className="inline-flex items-center text-[11px] font-bold bg-emerald-950 border border-emerald-700 text-emerald-300 px-2 py-0.5 rounded-full shadow-sm">
                       Mevcut Aşama
                     </span>
                   )}
                 </p>
 
                 {formattedTime && (
-                  <span className="text-xs text-slate-500 font-mono flex items-center gap-1">
-                    <Clock className="w-3 h-3 text-slate-400" />
+                  <span className="text-xs text-slate-400 font-mono flex items-center gap-1">
+                    <Clock className="w-3 h-3 text-slate-500" />
                     {formattedTime}
                   </span>
                 )}
@@ -108,12 +108,12 @@ export const StatusTimeline: React.FC<StatusTimelineProps> = ({
               {/* Note or description */}
               {historyEntry?.note ? (
                 <div
-                  className={`mt-1.5 text-xs rounded-lg p-2.5 ${
+                  className={`mt-1.5 text-xs rounded-xl p-3 ${
                     isCurrent
-                      ? 'bg-emerald-50/70 border border-emerald-100 text-emerald-900'
+                      ? 'bg-emerald-950/60 border border-emerald-800 text-emerald-200'
                       : isCompleted
-                      ? 'bg-slate-50 border border-slate-100 text-slate-600'
-                      : 'text-slate-400'
+                      ? 'bg-[#070d19] border border-slate-800 text-slate-300'
+                      : 'text-slate-500'
                   }`}
                 >
                   <p className="leading-relaxed">{historyEntry.note}</p>

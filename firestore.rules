@@ -21,36 +21,17 @@ service cloud.firestore {
       // Admin has full CRUD rights
       allow read, write: if isAdmin();
 
-      // Owner can read their own registered business
-      allow get: if isSignedIn() && (
+      // Signed in user can self-register their own business upon trial sign-up
+      allow create: if isSignedIn();
+
+      // Owner can get and update their registered business
+      allow get, update: if isSignedIn() && (
         isAdmin() ||
         resource.data.ownerUid == request.auth.uid
       );
 
-      // Only admin can list all businesses
-      allow list: if isAdmin();
-
-      // Signed in user can self-register their own business
-      allow create: if isSignedIn() && (
-        isAdmin() ||
-        (
-          request.resource.data.ownerUid == request.auth.uid &&
-          request.resource.data.name is string &&
-          request.resource.data.name.size() > 0
-        )
-      );
-
-      // Owner can update their own business details
-      allow update: if isSignedIn() && (
-        isAdmin() ||
-        (
-          resource.data.ownerUid == request.auth.uid &&
-          request.resource.data.ownerUid == resource.data.ownerUid
-        )
-      );
-
-      // Only Admin can delete businesses
-      allow delete: if isAdmin();
+      // Only admin can list all businesses or delete
+      allow list, delete: if isAdmin();
     }
 
     // --- 2. USERS COLLECTION ---
@@ -58,31 +39,13 @@ service cloud.firestore {
       // Admin has full access
       allow read, write: if isAdmin();
 
-      // Users can view their own profile
-      allow get: if isSignedIn() && (request.auth.uid == userId || isAdmin());
-
-      // Only Admin can list all users
-      allow list: if isAdmin();
-      
-      // User can create their own profile upon trial registration
-      allow create: if isSignedIn() && (
-        isAdmin() ||
-        (
-          request.auth.uid == userId &&
-          request.resource.data.uid == request.auth.uid
-        )
-      );
-      
-      // User can update their own profile
-      allow update: if isSignedIn() && (
-        isAdmin() ||
-        (
-          request.auth.uid == userId &&
-          request.resource.data.uid == request.auth.uid
-        )
+      // Users can get, create and update their own profile document
+      allow get, create, update: if isSignedIn() && (
+        request.auth.uid == userId || isAdmin()
       );
 
-      allow delete: if isAdmin();
+      // Only Admin can list all users or delete
+      allow list, delete: if isAdmin();
     }
 
     // --- 3. VEHICLES COLLECTION ---
