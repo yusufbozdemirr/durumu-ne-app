@@ -73,9 +73,20 @@ export const NotificationSubscriptionCard: React.FC<NotificationSubscriptionCard
     sessionStorage.setItem(`fcm_dismissed_${publicToken}`, 'true');
   };
 
-  // If push is not supported or user dismissed without error, don't show
+  // If push is not supported, show a warning instead of silently hiding
   if (isSupported === false) {
-    return null;
+    return (
+      <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-start gap-3 text-slate-600 shadow-xs">
+        <AlertCircle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+        <div className="space-y-1">
+          <p className="text-xs sm:text-sm font-bold text-slate-800">Bildirimler Bu Ortamda Desteklenmiyor</p>
+          <p className="text-[11px] sm:text-xs leading-relaxed">
+            Firebase Web Push özellikleri mevcut pencerede (muhtemelen iFrame içinde veya gizli sekmede) engellenmiş olabilir. 
+            Test etmek için lütfen uygulamayı <b>yeni sekmede açın</b> (sağ üstteki 'Yeni sekmede aç' ikonu).
+          </p>
+        </div>
+      </div>
+    );
   }
 
   // Already subscribed: show clean subtle active badge
