@@ -24,64 +24,73 @@ export const TrackVehiclePage: React.FC = () => {
 
   const [vehicle, setVehicle] = useState<PublicVehicle | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [foregroundToast, setForegroundToast] = useState<{ title: string; body: string } | null>(null);
 
-  const fetchVehicle = async () => {
+  // Keep track of previous status to detect changes for notifications
+  const previousStatusRef = React.useRef<string | null>(null);
+
+  useEffect(() => {
     if (!activeToken) {
       setError('Geçersiz takip bağlantısı.');
       setLoading(false);
       return;
     }
-    try {
-      setError(null);
-      const data = await publicTrackingService.getPublicVehicle(activeToken);
-      if (data) {
-        setVehicle(data);
-      } else {
-        setError('Araç takip kaydı bulunamadı.');
-      }
-    } catch (err) {
-      console.error('Error fetching public vehicle:', err);
-      setError('Araç bilgileri alınırken bir bağlantı sorunu oluştu.');
-    } finally {
-      setLoading(false);
-      setIsRefreshing(false);
-    }
-  };
 
-  useEffect(() => {
-    fetchVehicle();
-  }, [activeToken]);
+    setLoading(true);
+    
+    const unsubscribe = publicTrackingService.subscribeToPublicVehicle(
+      activeToken,
+      (data) => {
+        if (data) {
+          setVehicle(data);
+          setError(null);
 
-  // Real-time foreground Web Push listener
-  useEffect(() => {
-    let unsubscribe: (() => void) | null = null;
-
-    notificationService
-      .setupForegroundListener((payload) => {
-        if (!payload.data?.publicToken || payload.data.publicToken === activeToken) {
-          setForegroundToast({
-            title: payload.title || 'Durumu Ne?',
-            body: payload.body || 'Aracınızın durumu güncellendi.',
-          });
-          // Automatically reload vehicle details to show updated timeline
-          fetchVehicle();
+          // Check for status change and trigger local notification if subscribed
+          const newStatus = data.currentStatus;
+          const oldStatus = previousStatusRef.current;
+          
+          if (oldStatus !== null && oldStatus !== newStatus) {
+            if (notificationService.isSubscribedForVehicle(activeToken)) {
+              const statusCfg = getStatusConfig(newStatus);
+              const title = 'Durumu Ne?';
+              let body = '';
+              if (newStatus === 'ready') {
+                body = `${data.plate} plakalı aracınız hazır. Teslim alabilirsiniz.`;
+              } else {
+                body = `${data.plate} plakalı aracınızın durumu '${statusCfg.label}' olarak güncellendi.`;
+              }
+              
+              // Trigger native browser notification
+              notificationService.sendLocalNotification(title, body);
+              
+              // Show in-app toast as well
+              setForegroundToast({ title, body });
+            }
+          }
+          
+          previousStatusRef.current = newStatus;
+        } else {
+          setError('Araç takip kaydı bulunamadı.');
         }
-      })
-      .then((unsub) => {
-        unsubscribe = unsub;
-      });
+        setLoading(false);
+      },
+      (err) => {
+        console.error('Subscription error:', err);
+        setError('Araç bilgileri alınırken bir bağlantı sorunu oluştu.');
+        setLoading(false);
+      }
+    );
 
     return () => {
-      if (unsubscribe) unsubscribe();
+      unsubscribe();
     };
   }, [activeToken]);
 
   const handleRefresh = () => {
-    setIsRefreshing(true);
-    fetchVehicle();
+    // With real-time updates, manual refresh is mostly aesthetic,
+    // but we can force a re-fetch of the public vehicle if we really wanted to.
+    // Given we are onSnapshot, we can just let it be.
   };
 
   const statusCfg = vehicle ? getStatusConfig(vehicle.currentStatus) : null;
@@ -125,9 +134,9 @@ export const TrackVehiclePage: React.FC = () => {
             type="button"
             onClick={handleRefresh}
             className="p-2 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors"
-            title="Durumu Yenile"
+            title="Durum Canlı Takip Ediliyor"
           >
-            <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin text-emerald-600' : ''}`} />
+            <RefreshCw className="w-4 h-4 text-emerald-600 animate-pulse" />
           </button>
         </div>
       </header>

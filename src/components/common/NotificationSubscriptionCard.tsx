@@ -52,13 +52,13 @@ export const NotificationSubscriptionCard: React.FC<NotificationSubscriptionCard
     setErrorMsg(null);
     setSuccessMsg(null);
 
-    const result = await notificationService.subscribeToVehicleNotifications(publicToken);
+    const result = await notificationService.requestPermission(publicToken);
     setIsLoading(false);
 
     if (result.success) {
       setIsSubscribed(true);
       setPermission('granted');
-      setSuccessMsg('Bildirimler başarıyla açıldı! Durum değiştikçe anlık bildirim alacaksınız.');
+      setSuccessMsg('Bildirimler başarıyla açıldı! (Sekmeyi kapatmadığınız sürece arka planda çalışır)');
       onSubscribed?.();
     } else {
       if (result.permissionDenied) {
@@ -79,10 +79,10 @@ export const NotificationSubscriptionCard: React.FC<NotificationSubscriptionCard
       <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-start gap-3 text-slate-600 shadow-xs">
         <AlertCircle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
         <div className="space-y-1">
-          <p className="text-xs sm:text-sm font-bold text-slate-800">Bildirimler Bu Ortamda Desteklenmiyor</p>
+          <p className="text-xs sm:text-sm font-bold text-slate-800">Bildirimler Desteklenmiyor</p>
           <p className="text-[11px] sm:text-xs leading-relaxed">
-            Firebase Web Push özellikleri mevcut pencerede (muhtemelen iFrame içinde veya gizli sekmede) engellenmiş olabilir. 
-            Test etmek için lütfen uygulamayı <b>yeni sekmede açın</b> (sağ üstteki 'Yeni sekmede aç' ikonu).
+            Tarayıcınız veya mevcut gizli sekme/gömülü pencere bildirimleri desteklemiyor.
+            Özelliği kullanmak için uygulamayı normal bir tarayıcı sekmesinde açmayı deneyin.
           </p>
         </div>
       </div>

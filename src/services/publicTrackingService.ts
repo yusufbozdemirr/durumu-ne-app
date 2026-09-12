@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc, deleteDoc, serverTimestamp, onSnapshot } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { PublicVehicle } from '../types';
 
@@ -13,24 +13,56 @@ export const publicTrackingService = {
       if (!snapshot.exists()) return null;
 
       const data = snapshot.data();
-      return {
-        publicToken,
-        plate: data.plate || '',
-        brand: data.brand || '',
-        model: data.model || '',
-        year: data.year || '',
-        currentStatus: data.currentStatus || 'received',
-        estimatedDelivery: data.estimatedDelivery || '',
-        statusHistory: data.statusHistory || [],
-        serviceDescription: data.serviceDescription || '',
-        updatedAt: data.updatedAt?.toDate
-          ? data.updatedAt.toDate().toISOString()
-          : data.updatedAt || new Date().toISOString(),
-      };
+      return this._mapPublicVehicle(publicToken, data);
     } catch (error) {
       console.error('Firebase error fetching public vehicle:', error);
       return null;
     }
+  },
+
+  /**
+   * Real-time subscription to public tracking data
+   */
+  subscribeToPublicVehicle(
+    publicToken: string,
+    onUpdate: (vehicle: PublicVehicle | null) => void,
+    onError?: (error: Error) => void
+  ): () => void {
+    const ref = doc(db, 'publicVehicles', publicToken);
+    
+    const unsubscribe = onSnapshot(
+      ref,
+      (snapshot) => {
+        if (!snapshot.exists()) {
+          onUpdate(null);
+        } else {
+          onUpdate(this._mapPublicVehicle(publicToken, snapshot.data()));
+        }
+      },
+      (error) => {
+        console.error('Firebase snapshot error:', error);
+        if (onError) onError(error);
+      }
+    );
+
+    return unsubscribe;
+  },
+
+  _mapPublicVehicle(publicToken: string, data: any): PublicVehicle {
+    return {
+      publicToken,
+      plate: data.plate || '',
+      brand: data.brand || '',
+      model: data.model || '',
+      year: data.year || '',
+      currentStatus: data.currentStatus || 'received',
+      estimatedDelivery: data.estimatedDelivery || '',
+      statusHistory: data.statusHistory || [],
+      serviceDescription: data.serviceDescription || '',
+      updatedAt: data.updatedAt?.toDate
+        ? data.updatedAt.toDate().toISOString()
+        : data.updatedAt || new Date().toISOString(),
+    };
   },
 
   /**
