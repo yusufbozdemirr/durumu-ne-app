@@ -3,9 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { BrandLogo } from '../components/common/BrandLogo';
 import { PlateDisplay } from '../components/common/PlateDisplay';
 import { StatusTimeline } from '../components/common/StatusTimeline';
-import { NotificationSubscriptionCard } from '../components/common/NotificationSubscriptionCard';
 import { publicTrackingService } from '../services/publicTrackingService';
-import { notificationService } from '../services/notificationService';
 import { getStatusConfig, formatTimeAgo } from '../utils/statusConstants';
 import { PublicVehicle } from '../types';
 import {
@@ -14,8 +12,6 @@ import {
   ShieldCheck,
   AlertCircle,
   RefreshCw,
-  BellRing,
-  X,
 } from 'lucide-react';
 
 export const TrackVehiclePage: React.FC = () => {
@@ -24,73 +20,40 @@ export const TrackVehiclePage: React.FC = () => {
 
   const [vehicle, setVehicle] = useState<PublicVehicle | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [foregroundToast, setForegroundToast] = useState<{ title: string; body: string } | null>(null);
 
-  // Keep track of previous status to detect changes for notifications
-  const previousStatusRef = React.useRef<string | null>(null);
-
-  useEffect(() => {
+  const fetchVehicle = async () => {
     if (!activeToken) {
       setError('Geçersiz takip bağlantısı.');
       setLoading(false);
       return;
     }
 
-    setLoading(true);
-    
-    const unsubscribe = publicTrackingService.subscribeToPublicVehicle(
-      activeToken,
-      (data) => {
-        if (data) {
-          setVehicle(data);
-          setError(null);
-
-          // Check for status change and trigger local notification if subscribed
-          const newStatus = data.currentStatus;
-          const oldStatus = previousStatusRef.current;
-          
-          if (oldStatus !== null && oldStatus !== newStatus) {
-            if (notificationService.isSubscribedForVehicle(activeToken)) {
-              const statusCfg = getStatusConfig(newStatus);
-              const title = 'Durumu Ne?';
-              let body = '';
-              if (newStatus === 'ready') {
-                body = `${data.plate} plakalı aracınız hazır. Teslim alabilirsiniz.`;
-              } else {
-                body = `${data.plate} plakalı aracınızın durumu '${statusCfg.label}' olarak güncellendi.`;
-              }
-              
-              // Trigger native browser notification
-              notificationService.sendLocalNotification(title, body);
-              
-              // Show in-app toast as well
-              setForegroundToast({ title, body });
-            }
-          }
-          
-          previousStatusRef.current = newStatus;
-        } else {
-          setError('Araç takip kaydı bulunamadı.');
-        }
-        setLoading(false);
-      },
-      (err) => {
-        console.error('Subscription error:', err);
-        setError('Araç bilgileri alınırken bir bağlantı sorunu oluştu.');
-        setLoading(false);
+    try {
+      setError(null);
+      const data = await publicTrackingService.getPublicVehicle(activeToken);
+      if (data) {
+        setVehicle(data);
+      } else {
+        setError('Araç takip kaydı bulunamadı.');
       }
-    );
+    } catch (err) {
+      console.error('Error fetching public vehicle:', err);
+      setError('Araç bilgileri alınırken bir bağlantı sorunu oluştu.');
+    } finally {
+      setLoading(false);
+      setIsRefreshing(false);
+    }
+  };
 
-    return () => {
-      unsubscribe();
-    };
+  useEffect(() => {
+    fetchVehicle();
   }, [activeToken]);
 
   const handleRefresh = () => {
-    // With real-time updates, manual refresh is mostly aesthetic,
-    // but we can force a re-fetch of the public vehicle if we really wanted to.
-    // Given we are onSnapshot, we can just let it be.
+    setIsRefreshing(true);
+    fetchVehicle();
   };
 
   const statusCfg = vehicle ? getStatusConfig(vehicle.currentStatus) : null;
@@ -134,37 +97,12 @@ export const TrackVehiclePage: React.FC = () => {
             type="button"
             onClick={handleRefresh}
             className="p-2 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors"
-            title="Durum Canlı Takip Ediliyor"
+            title="Durumu Yenile"
           >
-            <RefreshCw className="w-4 h-4 text-emerald-600 animate-pulse" />
+            <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin text-emerald-600' : ''}`} />
           </button>
         </div>
       </header>
-
-      {/* Foreground Real-time Push Alert Toast */}
-      {foregroundToast && (
-        <div className="max-w-md mx-auto px-4 pt-3 w-full">
-          <div className="bg-emerald-600 text-white p-3.5 rounded-2xl shadow-lg flex items-start justify-between gap-3 animate-slide-in">
-            <div className="flex items-start gap-2.5">
-              <div className="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center shrink-0 mt-0.5">
-                <BellRing className="w-3.5 h-3.5" />
-              </div>
-              <div>
-                <p className="text-xs font-bold">{foregroundToast.title}</p>
-                <p className="text-[11px] text-emerald-100 mt-0.5">{foregroundToast.body}</p>
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={() => setForegroundToast(null)}
-              className="text-white/80 hover:text-white p-1 rounded-md"
-              aria-label="Kapat"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Main Card Container */}
       <main className="flex-1 w-full max-w-md mx-auto p-4 sm:p-5 space-y-4">
@@ -238,14 +176,6 @@ export const TrackVehiclePage: React.FC = () => {
             </div>
           </div>
         </div>
-
-        {/* Web Push Notification Subscription Card */}
-        {activeToken && (
-          <NotificationSubscriptionCard
-            publicToken={activeToken}
-            plate={vehicle.plate}
-          />
-        )}
 
         {/* Process Timeline Card */}
         <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs">

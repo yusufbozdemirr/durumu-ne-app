@@ -223,34 +223,6 @@ service cloud.firestore {
           resource.data.businessId == getUserBusinessId()
         )
       );
-
-      // --- 4.1 NOTIFICATION TOKENS (Web Push FCM Token Kayıtları) ---
-      match /notificationTokens/{tokenId} {
-        // Read: Sadece işletme sahibi veya Admin listeleyebilir
-        allow get, list: if isSignedIn() && (
-          isAdmin() ||
-          (
-            getUserBusinessId() != '' &&
-            get(/databases/$(database)/documents/publicVehicles/$(publicToken)).data.businessId == getUserBusinessId()
-          )
-        );
-
-        // Müşteri bildirim izni verdiğinde kendi FCM token'ını kaydedebilir
-        allow create, update: if (
-          request.resource.data.token is string &&
-          request.resource.data.token.size() > 10 &&
-          request.resource.data.publicToken == publicToken
-        );
-
-        // Token silme: İşletme sahibi veya Admin
-        allow delete: if isSignedIn() && (
-          isAdmin() ||
-          (
-            getUserBusinessId() != '' &&
-            get(/databases/$(database)/documents/publicVehicles/$(publicToken)).data.businessId == getUserBusinessId()
-          )
-        );
-      }
     }
   }
 }
