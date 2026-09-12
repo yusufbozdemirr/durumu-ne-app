@@ -75,14 +75,20 @@ export const NotificationSubscriptionCard: React.FC<NotificationSubscriptionCard
 
   // If push is not supported, show a warning instead of silently hiding
   if (isSupported === false) {
+    const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent || '');
+    
     return (
       <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-start gap-3 text-slate-600 shadow-xs">
         <AlertCircle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
         <div className="space-y-1">
-          <p className="text-xs sm:text-sm font-bold text-slate-800">Bildirimler Desteklenmiyor</p>
+          <p className="text-xs sm:text-sm font-bold text-slate-800">
+            {isIOS ? 'iPhone Bildirim Kısıtlaması' : 'Bildirimler Desteklenmiyor'}
+          </p>
           <p className="text-[11px] sm:text-xs leading-relaxed">
-            Tarayıcınız veya mevcut gizli sekme/gömülü pencere bildirimleri desteklemiyor.
-            Özelliği kullanmak için uygulamayı normal bir tarayıcı sekmesinde açmayı deneyin.
+            {isIOS 
+              ? "Apple kuralları gereği iPhone'da Chrome üzerinden bildirim alınamaz. Bildirimleri açmak için bu linki Safari'de açıp paylaş ikonundan 'Ana Ekrana Ekle' demeniz gerekir." 
+              : "Tarayıcınız veya mevcut gizli sekme/gömülü pencere bildirimleri desteklemiyor. Özelliği kullanmak için uygulamayı normal bir tarayıcı sekmesinde açmayı deneyin."
+            }
           </p>
         </div>
       </div>
