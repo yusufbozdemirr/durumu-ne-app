@@ -3,7 +3,9 @@ import { useParams, Link } from 'react-router-dom';
 import { BrandLogo } from '../components/common/BrandLogo';
 import { PlateDisplay } from '../components/common/PlateDisplay';
 import { StatusTimeline } from '../components/common/StatusTimeline';
+import { NotificationSubscriptionCard } from '../components/common/NotificationSubscriptionCard';
 import { publicTrackingService } from '../services/publicTrackingService';
+import { notificationService } from '../services/notificationService';
 import { getStatusConfig, formatTimeAgo } from '../utils/statusConstants';
 import { PublicVehicle } from '../types';
 import {
@@ -12,6 +14,8 @@ import {
   ShieldCheck,
   AlertCircle,
   RefreshCw,
+  BellRing,
+  X,
 } from 'lucide-react';
 
 export const TrackVehiclePage: React.FC = () => {
@@ -22,6 +26,7 @@ export const TrackVehiclePage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [foregroundToast, setForegroundToast] = useState<{ title: string; body: string } | null>(null);
 
   const fetchVehicle = async () => {
     if (!activeToken) {
@@ -48,6 +53,30 @@ export const TrackVehiclePage: React.FC = () => {
 
   useEffect(() => {
     fetchVehicle();
+  }, [activeToken]);
+
+  // Real-time foreground Web Push listener
+  useEffect(() => {
+    let unsubscribe: (() => void) | null = null;
+
+    notificationService
+      .setupForegroundListener((payload) => {
+        if (!payload.data?.publicToken || payload.data.publicToken === activeToken) {
+          setForegroundToast({
+            title: payload.title || 'Durumu Ne?',
+            body: payload.body || 'Aracınızın durumu güncellendi.',
+          });
+          // Automatically reload vehicle details to show updated timeline
+          fetchVehicle();
+        }
+      })
+      .then((unsub) => {
+        unsubscribe = unsub;
+      });
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, [activeToken]);
 
   const handleRefresh = () => {
@@ -102,6 +131,31 @@ export const TrackVehiclePage: React.FC = () => {
           </button>
         </div>
       </header>
+
+      {/* Foreground Real-time Push Alert Toast */}
+      {foregroundToast && (
+        <div className="max-w-md mx-auto px-4 pt-3 w-full">
+          <div className="bg-emerald-600 text-white p-3.5 rounded-2xl shadow-lg flex items-start justify-between gap-3 animate-slide-in">
+            <div className="flex items-start gap-2.5">
+              <div className="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center shrink-0 mt-0.5">
+                <BellRing className="w-3.5 h-3.5" />
+              </div>
+              <div>
+                <p className="text-xs font-bold">{foregroundToast.title}</p>
+                <p className="text-[11px] text-emerald-100 mt-0.5">{foregroundToast.body}</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setForegroundToast(null)}
+              className="text-white/80 hover:text-white p-1 rounded-md"
+              aria-label="Kapat"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Main Card Container */}
       <main className="flex-1 w-full max-w-md mx-auto p-4 sm:p-5 space-y-4">
@@ -175,6 +229,14 @@ export const TrackVehiclePage: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Web Push Notification Subscription Card */}
+        {activeToken && (
+          <NotificationSubscriptionCard
+            publicToken={activeToken}
+            plate={vehicle.plate}
+          />
+        )}
 
         {/* Process Timeline Card */}
         <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs">

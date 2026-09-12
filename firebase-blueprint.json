@@ -76,6 +76,21 @@
         "updatedAt": { "type": "string" }
       },
       "required": ["publicToken", "businessId", "plate", "brand", "model", "currentStatus"]
+    },
+    "notificationTokens": {
+      "title": "Notification Tokens",
+      "description": "FCM registration tokens for Web Push status notifications on tracked vehicles.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "publicToken": { "type": "string" },
+        "token": { "type": "string" },
+        "active": { "type": "boolean" },
+        "userAgent": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["publicToken", "token", "active"]
     }
   }
 }
