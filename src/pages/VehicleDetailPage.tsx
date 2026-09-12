@@ -8,6 +8,7 @@ import { ConfirmDialog } from '../components/common/ConfirmDialog';
 import { VehicleDetailSkeleton } from '../components/common/LoadingSkeleton';
 import { STATUS_LIST, getStatusConfig, formatTimeAgo } from '../utils/statusConstants';
 import { VehicleStatus, StatusHistoryEntry } from '../types';
+import { WhatsAppIcon } from '../components/common/WhatsAppIcon';
 import {
   ArrowLeft,
   QrCode,
@@ -181,10 +182,10 @@ export const VehicleDetailPage: React.FC = () => {
               type="button"
               id="btn-whatsapp-notify"
               onClick={handleWhatsAppShare}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/60 rounded-lg transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] active:bg-[#1da850] rounded-lg transition-colors shadow-xs"
             >
-              <MessageSquare className="w-4 h-4 text-emerald-600" />
-              WhatsApp Paylaş
+              <WhatsAppIcon className="w-4 h-4" />
+              <span>WhatsApp Paylaş</span>
             </button>
 
             <button
@@ -212,7 +213,77 @@ export const VehicleDetailPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* LEFT / MAIN AREA (2 Columns on large screen) */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Summary Cards Grid */}
+          {/* 1. AŞAMA DURUMUNU GÜNCELLE (ARAÇ BİLGİLERİNİN ÜSTÜNDE) */}
+          <div className="bg-white rounded-xl border-2 border-emerald-500/30 p-5 sm:p-6 shadow-xs bg-linear-to-b from-emerald-50/20 to-white">
+            <div className="pb-4 border-b border-slate-100 mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Aşama Durumunu Güncelle
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Yeni bir aşamaya geçin ve müşteriye anlık gösterilecek notu ekleyin.
+                </p>
+              </div>
+              <div className="flex items-center gap-1.5 self-start sm:self-auto">
+                <span className="text-[11px] text-slate-500 font-medium">Mevcut Durum:</span>
+                <StatusBadge status={vehicle.currentStatus} size="sm" />
+              </div>
+            </div>
+
+            <form onSubmit={handleUpdateStatusSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Dropdown with standardized statuses */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    Yeni Aşama Seçin
+                  </label>
+                  <select
+                    id="select-update-status"
+                    value={selectedStatus}
+                    onChange={(e) => setSelectedStatus(e.target.value as VehicleStatus)}
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-hidden focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100 transition-colors shadow-2xs"
+                  >
+                    {STATUS_LIST.map((s) => (
+                      <option key={s.key} value={s.key}>
+                        {s.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Status Note input */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    Aşama Notu <span className="text-slate-400 font-normal">(Müşteri ekranında görünür)</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="input-status-note"
+                    placeholder={`Örn: ${getStatusConfig(selectedStatus).description}`}
+                    value={statusNote}
+                    onChange={(e) => setStatusNote(e.target.value)}
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs focus:outline-hidden focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100 transition-colors shadow-2xs"
+                  />
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <div className="flex items-center justify-end pt-1">
+                <button
+                  type="submit"
+                  id="btn-submit-status-update"
+                  disabled={isUpdating}
+                  className="w-full sm:w-auto py-2.5 px-6 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 disabled:opacity-50 rounded-xl transition-colors shadow-xs flex items-center justify-center gap-2"
+                >
+                  {isUpdating && <Loader2 className="w-4 h-4 animate-spin" />}
+                  <span>Aşamayı Kaydet ve Bildir</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* 2. ARAÇ VE MÜŞTERİ BİLGİLERİ (AŞAMA GÜNCELLEMENİN ALTINDA) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Vehicle Details Card */}
             <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs">
@@ -322,67 +393,10 @@ export const VehicleDetailPage: React.FC = () => {
           </div>
         </div>
 
-        {/* RIGHT / SECONDARY AREA (Prominent Status Update Control) */}
+        {/* RIGHT / SECONDARY AREA */}
         <div className="space-y-6">
-          {/* Prominent Status Update Control */}
-          <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs">
-            <div className="pb-3 border-b border-slate-100 mb-4">
-              <h3 className="text-sm font-bold text-slate-900">Aşama Durumunu Güncelle</h3>
-              <p className="text-xs text-slate-500 mt-0.5">
-                Yeni bir aşamaya geçin ve müşteriye gösterilecek notu ekleyin.
-              </p>
-            </div>
-
-            <form onSubmit={handleUpdateStatusSubmit} className="space-y-4">
-              {/* Dropdown with 6 standardized statuses */}
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Yeni Aşama Seçin
-                </label>
-                <select
-                  id="select-update-status"
-                  value={selectedStatus}
-                  onChange={(e) => setSelectedStatus(e.target.value as VehicleStatus)}
-                  className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-hidden focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100 transition-colors"
-                >
-                  {STATUS_LIST.map((s) => (
-                    <option key={s.key} value={s.key}>
-                      {s.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Status Note textarea */}
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Aşama Notu (Müşteri ekranında görünür)
-                </label>
-                <textarea
-                  id="textarea-status-note"
-                  rows={3}
-                  placeholder={`Örn: ${getStatusConfig(selectedStatus).description}`}
-                  value={statusNote}
-                  onChange={(e) => setStatusNote(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-hidden focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100 transition-colors"
-                />
-              </div>
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                id="btn-submit-status-update"
-                disabled={isUpdating}
-                className="w-full py-2.5 px-4 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 disabled:opacity-50 rounded-xl transition-colors shadow-xs flex items-center justify-center gap-2"
-              >
-                {isUpdating && <Loader2 className="w-4 h-4 animate-spin" />}
-                <span>Aşamayı Kaydet ve Bildir</span>
-              </button>
-            </form>
-          </div>
-
           {/* Customer Public Link Card */}
-          <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs space-y-3">
+          <div className="bg-white rounded-xl border border-slate-200/80 p-5 shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
                 Müşteri Takip Ekranı
@@ -415,19 +429,19 @@ export const VehicleDetailPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => openQRModal(vehicle)}
-                className="w-full py-2 px-3 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200/70 rounded-lg flex items-center justify-center gap-1.5 transition-colors"
+                className="w-full py-2.5 px-3 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200/70 rounded-lg flex items-center justify-center gap-1.5 transition-colors"
               >
-                <QrCode className="w-3.5 h-3.5 text-emerald-600" />
+                <QrCode className="w-4 h-4 text-emerald-600" />
                 QR Kod
               </button>
 
               <button
                 type="button"
                 onClick={handleWhatsAppShare}
-                className="w-full py-2 px-3 text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 rounded-lg flex items-center justify-center gap-1.5 transition-colors border border-emerald-200/60"
+                className="w-full py-2.5 px-3 text-xs font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] active:bg-[#1da850] rounded-lg flex items-center justify-center gap-1.5 transition-colors shadow-xs"
               >
-                <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-                WhatsApp
+                <WhatsAppIcon className="w-4 h-4" />
+                <span>WhatsApp</span>
               </button>
             </div>
           </div>

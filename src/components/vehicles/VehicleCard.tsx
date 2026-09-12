@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Vehicle } from '../../types';
 import { PlateDisplay } from '../common/PlateDisplay';
 import { StatusBadge } from '../common/StatusBadge';
-import { Clock, QrCode, MessageSquare, ChevronRight } from 'lucide-react';
+import { Clock, QrCode, ChevronRight } from 'lucide-react';
+import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { useApp } from '../../context/AppContext';
 
 interface VehicleCardProps {
@@ -81,10 +82,10 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle: v }) => {
           <button
             type="button"
             onClick={handleWhatsAppNotify}
-            className="p-2 text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
+            className="p-2 text-slate-500 hover:text-[#25D366] hover:bg-emerald-50 rounded-lg transition-colors"
             title="WhatsApp Bildir"
           >
-            <MessageSquare className="w-4 h-4" />
+            <WhatsAppIcon className="w-4 h-4" />
           </button>
           <button
             type="button"

@@ -3,6 +3,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { Vehicle } from '../../types';
 import { PlateDisplay } from './PlateDisplay';
 import { X, Copy, Check, Download, ExternalLink } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
 import { useApp } from '../../context/AppContext';
 
 interface QRModalProps {
@@ -156,6 +157,27 @@ export const QRModal: React.FC<QRModalProps> = ({ vehicle, onClose }) => {
               )}
             </button>
           </div>
+
+          {/* WhatsApp Share Button */}
+          <button
+            type="button"
+            onClick={() => {
+              const text = encodeURIComponent(
+                `Merhaba Sayın ${vehicle.customerName || 'Müşterimiz'},\n${vehicle.plate} plakalı ${vehicle.brand} ${vehicle.model} aracınızın servis durumunu aşağıdaki bağlantıdan anlık olarak takip edebilirsiniz:\n${fullTrackingUrl}`
+              );
+              let phone = vehicle.customerPhone?.replace(/\D/g, '') || '';
+              if (phone.startsWith('0')) phone = phone.slice(1);
+              if (phone && !phone.startsWith('90')) phone = `90${phone}`;
+              const waUrl = phone
+                ? `https://wa.me/${phone}?text=${text}`
+                : `https://wa.me/?text=${text}`;
+              window.open(waUrl, '_blank');
+            }}
+            className="w-full mb-3 inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold rounded-xl bg-[#25D366] text-white hover:bg-[#20bd5a] active:bg-[#1da850] transition-colors shadow-xs"
+          >
+            <WhatsAppIcon className="w-4 h-4" />
+            <span>Müşteriye WhatsApp ile Gönder</span>
+          </button>
 
           {/* Action Buttons */}
           <div className="grid grid-cols-2 gap-3">

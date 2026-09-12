@@ -57,7 +57,9 @@ export const DashboardPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-xl border border-slate-200/80 shadow-xs">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">Genel Bakış</h2>
+            <h2 className="text-xl font-bold text-slate-900 tracking-tight">
+              {business?.name || 'Servis Paneli'}
+            </h2>
             <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/60">
               Canlı Servis Takibi
             </span>

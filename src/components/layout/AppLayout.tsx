@@ -8,7 +8,7 @@ import { useApp } from '../../context/AppContext';
 
 export const AppLayout: React.FC = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const { qrModalVehicle, closeQRModal } = useApp();
+  const { qrModalVehicle, closeQRModal, business } = useApp();
   const location = useLocation();
 
   // Determine topbar titles based on path
@@ -21,7 +21,10 @@ export const AppLayout: React.FC = () => {
       };
     }
     if (path === '/dashboard') {
-      return { title: 'Genel Bakış', subtitle: 'Servis ve araç durum özeti' };
+      return {
+        title: business?.name || 'Genel Bakış',
+        subtitle: business?.address || 'Servis ve araç durum özeti',
+      };
     }
     if (path === '/vehicles') {
       return {

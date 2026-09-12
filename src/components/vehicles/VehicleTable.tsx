@@ -4,7 +4,8 @@ import { Vehicle } from '../../types';
 import { PlateDisplay } from '../common/PlateDisplay';
 import { StatusBadge } from '../common/StatusBadge';
 import { formatTimeAgo } from '../../utils/statusConstants';
-import { Eye, Edit2, QrCode, Clock, MessageSquare } from 'lucide-react';
+import { Eye, Edit2, QrCode, Clock } from 'lucide-react';
+import { WhatsAppIcon } from '../common/WhatsAppIcon';
 import { useApp } from '../../context/AppContext';
 
 interface VehicleTableProps {
@@ -111,10 +112,10 @@ export const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles }) => {
                   <button
                     type="button"
                     onClick={(e) => handleWhatsAppNotify(v, e)}
-                    className="p-1.5 text-slate-400 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
+                    className="p-1.5 text-slate-400 hover:text-[#25D366] hover:bg-emerald-50 rounded-lg transition-colors"
                     title="WhatsApp'tan Bildir"
                   >
-                    <MessageSquare className="w-4 h-4" />
+                    <WhatsAppIcon className="w-4 h-4" />
                   </button>
 
                   <button

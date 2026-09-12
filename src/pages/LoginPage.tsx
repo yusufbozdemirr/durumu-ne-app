@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { BrandLogo } from '../components/common/BrandLogo';
-import { ArrowRight, Lock, Mail, ShieldCheck, Loader2 } from 'lucide-react';
+import { ArrowRight, Lock, Mail, ShieldCheck, Loader2, Eye, EyeOff } from 'lucide-react';
 import { ADMIN_UID, isSystemAdmin } from '../utils/constants';
 
 export const LoginPage: React.FC = () => {
@@ -11,6 +11,7 @@ export const LoginPage: React.FC = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState<boolean>(() => {
     return localStorage.getItem('durumu_remember_me') !== 'false';
   });
@@ -27,7 +28,12 @@ export const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() || !password) {
-      setError('Lütfen e-posta ve şifrenizi giriniz.');
+      setError('Lütfen e-posta ve 6 haneli şifrenizi giriniz.');
+      return;
+    }
+
+    if (password.length !== 6) {
+      setError('Şifre tam 6 haneli rakamlardan oluşmalıdır.');
       return;
     }
 
@@ -107,23 +113,42 @@ export const LoginPage: React.FC = () => {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="block text-xs font-semibold text-slate-700">
-                  Şifre
+                  Şifre (6 Haneli Rakam)
                 </label>
+                <span className="text-[11px] text-slate-400 font-mono">
+                  {password.length}/6 hane
+                </span>
               </div>
               <div className="relative">
                 <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   id="input-login-password"
                   required
-                  placeholder="••••••••"
+                  inputMode="numeric"
+                  maxLength={6}
+                  pattern="[0-9]*"
+                  placeholder="••••••"
                   value={password}
                   onChange={(e) => {
-                    setPassword(e.target.value);
+                    const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+                    setPassword(val);
                     setError('');
                   }}
-                  className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs transition-colors focus:outline-hidden focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100"
+                  className="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono tracking-widest transition-colors focus:outline-hidden focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 rounded transition-colors"
+                  title={showPassword ? 'Şifreyi Gizle' : 'Şifreyi Göster'}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
               </div>
             </div>
 

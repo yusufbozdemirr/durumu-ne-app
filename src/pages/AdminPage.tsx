@@ -115,8 +115,8 @@ export const AdminPage: React.FC = () => {
       return;
     }
 
-    if (createForm.password.length < 6) {
-      setFormError('Şifre en az 6 karakter olmalıdır.');
+    if (!/^\d{6}$/.test(createForm.password)) {
+      setFormError('Şifre tam 6 haneli bir rakam (PIN) olmalıdır (Örn: 123456).');
       return;
     }
 
@@ -602,22 +602,41 @@ export const AdminPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Geçici / Başlangıç Şifresi (En az 6 karakter) *
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-semibold text-slate-700">
+                      Müşteri Giriş Şifresi (6 Haneli Rakam) *
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const randomPin = Math.floor(100000 + Math.random() * 900000).toString();
+                        setCreateForm((prev) => ({ ...prev, password: randomPin }));
+                      }}
+                      className="text-[11px] text-emerald-600 hover:text-emerald-700 font-semibold underline underline-offset-2"
+                    >
+                      Rastgele 6 Haneli Şifre Üret
+                    </button>
+                  </div>
                   <div className="relative">
                     <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                     <input
-                      type="password"
+                      type="text"
                       required
-                      placeholder="••••••••"
+                      inputMode="numeric"
+                      maxLength={6}
+                      pattern="[0-9]*"
+                      placeholder="Örn: 123456"
                       value={createForm.password}
-                      onChange={(e) =>
-                        setCreateForm({ ...createForm, password: e.target.value })
-                      }
-                      className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-hidden focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100"
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+                        setCreateForm({ ...createForm, password: val });
+                      }}
+                      className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono tracking-wider focus:outline-hidden focus:bg-white focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100"
                     />
                   </div>
+                  <p className="text-[11px] text-slate-400 mt-1">
+                    Müşteri işletmesi bu 6 haneli rakamla sisteme giriş yapacaktır.
+                  </p>
                 </div>
               </div>
 
