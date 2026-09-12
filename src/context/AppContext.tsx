@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { User as FirebaseUser } from 'firebase/auth';
-import { Vehicle, Business, UserProfile, VehicleStatus, StatusHistoryEntry } from '../types';
+import { Vehicle, Business, UserProfile, VehicleStatus, StatusHistoryEntry, PlanStatus } from '../types';
 import { authService } from '../services/authService';
 import { businessService } from '../services/businessService';
 import { vehicleService } from '../services/vehicleService';
@@ -8,6 +8,8 @@ import { statusHistoryService } from '../services/statusHistoryService';
 import { adminService, CreateBusinessInput } from '../services/adminService';
 import { ADMIN_UID, ADMIN_EMAILS, isSystemAdmin } from '../utils/constants';
 import { getTurkishErrorMessage } from '../utils/errorHandler';
+import { getPlanStatus } from '../utils/planUtils';
+import { auth } from '../lib/firebase';
 
 export interface ToastMessage {
   id: string;
@@ -25,6 +27,7 @@ interface AppContextType {
   isLoading: boolean;
   qrModalVehicle: Vehicle | null;
   toasts: ToastMessage[];
+  planStatus: PlanStatus;
 
   // Owner Vehicle Actions
   addVehicle: (data: {
@@ -68,11 +71,32 @@ interface AppContextType {
   adminCreateBusiness: (input: CreateBusinessInput) => Promise<Business>;
   adminUpdateBusiness: (
     businessId: string,
-    updates: Partial<{ name: string; phone: string; address: string; plan: 'free' | 'pro'; active: boolean }>
+    updates: Partial<{
+      name: string;
+      phone: string;
+      address: string;
+      plan: 'free' | 'pro' | 'trial';
+      accountStatus: 'active' | 'trial_expired' | 'suspended';
+      active: boolean;
+      ownerName?: string;
+      ownerEmail?: string;
+      trialStartDate?: string;
+      trialEndDate?: string;
+      proStartDate?: string;
+      proEndDate?: string;
+    }>
   ) => Promise<void>;
   adminDeleteBusiness: (businessId: string) => Promise<void>;
 
   // Auth & UI
+  registerTrial: (params: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    businessName: string;
+    phone?: string;
+  }) => Promise<UserProfile>;
   login: (email: string, pass: string, rememberMe?: boolean) => Promise<UserProfile>;
   logout: () => Promise<void>;
   openQRModal: (vehicle: Vehicle) => void;
@@ -171,7 +195,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             setVehicles(vList);
           } else {
             // User exists in Auth but has no business/user profile in Firestore
-            console.error('Firebase error: No valid profile for authenticated user', fbUser.uid);
+            console.warn('User has no valid Firestore profile. Terminating orphaned session.');
+            await authService.logout();
+            setCurrentUser(null);
             setUserProfile(null);
             setBusiness(null);
             setVehicles([]);
@@ -407,18 +433,66 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const adminUpdateBusiness = useCallback(
     async (
       businessId: string,
-      updates: Partial<{ name: string; phone: string; address: string; plan: 'free' | 'pro'; active: boolean }>
+      updates: Partial<{
+        name: string;
+        phone: string;
+        address: string;
+        plan: 'free' | 'pro' | 'trial';
+        accountStatus: 'active' | 'trial_expired' | 'suspended';
+        active: boolean;
+        ownerName?: string;
+        ownerEmail?: string;
+        trialStartDate?: string;
+        trialEndDate?: string;
+        proStartDate?: string;
+        proEndDate?: string;
+      }>
     ) => {
       try {
         await adminService.updateBusiness(businessId, updates);
         setAllBusinesses((prev) =>
           prev.map((b) => (b.id === businessId ? { ...b, ...updates } : b))
         );
+        if (business?.id === businessId) {
+          setBusiness((prev) => (prev ? { ...prev, ...updates } : null));
+        }
         showToast('İşletme başarıyla güncellendi.', 'success');
       } catch (error) {
         console.error('Admin update business error:', error);
         showToast(getTurkishErrorMessage(error), 'error');
         throw error;
+      }
+    },
+    [showToast, business?.id]
+  );
+
+  const registerTrial = useCallback(
+    async (params: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      password: string;
+      businessName: string;
+      phone?: string;
+    }) => {
+      try {
+        setIsLoading(true);
+        const profile = await authService.registerTrial(params);
+        setUserProfile(profile);
+        setCurrentUser(auth.currentUser);
+        if (profile.businessId) {
+          const biz = await businessService.getBusiness(profile.businessId);
+          setBusiness(biz);
+        }
+        showToast('Ücretsiz deneme hesabınız başarıyla oluşturuldu! Hoş geldiniz.', 'success');
+        return profile;
+      } catch (error: any) {
+        console.error('Registration trial error:', error);
+        const trMsg = getTurkishErrorMessage(error);
+        showToast(trMsg, 'error');
+        throw new Error(trMsg);
+      } finally {
+        setIsLoading(false);
       }
     },
     [showToast]
@@ -447,6 +521,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setQrModalVehicle(null);
   }, []);
 
+  const planStatus = getPlanStatus(business, isAdmin ? 'admin' : userProfile?.role);
+
   return (
     <AppContext.Provider
       value={{
@@ -454,11 +530,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         business,
         userProfile,
         currentUser,
-        isAuthenticated: !!currentUser,
+        isAuthenticated: !!(currentUser && (isAdmin || (userProfile && userProfile.businessId))),
         isAdmin,
         isLoading,
         qrModalVehicle,
         toasts,
+        planStatus,
         addVehicle,
         updateVehicleStatus,
         updateVehicle,
@@ -472,6 +549,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         adminCreateBusiness,
         adminUpdateBusiness,
         adminDeleteBusiness,
+        registerTrial,
         login,
         logout,
         openQRModal,

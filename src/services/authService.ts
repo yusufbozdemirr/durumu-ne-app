@@ -1,5 +1,6 @@
 import {
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signOut as fbSignOut,
   onAuthStateChanged,
   setPersistence,
@@ -161,6 +162,83 @@ export const authService = {
     }
 
     return profile;
+  },
+
+  /**
+   * Register a new business owner account with a 7-day free trial
+   */
+  async registerTrial(params: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    businessName: string;
+    phone?: string;
+  }): Promise<UserProfile> {
+    const { firstName, lastName, email, password, businessName, phone } = params;
+
+    // 1. Create user in Firebase Auth
+    const cred = await createUserWithEmailAndPassword(auth, email.trim(), password);
+    const uid = cred.user.uid;
+
+    try {
+      // 2. Compute 7-day trial dates
+      const businessId = `biz_${uid.slice(0, 8)}_${Date.now().toString(36)}`;
+      const now = new Date();
+      const trialStartDate = now.toISOString();
+      const trialEndDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString();
+      const fullName = `${firstName.trim()} ${lastName.trim()}`.trim();
+
+      // 3. Create User Document FIRST
+      const userRef = doc(db, 'users', uid);
+      const userProfile: UserProfile = {
+        uid,
+        email: email.trim(),
+        name: fullName,
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        phone: (phone || '').trim(),
+        businessId,
+        role: 'owner',
+        createdAt: trialStartDate,
+      };
+
+      await setDoc(userRef, {
+        ...userProfile,
+        createdAt: serverTimestamp(),
+      });
+
+      // 4. Create Business Document with plan: 'trial' and trial dates
+      const businessRef = doc(db, 'businesses', businessId);
+      await setDoc(businessRef, {
+        id: businessId,
+        name: businessName.trim(),
+        phone: (phone || '').trim(),
+        address: '',
+        ownerUid: uid,
+        ownerName: fullName,
+        ownerEmail: email.trim(),
+        plan: 'trial',
+        accountStatus: 'active',
+        trialStartDate,
+        trialEndDate,
+        active: true,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+
+      return userProfile;
+    } catch (firestoreError) {
+      console.error('Failed to create user or business document in Firestore:', firestoreError);
+      // Clean up newly created auth user so an orphaned auth session without a profile is not left behind
+      try {
+        await cred.user.delete();
+      } catch (delErr) {
+        console.warn('Could not delete auth user after Firestore error, signing out instead:', delErr);
+        await fbSignOut(auth);
+      }
+      throw firestoreError;
+    }
   },
 
   /**

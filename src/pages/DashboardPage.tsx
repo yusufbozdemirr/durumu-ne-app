@@ -16,6 +16,8 @@ import {
   Search,
 } from 'lucide-react';
 import { VehicleStatus } from '../types';
+import { TrialWarningBanner } from '../components/common/TrialWarningBanner';
+import { OnboardingCard } from '../components/dashboard/OnboardingCard';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -53,6 +55,12 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Trial Expiration Warning Banner */}
+      <TrialWarningBanner />
+
+      {/* New User First-Time Onboarding Card */}
+      <OnboardingCard />
+
       {/* Top Welcome / Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-xl border border-slate-200/80 shadow-xs">
         <div>

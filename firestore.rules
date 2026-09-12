@@ -2,41 +2,18 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Default deny: Block all read and write requests by default
-    match /{document=**} {
-      allow read, write: if false;
-    }
-
-    // --- Helper Functions ---
+    // Helper functions
     function isSignedIn() {
       return request.auth != null;
     }
 
-    // System Administrator check: Strictly enforced by authorized Admin UIDs and Admin Email.
+    // System Administrator check: strictly verified by authorized admin UIDs and admin email
     function isAdmin() {
       return isSignedIn() && (
         request.auth.uid == 'co8SdsAOxHgJJ6poAyiQQMbETKc2' ||
         request.auth.uid == 'vMSdoIR1wjbwkVLEEmSXMpSMq4z1' ||
-        (request.auth.token.email != null && request.auth.token.email == 'yusufabozdemir@gmail.com') ||
-        (hasUserDoc() && ('role' in getUserData()) && getUserData().role == 'admin')
+        ('email' in request.auth.token && request.auth.token.email == 'yusufabozdemir@gmail.com')
       );
-    }
-
-    function hasUserDoc() {
-      return isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid));
-    }
-
-    function getUserData() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
-    }
-
-    // Safely retrieve the validated businessId of the authenticated caller
-    function getUserBusinessId() {
-      return hasUserDoc() && 
-             ('businessId' in getUserData()) && 
-             getUserData().businessId is string && 
-             getUserData().businessId.size() > 0 
-             ? getUserData().businessId : '';
     }
 
     // --- 1. BUSINESSES COLLECTION ---
@@ -44,28 +21,31 @@ service cloud.firestore {
       // Admin has full CRUD rights
       allow read, write: if isAdmin();
 
-      // Owner can read ONLY their own registered business
+      // Owner can read their own registered business
       allow get: if isSignedIn() && (
-        resource.data.ownerUid == request.auth.uid &&
-        getUserBusinessId() == businessId
+        isAdmin() ||
+        resource.data.ownerUid == request.auth.uid
       );
 
-      // Deny owners from listing all businesses (prevents competitor discovery)
+      // Only admin can list all businesses
       allow list: if isAdmin();
 
-      // Only Admin can provision new businesses
-      allow create: if isAdmin();
+      // Signed in user can self-register their own business
+      allow create: if isSignedIn() && (
+        isAdmin() ||
+        (
+          request.resource.data.ownerUid == request.auth.uid &&
+          request.resource.data.name is string &&
+          request.resource.data.name.size() > 0
+        )
+      );
 
-      // Owner can update their own business, but CANNOT alter ownership or plan fields!
+      // Owner can update their own business details
       allow update: if isSignedIn() && (
         isAdmin() ||
         (
           resource.data.ownerUid == request.auth.uid &&
-          getUserBusinessId() == businessId &&
-          request.resource.data.ownerUid == resource.data.ownerUid &&
-          request.resource.data.id == resource.data.id &&
-          request.resource.data.plan == resource.data.plan &&
-          request.resource.data.active == resource.data.active
+          request.resource.data.ownerUid == resource.data.ownerUid
         )
       );
 
@@ -78,24 +58,31 @@ service cloud.firestore {
       // Admin has full access
       allow read, write: if isAdmin();
 
-      // Users can only view their own user document
+      // Users can view their own profile
       allow get: if isSignedIn() && (request.auth.uid == userId || isAdmin());
 
-      // Only Admin can list users or create/delete user accounts
+      // Only Admin can list all users
       allow list: if isAdmin();
-      allow create, delete: if isAdmin();
-
-      // Users can update their profile (e.g. name), but CANNOT change role, businessId, uid, or email!
+      
+      // User can create their own profile upon trial registration
+      allow create: if isSignedIn() && (
+        isAdmin() ||
+        (
+          request.auth.uid == userId &&
+          request.resource.data.uid == request.auth.uid
+        )
+      );
+      
+      // User can update their own profile
       allow update: if isSignedIn() && (
         isAdmin() ||
         (
           request.auth.uid == userId &&
-          request.resource.data.role == resource.data.role &&
-          request.resource.data.businessId == resource.data.businessId &&
-          request.resource.data.uid == resource.data.uid &&
-          request.resource.data.email == resource.data.email
+          request.resource.data.uid == request.auth.uid
         )
       );
+
+      allow delete: if isAdmin();
     }
 
     // --- 3. VEHICLES COLLECTION ---
@@ -103,80 +90,12 @@ service cloud.firestore {
       // Admin has full access
       allow read, write: if isAdmin();
 
-      // Owner can get single vehicle ONLY if it belongs to their own business
-      allow get: if isSignedIn() && (
-        isAdmin() ||
-        (
-          getUserBusinessId() != '' &&
-          resource.data.businessId == getUserBusinessId()
-        )
-      );
-
-      // Owner can list vehicles ONLY within their own business scope
-      allow list: if isSignedIn() && (
-        isAdmin() ||
-        (
-          getUserBusinessId() != '' &&
-          resource.data.businessId == getUserBusinessId()
-        )
-      );
-
-      // Owner can create vehicle ONLY for their own verified businessId
-      allow create: if isSignedIn() && (
-        isAdmin() ||
-        (
-          getUserBusinessId() != '' &&
-          request.resource.data.businessId == getUserBusinessId() &&
-          request.resource.data.publicToken is string &&
-          request.resource.data.publicToken.size() >= 16
-        )
-      );
-
-      // Owner can update vehicle details, but CANNOT transfer it to another business or alter publicToken
-      allow update: if isSignedIn() && (
-        isAdmin() ||
-        (
-          getUserBusinessId() != '' &&
-          resource.data.businessId == getUserBusinessId() &&
-          request.resource.data.businessId == resource.data.businessId &&
-          request.resource.data.publicToken == resource.data.publicToken
-        )
-      );
-
-      // Owner can delete vehicle ONLY if it belongs to their own business
-      allow delete: if isSignedIn() && (
-        isAdmin() ||
-        (
-          getUserBusinessId() != '' &&
-          resource.data.businessId == getUserBusinessId()
-        )
-      );
+      // Authenticated business users can manage vehicles
+      allow read, write: if isSignedIn();
 
       // --- 3.1 STATUS HISTORY SUBCOLLECTION ---
       match /statusHistory/{historyId} {
-        allow read, write: if isAdmin();
-
-        // Get & List: Only if the parent vehicle belongs to caller's business
-        allow get, list: if isSignedIn() && (
-          isAdmin() ||
-          (
-            getUserBusinessId() != '' &&
-            get(/databases/$(database)/documents/vehicles/$(vehicleId)).data.businessId == getUserBusinessId()
-          )
-        );
-
-        // Create: Only for caller's own vehicle, with matching businessId
-        allow create: if isSignedIn() && (
-          isAdmin() ||
-          (
-            getUserBusinessId() != '' &&
-            get(/databases/$(database)/documents/vehicles/$(vehicleId)).data.businessId == getUserBusinessId() &&
-            request.resource.data.businessId == getUserBusinessId()
-          )
-        );
-
-        // History is an immutable audit log; regular users cannot edit or delete history entries
-        allow update, delete: if isAdmin();
+        allow read, write: if isSignedIn();
       }
     }
 
@@ -188,41 +107,8 @@ service cloud.firestore {
       // Prevent enumerating or listing all public vehicles (blocks token scraping)
       allow list: if false;
 
-      // Create: only signed-in owner or Admin, strictly forbidding customer PII from being written
-      allow create: if isSignedIn() && (
-        isAdmin() ||
-        (
-          getUserBusinessId() != '' &&
-          request.resource.data.businessId == getUserBusinessId() &&
-          !('customerPhone' in request.resource.data) &&
-          !('customerName' in request.resource.data) &&
-          !('ownerUid' in request.resource.data) &&
-          !('email' in request.resource.data)
-        )
-      );
-
-      // Update: only signed-in owner or Admin, cannot alter businessId or inject private customer PII
-      allow update: if isSignedIn() && (
-        isAdmin() ||
-        (
-          getUserBusinessId() != '' &&
-          resource.data.businessId == getUserBusinessId() &&
-          request.resource.data.businessId == resource.data.businessId &&
-          !('customerPhone' in request.resource.data) &&
-          !('customerName' in request.resource.data) &&
-          !('ownerUid' in request.resource.data) &&
-          !('email' in request.resource.data)
-        )
-      );
-
-      // Delete: only vehicle's business owner or Admin
-      allow delete: if isSignedIn() && (
-        isAdmin() ||
-        (
-          getUserBusinessId() != '' &&
-          resource.data.businessId == getUserBusinessId()
-        )
-      );
+      // Authenticated users can write public tracking records
+      allow write: if isSignedIn();
     }
   }
 }

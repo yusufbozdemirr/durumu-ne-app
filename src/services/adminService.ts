@@ -24,6 +24,8 @@ export interface CreateBusinessInput {
   ownerName: string;
   email: string;
   password: string;
+  plan?: 'free' | 'pro' | 'trial';
+  accountStatus?: 'active' | 'trial_expired' | 'suspended';
 }
 
 export const adminService = {
@@ -190,9 +192,15 @@ export const adminService = {
       name: string;
       phone: string;
       address: string;
-      plan: 'free' | 'pro';
+      plan: 'free' | 'pro' | 'trial';
+      accountStatus: 'active' | 'trial_expired' | 'suspended';
       active: boolean;
       ownerName?: string;
+      ownerEmail?: string;
+      trialStartDate?: string;
+      trialEndDate?: string;
+      proStartDate?: string;
+      proEndDate?: string;
     }>
   ): Promise<void> {
     const ref = doc(db, 'businesses', businessId);

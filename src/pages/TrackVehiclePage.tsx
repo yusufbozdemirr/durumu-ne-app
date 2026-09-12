@@ -209,7 +209,7 @@ export const TrackVehiclePage: React.FC = () => {
         <div className="max-w-md mx-auto px-4 flex items-center justify-between">
           <span>DURUMU NE? © {new Date().getFullYear()}</span>
           <Link to="/login" className="hover:text-slate-600 hover:underline">
-            İşletme Girişi
+            Bayi Girişi
           </Link>
         </div>
       </footer>

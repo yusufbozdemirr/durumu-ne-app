@@ -67,7 +67,12 @@ export interface Business {
   phone: string;
   address: string;
   ownerUid: string;
-  plan: 'free' | 'pro';
+  plan: 'free' | 'pro' | 'trial';
+  accountStatus?: 'active' | 'trial_expired' | 'suspended';
+  trialStartDate?: string;
+  trialEndDate?: string;
+  proStartDate?: string;
+  proEndDate?: string;
   active: boolean;
   createdAt: string;
   updatedAt: string;
@@ -79,9 +84,27 @@ export interface UserProfile {
   uid: string;
   email: string;
   name: string;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
   businessId: string;
   role: 'admin' | 'owner';
   createdAt: string;
+}
+
+export interface PlanStatus {
+  plan: 'free' | 'pro' | 'trial';
+  accountStatus: 'active' | 'trial_expired' | 'suspended';
+  isTrial: boolean;
+  isPro: boolean;
+  isExpired: boolean;
+  canAccessDashboard: boolean;
+  daysRemaining: number;
+  hoursRemaining: number;
+  warningState: 'none' | 'urgent_2_days' | 'urgent_1_day' | 'urgent_hours' | 'expired';
+  warningMessage?: string;
+  trialStartDate?: string;
+  trialEndDate?: string;
 }
 
 export interface FilterState {

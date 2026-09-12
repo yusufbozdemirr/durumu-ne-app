@@ -58,9 +58,14 @@ export const AdminPage: React.FC = () => {
     name: '',
     phone: '',
     address: '',
-    plan: 'free' as 'free' | 'pro',
+    plan: 'trial' as 'free' | 'pro' | 'trial',
+    accountStatus: 'active' as 'active' | 'trial_expired' | 'suspended',
     active: true,
+    trialEndDate: '',
+    proEndDate: '',
   });
+
+  const [planFilter, setPlanFilter] = useState<'all' | 'trial' | 'pro' | 'trial_expired' | 'suspended'>('all');
 
   useEffect(() => {
     let isMounted = true;
@@ -92,7 +97,20 @@ export const AdminPage: React.FC = () => {
         ? b.active !== false
         : b.active === false;
 
-    return matchesSearch && matchesStatus;
+    const matchesPlan =
+      planFilter === 'all'
+        ? true
+        : planFilter === 'pro'
+        ? b.plan === 'pro'
+        : planFilter === 'trial'
+        ? b.plan === 'trial' || !b.plan
+        : planFilter === 'trial_expired'
+        ? b.accountStatus === 'trial_expired'
+        : planFilter === 'suspended'
+        ? b.accountStatus === 'suspended' || b.active === false
+        : true;
+
+    return matchesSearch && matchesStatus && matchesPlan;
   });
 
   const totalCount = allBusinesses.length;
@@ -154,8 +172,11 @@ export const AdminPage: React.FC = () => {
       name: b.name,
       phone: b.phone,
       address: b.address,
-      plan: b.plan || 'free',
+      plan: b.plan || 'trial',
+      accountStatus: b.accountStatus || (b.active === false ? 'suspended' : 'active'),
       active: b.active !== false,
+      trialEndDate: b.trialEndDate ? b.trialEndDate.substring(0, 10) : '',
+      proEndDate: b.proEndDate ? b.proEndDate.substring(0, 10) : '',
     });
     setFormError('');
   };
@@ -178,7 +199,10 @@ export const AdminPage: React.FC = () => {
         phone: editForm.phone.trim(),
         address: editForm.address.trim(),
         plan: editForm.plan,
-        active: editForm.active,
+        accountStatus: editForm.accountStatus,
+        active: editForm.accountStatus !== 'suspended' && editForm.active,
+        trialEndDate: editForm.trialEndDate ? new Date(editForm.trialEndDate).toISOString() : undefined,
+        proEndDate: editForm.proEndDate ? new Date(editForm.proEndDate).toISOString() : undefined,
       });
       setEditingBusiness(null);
     } catch (err: any) {
@@ -284,14 +308,17 @@ export const AdminPage: React.FC = () => {
           />
         </div>
 
-        <div className="flex items-center gap-2 w-full sm:w-auto">
-          <span className="text-xs font-semibold text-slate-500 hidden sm:inline">Durum:</span>
-          <div className="flex items-center bg-slate-100 p-1 rounded-xl text-xs font-medium">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <span className="text-xs font-semibold text-slate-500 hidden sm:inline">Paket / Durum:</span>
+          <div className="flex items-center bg-slate-100 p-1 rounded-xl text-xs font-medium overflow-x-auto max-w-full">
             <button
               type="button"
-              onClick={() => setStatusFilter('all')}
-              className={`px-3 py-1 rounded-lg transition-colors ${
-                statusFilter === 'all'
+              onClick={() => {
+                setPlanFilter('all');
+                setStatusFilter('all');
+              }}
+              className={`px-3 py-1 rounded-lg transition-colors whitespace-nowrap ${
+                planFilter === 'all' && statusFilter === 'all'
                   ? 'bg-white text-slate-900 font-bold shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
@@ -300,25 +327,47 @@ export const AdminPage: React.FC = () => {
             </button>
             <button
               type="button"
-              onClick={() => setStatusFilter('active')}
-              className={`px-3 py-1 rounded-lg transition-colors ${
-                statusFilter === 'active'
+              onClick={() => setPlanFilter('pro')}
+              className={`px-3 py-1 rounded-lg transition-colors whitespace-nowrap ${
+                planFilter === 'pro'
                   ? 'bg-white text-emerald-800 font-bold shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Aktif ({activeCount})
+              PRO
+            </button>
+            <button
+              type="button"
+              onClick={() => setPlanFilter('trial')}
+              className={`px-3 py-1 rounded-lg transition-colors whitespace-nowrap ${
+                planFilter === 'trial'
+                  ? 'bg-white text-blue-800 font-bold shadow-2xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Deneme (Trial)
+            </button>
+            <button
+              type="button"
+              onClick={() => setPlanFilter('trial_expired')}
+              className={`px-3 py-1 rounded-lg transition-colors whitespace-nowrap ${
+                planFilter === 'trial_expired'
+                  ? 'bg-white text-amber-800 font-bold shadow-2xs'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Süresi Doldu
             </button>
             <button
               type="button"
               onClick={() => setStatusFilter('inactive')}
-              className={`px-3 py-1 rounded-lg transition-colors ${
+              className={`px-3 py-1 rounded-lg transition-colors whitespace-nowrap ${
                 statusFilter === 'inactive'
                   ? 'bg-white text-rose-700 font-bold shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Pasif ({inactiveCount})
+              Askıda ({inactiveCount})
             </button>
           </div>
         </div>
@@ -402,23 +451,46 @@ export const AdminPage: React.FC = () => {
                     {/* Plan & Status */}
                     <td className="py-3.5 px-4">
                       <div className="flex flex-col gap-1">
-                        <span
-                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold w-fit ${
-                            b.active !== false
-                              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                              : 'bg-rose-50 text-rose-700 border border-rose-200'
-                          }`}
-                        >
-                          <span
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              b.active !== false ? 'bg-emerald-600' : 'bg-rose-600'
-                            }`}
-                          />
-                          {b.active !== false ? 'Aktif' : 'Pasif'}
-                        </span>
-                        <span className="text-[10px] text-slate-400 font-medium">
-                          Paket: <strong className="text-slate-600 uppercase">{b.plan || 'FREE'}</strong>
-                        </span>
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          {b.plan === 'pro' ? (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                              PRO
+                            </span>
+                          ) : b.plan === 'trial' || !b.plan ? (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 text-blue-800 border border-blue-200">
+                              7G Deneme
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                              Ücretsiz
+                            </span>
+                          )}
+
+                          {b.accountStatus === 'trial_expired' ? (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-200">
+                              Deneme Bitti
+                            </span>
+                          ) : b.accountStatus === 'suspended' || b.active === false ? (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-50 text-rose-700 border border-rose-200">
+                              Askıda
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                              Aktif
+                            </span>
+                          )}
+                        </div>
+
+                        {b.plan === 'trial' && b.trialEndDate && (
+                          <span className="text-[10px] text-slate-400 font-mono">
+                            Deneme Bitiş: {new Date(b.trialEndDate).toLocaleDateString('tr-TR')}
+                          </span>
+                        )}
+                        {b.plan === 'pro' && b.proEndDate && (
+                          <span className="text-[10px] text-emerald-600 font-mono">
+                            Pro Bitiş: {new Date(b.proEndDate).toLocaleDateString('tr-TR')}
+                          </span>
+                        )}
                       </div>
                     </td>
 
@@ -683,12 +755,87 @@ export const AdminPage: React.FC = () => {
               </button>
             </div>
 
-            <form onSubmit={handleEditSubmit} className="p-6 space-y-4">
+            <form onSubmit={handleEditSubmit} className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
               {formError && (
                 <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 font-medium">
                   {formError}
                 </div>
               )}
+
+              {/* Quick Actions */}
+              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block">
+                  Hızlı Lisans ve Süre İşlemleri
+                </span>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const nextYear = new Date();
+                      nextYear.setFullYear(nextYear.getFullYear() + 1);
+                      setEditForm({
+                        ...editForm,
+                        plan: 'pro',
+                        accountStatus: 'active',
+                        active: true,
+                        proEndDate: nextYear.toISOString().substring(0, 10),
+                      });
+                    }}
+                    className="p-2 text-left bg-white border border-emerald-200 text-emerald-800 hover:bg-emerald-50 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5"
+                  >
+                    <span>⭐ 1 Yıl PRO Tanımla</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const nextMonth = new Date();
+                      nextMonth.setDate(nextMonth.getDate() + 30);
+                      setEditForm({
+                        ...editForm,
+                        plan: 'pro',
+                        accountStatus: 'active',
+                        active: true,
+                        proEndDate: nextMonth.toISOString().substring(0, 10),
+                      });
+                    }}
+                    className="p-2 text-left bg-white border border-emerald-200 text-emerald-800 hover:bg-emerald-50 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5"
+                  >
+                    <span>⭐ 1 Ay PRO Tanımla</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const sevenDays = new Date();
+                      sevenDays.setDate(sevenDays.getDate() + 7);
+                      setEditForm({
+                        ...editForm,
+                        plan: 'trial',
+                        accountStatus: 'active',
+                        active: true,
+                        trialEndDate: sevenDays.toISOString().substring(0, 10),
+                      });
+                    }}
+                    className="p-2 text-left bg-white border border-blue-200 text-blue-800 hover:bg-blue-50 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5"
+                  >
+                    <span>⏱ 7 Gün Deneme Ver</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditForm({
+                        ...editForm,
+                        accountStatus: 'trial_expired',
+                      });
+                    }}
+                    className="p-2 text-left bg-white border border-amber-200 text-amber-900 hover:bg-amber-50 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5"
+                  >
+                    <span>🚫 Denemeyi Bitir</span>
+                  </button>
+                </div>
+              </div>
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
@@ -731,34 +878,68 @@ export const AdminPage: React.FC = () => {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Durum
+                    Hesap Durumu
                   </label>
                   <select
-                    value={editForm.active ? 'active' : 'inactive'}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, active: e.target.value === 'active' })
-                    }
+                    value={editForm.accountStatus}
+                    onChange={(e) => {
+                      const val = e.target.value as 'active' | 'trial_expired' | 'suspended';
+                      setEditForm({
+                        ...editForm,
+                        accountStatus: val,
+                        active: val !== 'suspended',
+                      });
+                    }}
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-hidden focus:bg-white focus:border-emerald-600"
                   >
                     <option value="active">Aktif</option>
-                    <option value="inactive">Pasif / Askıda</option>
+                    <option value="trial_expired">Deneme Süresi Doldu</option>
+                    <option value="suspended">Askıda / Pasif</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Paket
+                    Paket Türü
                   </label>
                   <select
                     value={editForm.plan}
                     onChange={(e) =>
-                      setEditForm({ ...editForm, plan: e.target.value as 'free' | 'pro' })
+                      setEditForm({ ...editForm, plan: e.target.value as 'free' | 'pro' | 'trial' })
                     }
                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-hidden focus:bg-white focus:border-emerald-600"
                   >
-                    <option value="free">FREE</option>
-                    <option value="pro">PRO</option>
+                    <option value="trial">7 Günlük Deneme (trial)</option>
+                    <option value="pro">PRO (pro)</option>
+                    <option value="free">Ücretsiz (free)</option>
                   </select>
+                </div>
+              </div>
+
+              {/* Date pickers */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Deneme Bitiş Tarihi
+                  </label>
+                  <input
+                    type="date"
+                    value={editForm.trialEndDate}
+                    onChange={(e) => setEditForm({ ...editForm, trialEndDate: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-hidden focus:bg-white focus:border-emerald-600 font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    PRO Bitiş Tarihi
+                  </label>
+                  <input
+                    type="date"
+                    value={editForm.proEndDate}
+                    onChange={(e) => setEditForm({ ...editForm, proEndDate: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-hidden focus:bg-white focus:border-emerald-600 font-mono"
+                  />
                 </div>
               </div>
 
