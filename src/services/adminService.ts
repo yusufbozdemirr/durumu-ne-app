@@ -127,7 +127,8 @@ export const adminService = {
       }
 
       // 2. Generate unique businessId
-      const businessId = `biz_${customerUid.substring(0, 8)}_${Date.now().toString(36)}`;
+      const generateBusinessId = () => `D-${Math.floor(100000000 + Math.random() * 900000000)}`;
+      const businessId = generateBusinessId();
       const nowIso = new Date().toISOString();
       const isProPlan = input.plan === 'pro' || input.paketTuru === 'pro';
 

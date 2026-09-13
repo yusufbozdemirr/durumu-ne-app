@@ -29,7 +29,7 @@ export const PlateDisplay: React.FC<PlateDisplayProps> = ({
       title={`Plaka: ${plate}`}
     >
       <span
-        className={`bg-blue-700 text-slate-900 font-sans font-black flex items-center justify-center rounded-xs leading-none ${trBadgeSizes[size]}`}
+        className={`bg-blue-500 text-white font-sans font-black flex items-center justify-center rounded-xs leading-none ${trBadgeSizes[size]}`}
       >
         TR
       </span>

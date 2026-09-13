@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { StatCard } from '../components/common/StatCard';
@@ -22,9 +22,16 @@ import { VehicleStatus } from '../types';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
-  const { vehicles, isLoading, business } = useApp();
+  const { vehicles, isLoading, business, planStatus, setIsPlanModalOpen } = useApp();
   const [selectedFilter, setSelectedFilter] = useState<'all' | VehicleStatus>('all');
   const [searchTerm, setSearchTerm] = useState('');
+
+  // Show trial reminder on dashboard load
+  useEffect(() => {
+    if (planStatus?.isTrial) {
+      setIsPlanModalOpen(true);
+    }
+  }, [planStatus?.isTrial, setIsPlanModalOpen]);
 
   if (isLoading) {
     return <DashboardSkeleton />;

@@ -206,7 +206,8 @@ export const authService = {
     const uid = cred.user.uid;
 
     try {
-      const businessId = `biz_${uid.slice(0, 8)}_${Date.now().toString(36)}`;
+      const generateBusinessId = () => `D-${Math.floor(100000000 + Math.random() * 900000000)}`;
+      const businessId = generateBusinessId();
       const now = new Date();
       const talepTarihi = now.toISOString();
       const fullName = `${firstName.trim()} ${lastName.trim()}`.trim();

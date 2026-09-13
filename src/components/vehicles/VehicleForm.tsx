@@ -58,7 +58,25 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
   // Toggle between registered preset dropdowns and manual free-text input
   const [isManualVehicle, setIsManualVehicle] = useState<boolean>(!brandInDb);
 
-  const [plate, setPlate] = useState(initialData?.plate || '');
+  const parsePlate = (plateStr: string) => {
+    const p = plateStr.replace(/\s+/g, '');
+    const match = p.match(/^(\d{1,2})([A-ZÇĞİÖŞÜ]{1,3})(\d{1,4})$/i);
+    if (match) {
+      return { part1: match[1], part2: match[2].toUpperCase(), part3: match[3] };
+    }
+    // Fallback if parsing fails
+    return { part1: p.substring(0, 2).replace(/\D/g, ''), part2: p.substring(2, 5).replace(/[^A-ZÇĞİÖŞÜ]/ig, '').toUpperCase(), part3: p.substring(5).replace(/\D/g, '') };
+  };
+
+  const initPlate = initialData?.plate ? parsePlate(initialData.plate) : { part1: '', part2: '', part3: '' };
+  
+  const [platePart1, setPlatePart1] = useState(initPlate.part1);
+  const [platePart2, setPlatePart2] = useState(initPlate.part2);
+  const [platePart3, setPlatePart3] = useState(initPlate.part3);
+
+  // Derived plate string
+  const plate = `${platePart1} ${platePart2} ${platePart3}`.trim();
+
   const [brand, setBrand] = useState(initialData?.brand || 'Fiat');
   const [model, setModel] = useState(initialData?.model || '');
   const [year, setYear] = useState<number | string>(
@@ -189,7 +207,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
 
   const validate = () => {
     const errs: Record<string, string> = {};
-    if (!plate.trim()) errs.plate = 'Plaka alanı zorunludur.';
+    if (!platePart1 || !platePart2 || !platePart3) errs.plate = 'Plaka alanları eksiksiz doldurulmalıdır.';
     if (!brand.trim()) errs.brand = 'Marka alanı zorunludur.';
     if (!model.trim()) errs.model = 'Model / Motor alanı zorunludur.';
     if (!customerPhone.trim()) errs.customerPhone = 'Müşteri telefon numarası zorunludur.';
@@ -288,21 +306,55 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
             <label className="block text-xs font-semibold text-slate-600 mb-1.5">
               Plaka <span className="text-rose-500">*</span>
             </label>
-            <input
-              type="text"
-              id="input-plate"
-              placeholder="Örn: 34 ABC 123 veya 06 XYZ 78"
-              value={plate}
-              onChange={(e) => {
-                setPlate(e.target.value.toUpperCase());
-                if (errors.plate) setErrors((prev) => ({ ...prev, plate: '' }));
-              }}
-              className={`w-full px-4 py-3 bg-slate-50 border rounded-xl text-base font-mono font-bold tracking-wider uppercase text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden ${
-                errors.plate
-                  ? 'border-rose-500'
-                  : 'border-slate-200 focus:border-teal-500'
-              }`}
-            />
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                id="input-plate-1"
+                placeholder="34"
+                maxLength={2}
+                value={platePart1}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/\D/g, '');
+                  setPlatePart1(val);
+                  if (val.length === 2) document.getElementById('input-plate-2')?.focus();
+                  if (errors.plate) setErrors((prev) => ({ ...prev, plate: '' }));
+                }}
+                className={`w-16 sm:w-20 px-3 py-3 text-center bg-slate-50 border rounded-xl text-base font-mono font-bold uppercase text-slate-900 placeholder:text-slate-400 transition-colors focus:outline-hidden ${
+                  errors.plate ? 'border-rose-500' : 'border-slate-200 focus:border-teal-500'
+                }`}
+              />
+              <input
+                type="text"
+                id="input-plate-2"
+                placeholder="ABC"
+                maxLength={3}
+                value={platePart2}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/[^A-Za-zçğıöşüÇĞİÖŞÜ]/g, '').toUpperCase();
+                  setPlatePart2(val);
+                  if (val.length === 3) document.getElementById('input-plate-3')?.focus();
+                  if (errors.plate) setErrors((prev) => ({ ...prev, plate: '' }));
+                }}
+                className={`w-20 sm:w-24 px-3 py-3 text-center bg-slate-50 border rounded-xl text-base font-mono font-bold uppercase text-slate-900 placeholder:text-slate-400 transition-colors focus:outline-hidden ${
+                  errors.plate ? 'border-rose-500' : 'border-slate-200 focus:border-teal-500'
+                }`}
+              />
+              <input
+                type="text"
+                id="input-plate-3"
+                placeholder="1234"
+                maxLength={4}
+                value={platePart3}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/\D/g, '');
+                  setPlatePart3(val);
+                  if (errors.plate) setErrors((prev) => ({ ...prev, plate: '' }));
+                }}
+                className={`flex-1 px-3 py-3 text-center bg-slate-50 border rounded-xl text-base font-mono font-bold uppercase text-slate-900 placeholder:text-slate-400 transition-colors focus:outline-hidden ${
+                  errors.plate ? 'border-rose-500' : 'border-slate-200 focus:border-teal-500'
+                }`}
+              />
+            </div>
             {errors.plate && (
               <p className="mt-1 text-xs text-rose-500 font-medium">{errors.plate}</p>
             )}
