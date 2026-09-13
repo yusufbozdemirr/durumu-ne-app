@@ -1139,10 +1139,10 @@ export const AdminPage: React.FC = () => {
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <label className="block text-xs font-semibold text-slate-600">
-                    Şifre (Sayısal PIN) *
+                    Şifre *
                   </label>
                   <span className="text-[10px] text-slate-500 font-mono">
-                    En az 6 haneli sadece rakam
+                    En az 6 karakter
                   </span>
                 </div>
                 <input

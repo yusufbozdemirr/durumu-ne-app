@@ -172,10 +172,10 @@ export const LoginPage: React.FC = () => {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="block text-xs font-semibold text-slate-600">
-                  Şifre (Sayısal PIN)
+                  Şifre
                 </label>
                 <span className="text-[10px] text-slate-500 font-mono">
-                  Sadece Rakam
+                  En az 6 karakter
                 </span>
               </div>
               <div className="relative">

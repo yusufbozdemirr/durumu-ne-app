@@ -370,11 +370,11 @@ export const WelcomeRegisterPage: React.FC = () => {
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
                     <label className="block text-xs font-semibold text-slate-600">
-                      Şifre (Sadece Sayı){' '}
+                      Şifre{' '}
                       <span className="text-teal-600">*</span>
                     </label>
                     <span className="text-[11px] text-teal-600 font-mono">
-                      En az 6 haneli PIN
+                      En az 6 karakter
                     </span>
                   </div>
                   <div className="relative">
@@ -403,10 +403,7 @@ required
                       )}
                     </button>
                   </div>
-                  <p className="text-[10px] text-slate-500 mt-1">
-                    Girişinizi kolaylaştırmak için şifreniz yalnızca sayılardan
-                    oluşmalıdır.
-                  </p>
+                  
                 </div>
 
                 {/* Submit CTA */}
