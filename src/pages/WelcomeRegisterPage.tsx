@@ -63,11 +63,11 @@ export const WelcomeRegisterPage: React.FC = () => {
       return;
     }
     if (!password) {
-      setError('Lütfen sadece sayılardan oluşan şifrenizi giriniz.');
+      setError('Lütfen şifrenizi giriniz.');
       return;
     }
     if (password.length < 6) {
-      setError('Şifreniz en az 6 haneli bir sayı olmalıdır (Örn: 123456).');
+      setError('Şifreniz en az 6 karakter olmalıdır.');
       return;
     }
 
@@ -383,9 +383,9 @@ export const WelcomeRegisterPage: React.FC = () => {
                       type={showPassword ? 'text' : 'password'}
                       id="input-register-password"
                       inputMode="numeric"
-                      pattern="[0-9]*"
-                      required
-                      placeholder="Örn: 123456"
+pattern="[0-9]*"
+required
+                      placeholder="Şifre"
                       value={password}
                       onChange={handlePasswordChange}
                       className="w-full pl-11 pr-11 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base text-slate-900 placeholder:text-slate-500 font-mono tracking-widest transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"

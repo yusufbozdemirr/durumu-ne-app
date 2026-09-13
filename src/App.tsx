@@ -32,9 +32,9 @@ export default function App() {
           <Route path="/tanitim" element={<LandingPage />} />
 
           {/* Public customer tracking routes (NO authentication required) */}
-          <Route path="/takip/:publicToken" element={<TrackVehiclePage />} />
-          <Route path="/takip/:token" element={<TrackVehiclePage />} />
-          <Route path="/track/:token" element={<TrackVehiclePage />} />
+          <Route path="/t/:publicToken" element={<TrackVehiclePage />} />
+          <Route path="/t/:token" element={<TrackVehiclePage />} />
+          <Route path="/t/:token" element={<TrackVehiclePage />} />
 
           {/* Public SaaS & Pricing pages */}
           <Route path="/paketler" element={<PackagesPage />} />

@@ -784,7 +784,7 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* DIRECT WHATSAPP CALLOUT BANNER */}
-      <section className="py-12 border-t border-slate-200 relative bg-gradient-to-r from-emerald-950/50 via-[#0c152a] to-emerald-950/50">
+      <section className="py-12 border-t border-slate-200 relative bg-teal-50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
           <div>
             <span className="text-xs font-bold text-teal-600 uppercase tracking-wider block mb-1">

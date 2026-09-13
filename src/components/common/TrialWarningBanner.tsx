@@ -16,7 +16,8 @@ export const TrialWarningBanner: React.FC = () => {
   }, []);
 
   if (isAdmin || isDismissed) return null;
-  if (!planStatus.isTrial || planStatus.isExpired || planStatus.warningState === 'none') {
+
+  if (planStatus.isExpired || planStatus.warningState === 'none' || planStatus.warningState === 'pending_approval') {
     return null;
   }
 
@@ -28,10 +29,12 @@ export const TrialWarningBanner: React.FC = () => {
   const whatsappUrl = getTrialWarningWhatsAppUrl(business?.name, planStatus.daysRemaining);
 
   const getNoticeDetails = () => {
+    const defaultTitle = planStatus.warningMessage || (planStatus.isPro ? 'Pro paketinizin bitmesine yaklaştınız.' : 'Deneme sürenizin bitmesine yaklaştınız.');
+    
     switch (planStatus.warningState) {
       case 'urgent_hours':
         return {
-          title: 'Deneme sürenizin bitmesine 1 günden az kaldı.',
+          title: defaultTitle,
           badge: 'Son Saatler',
           badgeColor: 'bg-rose-100 text-rose-800 border-rose-200',
           containerBg: 'bg-gradient-to-r from-rose-50 via-amber-50 to-orange-50 border-rose-200/80',
@@ -39,8 +42,8 @@ export const TrialWarningBanner: React.FC = () => {
         };
       case 'urgent_1_day':
         return {
-          title: 'Deneme sürenizin bitmesine 1 gün kaldı.',
-          badge: 'Yarın Bitiyor',
+          title: defaultTitle,
+          badge: 'Yakında Bitiyor',
           badgeColor: 'bg-amber-100 text-amber-800 border-amber-200',
           containerBg: 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200/80',
           iconColor: 'text-amber-600',
@@ -48,8 +51,8 @@ export const TrialWarningBanner: React.FC = () => {
       case 'urgent_2_days':
       default:
         return {
-          title: 'Deneme sürenizin bitmesine 2 gün kaldı.',
-          badge: 'Deneme Süresi',
+          title: defaultTitle,
+          badge: planStatus.isPro ? 'Abonelik Yenileme' : 'Deneme Süresi',
           badgeColor: 'bg-blue-100 text-blue-800 border-blue-200',
           containerBg: 'bg-gradient-to-r from-blue-50/70 via-indigo-50/50 to-slate-50 border-blue-200/80',
           iconColor: 'text-blue-600',
@@ -84,7 +87,7 @@ export const TrialWarningBanner: React.FC = () => {
               </span>
             </div>
             <p className="text-xs text-slate-600 mt-0.5 leading-relaxed">
-              Durumu Ne? deneyiminize kesintisiz devam etmek için Pro paket hakkında bilgi alın.
+              {planStatus.isPro ? 'Pro paket aboneliğinizi yenilemek için WhatsApp üzerinden bizimle iletişime geçin.' : 'Durumu Ne? deneyiminize kesintisiz devam etmek için Pro paket hakkında bilgi alın.'}
             </p>
           </div>
         </div>
@@ -99,9 +102,8 @@ export const TrialWarningBanner: React.FC = () => {
             className="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-white bg-teal-600 hover:bg-emerald-700 active:bg-emerald-800 rounded-xl transition-all shadow-xs shrink-0"
           >
             <MessageCircle className="w-4 h-4 fill-white/20" />
-            <span>Pro Paket Hakkında Bilgi Al</span>
+            <span>{planStatus.isPro ? 'Aboneliği Yenile' : 'Pro Paket Hakkında Bilgi Al'}</span>
           </a>
-
           <button
             type="button"
             onClick={handleDismiss}

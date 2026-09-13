@@ -123,7 +123,7 @@ export const VehicleDetailPage: React.FC = () => {
 
   const trackingToken = vehicle.publicToken || (vehicle as any).token;
   const origin = window.location.origin;
-  const trackingUrl = `${origin}/takip/${trackingToken}`;
+  const trackingUrl = `${origin}/t/${trackingToken}`;
 
   const handleWhatsAppShare = () => {
     const cleanPhone = vehicle.customerPhone.replace(/\D/g, '');
@@ -428,7 +428,7 @@ export const VehicleDetailPage: React.FC = () => {
 
             <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
               <span className="font-mono text-slate-600 truncate mr-2">
-                /takip/{trackingToken}
+                /t/{trackingToken}
               </span>
               <a
                 href={trackingUrl}

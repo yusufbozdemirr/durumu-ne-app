@@ -19,7 +19,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle: v }) => {
     e.stopPropagation();
     const token = v.publicToken || (v as any).token;
     const origin = window.location.origin;
-    const trackingUrl = `${origin}/takip/${token}`;
+    const trackingUrl = `${origin}/t/${token}`;
     const cleanPhone = v.customerPhone.replace(/\D/g, '');
     const phoneWithCountry = cleanPhone.startsWith('90')
       ? cleanPhone

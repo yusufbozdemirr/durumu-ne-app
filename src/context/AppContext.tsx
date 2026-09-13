@@ -25,6 +25,8 @@ interface AppContextType {
   isAuthenticated: boolean;
   isAdmin: boolean;
   isLoading: boolean;
+  isPlanModalOpen: boolean;
+  setIsPlanModalOpen: (open: boolean) => void;
   qrModalVehicle: Vehicle | null;
   toasts: ToastMessage[];
   planStatus: PlanStatus;
@@ -114,6 +116,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [allBusinesses, setAllBusinesses] = useState<Business[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isPlanModalOpen, setIsPlanModalOpen] = useState<boolean>(false);
   const [qrModalVehicle, setQrModalVehicle] = useState<Vehicle | null>(null);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
@@ -533,6 +536,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         isAuthenticated: !!(currentUser && (isAdmin || (userProfile && userProfile.businessId))),
         isAdmin,
         isLoading,
+        isPlanModalOpen,
+        setIsPlanModalOpen,
         qrModalVehicle,
         toasts,
         planStatus,

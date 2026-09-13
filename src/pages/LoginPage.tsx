@@ -184,9 +184,9 @@ export const LoginPage: React.FC = () => {
                   type={showPassword ? 'text' : 'password'}
                   id="input-login-password"
                   inputMode="numeric"
-                  pattern="[0-9]*"
-                  required
-                  placeholder="••••••"
+pattern="[0-9]*"
+required
+                  placeholder="Şifreniz"
                   value={password}
                   onChange={handlePasswordChange}
                   className="w-full pl-11 pr-11 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base text-slate-900 placeholder:text-slate-500 font-mono tracking-widest transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"

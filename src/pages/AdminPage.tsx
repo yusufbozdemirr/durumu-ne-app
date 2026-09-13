@@ -71,6 +71,7 @@ export const AdminPage: React.FC = () => {
     email: '',
     password: '',
     plan: 'trial' as 'pro' | 'trial',
+    accountStatus: 'active' as 'active' | 'suspended',
     endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
       .toISOString()
       .substring(0, 10),
@@ -371,8 +372,8 @@ export const AdminPage: React.FC = () => {
       return;
     }
 
-    if (!/^\d{6,}$/.test(createForm.password)) {
-      setFormError('Şifre en az 6 haneli sadece rakamlardan oluşmalıdır (Örn: 123456).');
+    if (createForm.password.length < 6) {
+      setFormError('Şifre en az 6 karakter olmalıdır.');
       return;
     }
 
@@ -406,6 +407,7 @@ export const AdminPage: React.FC = () => {
         email: '',
         password: '',
         plan: 'trial',
+        accountStatus: 'active',
         endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
           .toISOString()
           .substring(0, 10),
@@ -1145,9 +1147,7 @@ export const AdminPage: React.FC = () => {
                 </div>
                 <input
                   type="password"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  required
+                                    required
                   placeholder="123456"
                   value={createForm.password}
                   onChange={(e) => {
@@ -1155,6 +1155,8 @@ export const AdminPage: React.FC = () => {
                     setCreateForm({ ...createForm, password: digitsOnly });
                   }}
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono tracking-widest focus:outline-hidden focus:border-teal-500"
+inputMode="numeric"
+pattern="[0-9]*"
                 />
               </div>
 
