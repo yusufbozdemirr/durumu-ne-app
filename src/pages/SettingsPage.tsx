@@ -111,7 +111,7 @@ export const SettingsPage: React.FC = () => {
               id="input-biz-name"
               value={bizName}
               onChange={(e) => setBizName(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 transition-colors focus:outline-hidden focus:border-teal-500"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base text-slate-900 transition-colors focus:outline-hidden focus:border-teal-500"
             />
           </div>
 
@@ -125,7 +125,7 @@ export const SettingsPage: React.FC = () => {
               placeholder="0212 123 45 67 veya 0532 ..."
               value={bizPhone}
               onChange={(e) => setBizPhone(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono text-slate-900 transition-colors focus:outline-hidden focus:border-teal-500"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base font-mono text-slate-900 transition-colors focus:outline-hidden focus:border-teal-500"
             />
           </div>
 
@@ -137,7 +137,7 @@ export const SettingsPage: React.FC = () => {
               type="text"
               disabled
               value={business?.id || '-'}
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-500 cursor-not-allowed"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono text-slate-500 cursor-not-allowed"
             />
           </div>
 
@@ -151,7 +151,7 @@ export const SettingsPage: React.FC = () => {
               placeholder="Sanayi Sitesi No: 123..."
               value={bizAddress}
               onChange={(e) => setBizAddress(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 transition-colors focus:outline-hidden focus:border-teal-500"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base text-slate-900 transition-colors focus:outline-hidden focus:border-teal-500"
             />
           </div>
         </div>
@@ -183,7 +183,7 @@ export const SettingsPage: React.FC = () => {
               id="input-user-name"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 transition-colors focus:outline-hidden focus:border-teal-500"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base text-slate-900 transition-colors focus:outline-hidden focus:border-teal-500"
             />
           </div>
 
@@ -196,7 +196,7 @@ export const SettingsPage: React.FC = () => {
               disabled
               id="input-user-email"
               value={userEmail}
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono text-slate-500 cursor-not-allowed"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono text-slate-500 cursor-not-allowed"
             />
           </div>
 
@@ -209,7 +209,7 @@ export const SettingsPage: React.FC = () => {
               disabled
               id="input-user-role"
               value={userRole}
-              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-500 cursor-not-allowed"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-500 cursor-not-allowed"
             />
           </div>
         </div>

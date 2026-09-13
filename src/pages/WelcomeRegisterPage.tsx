@@ -136,7 +136,7 @@ export const WelcomeRegisterPage: React.FC = () => {
           <Link
             to="/login"
             id="link-welcome-login"
-            className="text-xs font-bold text-teal-600 hover:text-teal-600 px-3.5 py-2 rounded-xl bg-slate-100/80 border border-slate-200 hover:border-teal-500/50 hover:bg-slate-100 transition-colors"
+            className="text-xs font-bold text-teal-600 hover:text-teal-600 px-4 py-2 rounded-xl bg-slate-100/80 border border-slate-200 hover:border-teal-500/50 hover:bg-slate-100 transition-colors"
           >
             Bayi Girişi
           </Link>
@@ -265,7 +265,7 @@ export const WelcomeRegisterPage: React.FC = () => {
                       Adınız <span className="text-teal-600">*</span>
                     </label>
                     <div className="relative">
-                      <User className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                      <User className="w-4 h-4 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2" />
                       <input
                         type="text"
                         id="input-register-firstname"
@@ -276,7 +276,7 @@ export const WelcomeRegisterPage: React.FC = () => {
                           setFirstName(e.target.value);
                           setError('');
                         }}
-                        className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"
+                        className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"
                       />
                     </div>
                   </div>
@@ -295,7 +295,7 @@ export const WelcomeRegisterPage: React.FC = () => {
                         setLastName(e.target.value);
                         setError('');
                       }}
-                      className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
                 </div>
@@ -307,7 +307,7 @@ export const WelcomeRegisterPage: React.FC = () => {
                     <span className="text-teal-600">*</span>
                   </label>
                   <div className="relative">
-                    <Building2 className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Building2 className="w-4 h-4 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2" />
                     <input
                       type="text"
                       id="input-register-business-name"
@@ -318,7 +318,7 @@ export const WelcomeRegisterPage: React.FC = () => {
                         setBusinessName(e.target.value);
                         setError('');
                       }}
-                      className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"
+                      className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
                 </div>
@@ -329,7 +329,7 @@ export const WelcomeRegisterPage: React.FC = () => {
                     Telefon Numarası
                   </label>
                   <div className="relative">
-                    <Phone className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Phone className="w-4 h-4 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2" />
                     <input
                       type="tel"
                       id="input-register-phone"
@@ -339,7 +339,7 @@ export const WelcomeRegisterPage: React.FC = () => {
                         setPhone(e.target.value);
                         setError('');
                       }}
-                      className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"
+                      className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
                 </div>
@@ -350,7 +350,7 @@ export const WelcomeRegisterPage: React.FC = () => {
                     E-posta Adresi <span className="text-teal-600">*</span>
                   </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Mail className="w-4 h-4 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2" />
                     <input
                       type="email"
                       id="input-register-email"
@@ -361,7 +361,7 @@ export const WelcomeRegisterPage: React.FC = () => {
                         setEmail(e.target.value);
                         setError('');
                       }}
-                      className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-500 font-mono transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"
+                      className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base text-slate-900 placeholder:text-slate-500 font-mono transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"
                     />
                   </div>
                 </div>
@@ -378,7 +378,7 @@ export const WelcomeRegisterPage: React.FC = () => {
                     </span>
                   </div>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Lock className="w-4 h-4 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       id="input-register-password"
@@ -388,12 +388,12 @@ export const WelcomeRegisterPage: React.FC = () => {
                       placeholder="Örn: 123456"
                       value={password}
                       onChange={handlePasswordChange}
-                      className="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-500 font-mono tracking-widest transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"
+                      className="w-full pl-11 pr-11 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base text-slate-900 placeholder:text-slate-500 font-mono tracking-widest transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-900 p-0.5 rounded transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-900 p-0.5 rounded transition-colors"
                       title={showPassword ? 'Şifreyi Gizle' : 'Şifreyi Göster'}
                     >
                       {showPassword ? (
@@ -518,7 +518,7 @@ export const WelcomeRegisterPage: React.FC = () => {
                 type="button"
                 id="btn-dialog-close-home"
                 onClick={() => navigate('/')}
-                className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 transition-colors"
+                className="w-full py-3 px-4 rounded-xl text-xs font-semibold text-slate-500 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 transition-colors"
               >
                 Anasayfaya Dön
               </button>

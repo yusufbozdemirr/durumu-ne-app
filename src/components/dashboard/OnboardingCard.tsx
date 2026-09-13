@@ -72,7 +72,7 @@ export const OnboardingCard: React.FC = () => {
             type="button"
             id="btn-onboarding-add-first-vehicle"
             onClick={() => navigate('/vehicles/new')}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-white bg-teal-600 hover:bg-teal-500 active:bg-emerald-700 rounded-xl transition-colors shadow-md shadow-emerald-600/30 cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-4 py-3 text-xs font-bold text-white bg-teal-600 hover:bg-teal-500 active:bg-emerald-700 rounded-xl transition-colors shadow-md shadow-emerald-600/30 cursor-pointer"
           >
             <PlusCircle className="w-4 h-4" />
             <span>İlk Aracımı Ekle</span>
@@ -82,7 +82,7 @@ export const OnboardingCard: React.FC = () => {
             type="button"
             onClick={handleDismiss}
             id="btn-dismiss-onboarding"
-            className="p-1.5 text-slate-500 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors absolute top-3 right-3 sm:static"
+            className="p-1.5 text-slate-500 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors absolute top-3 right-4 sm:static"
             title="Kapat"
           >
             <X className="w-4 h-4" />
