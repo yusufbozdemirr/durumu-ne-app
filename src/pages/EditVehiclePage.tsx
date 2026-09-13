@@ -12,14 +12,14 @@ export const EditVehiclePage: React.FC = () => {
 
   if (!vehicle) {
     return (
-      <div className="bg-[#0c152a] rounded-2xl border border-slate-800 p-8 text-center max-w-md mx-auto my-12 shadow-xl">
-        <h3 className="text-base font-bold text-white">Araç Bulunamadı</h3>
-        <p className="text-xs text-slate-400 mt-1 mb-4">
+      <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center max-w-md mx-auto my-12 shadow-xl">
+        <h3 className="text-base font-bold text-slate-900">Araç Bulunamadı</h3>
+        <p className="text-xs text-slate-500 mt-1 mb-4">
           Düzenlemek istediğiniz araç kaydı bulunamadı veya silinmiş olabilir.
         </p>
         <button
           onClick={() => navigate('/vehicles')}
-          className="px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl transition-colors cursor-pointer"
+          className="px-4 py-2 text-xs font-bold text-white bg-teal-600 hover:bg-teal-500 rounded-xl transition-colors cursor-pointer"
         >
           Araçlara Dön
         </button>
@@ -43,9 +43,9 @@ export const EditVehiclePage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="border-b border-slate-800 pb-4">
-        <h2 className="text-xl font-bold text-white tracking-tight">Araç Bilgilerini Düzenle</h2>
-        <p className="text-xs text-slate-400 mt-1">
+      <div className="border-b border-slate-200 pb-4">
+        <h2 className="text-xl font-bold text-slate-900 tracking-tight">Araç Bilgilerini Düzenle</h2>
+        <p className="text-xs text-slate-500 mt-1">
           {vehicle.plate} - {vehicle.brand} {vehicle.model}
         </p>
       </div>

@@ -13,9 +13,9 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#070d19] flex flex-col items-center justify-center p-4">
-        <div className="w-9 h-9 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-xs text-slate-400 font-medium mt-3">
+      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
+        <div className="w-9 h-9 border-3 border-teal-500 border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs text-slate-500 font-medium mt-3">
           Oturum kontrol ediliyor...
         </p>
       </div>

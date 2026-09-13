@@ -26,30 +26,30 @@ export const StatCard: React.FC<StatCardProps> = ({
     default: {
       border: isActive
         ? 'border-slate-500 ring-1 ring-slate-500'
-        : 'border-slate-800',
-      iconBg: 'bg-slate-800 text-slate-300 border border-slate-700',
-      numberColor: 'text-white',
+        : 'border-slate-200',
+      iconBg: 'bg-slate-100 text-slate-600 border border-slate-200',
+      numberColor: 'text-slate-900',
     },
     emerald: {
       border: isActive
-        ? 'border-emerald-500 ring-1 ring-emerald-500'
-        : 'border-slate-800',
-      iconBg: 'bg-emerald-950/80 text-emerald-400 border border-emerald-800/60',
-      numberColor: 'text-white',
+        ? 'border-teal-500 ring-1 ring-emerald-500'
+        : 'border-slate-200',
+      iconBg: 'bg-teal-50/80 text-teal-600 border border-teal-200/60',
+      numberColor: 'text-slate-900',
     },
     amber: {
       border: isActive
         ? 'border-amber-500 ring-1 ring-amber-500'
-        : 'border-slate-800',
+        : 'border-slate-200',
       iconBg: 'bg-amber-950/80 text-amber-400 border border-amber-800/60',
-      numberColor: 'text-white',
+      numberColor: 'text-slate-900',
     },
     blue: {
       border: isActive
         ? 'border-blue-500 ring-1 ring-blue-500'
-        : 'border-slate-800',
+        : 'border-slate-200',
       iconBg: 'bg-blue-950/80 text-blue-400 border border-blue-800/60',
-      numberColor: 'text-white',
+      numberColor: 'text-slate-900',
     },
   };
 
@@ -59,14 +59,14 @@ export const StatCard: React.FC<StatCardProps> = ({
     <div
       id={id}
       onClick={onClick}
-      className={`bg-[#0c152a] rounded-xl border ${style.border} p-4 sm:p-5 shadow-lg transition-all duration-150 ${
+      className={`bg-white rounded-xl border ${style.border} p-4 sm:p-5 shadow-lg transition-all duration-150 ${
         onClick
-          ? 'cursor-pointer hover:border-slate-700 hover:bg-[#0e1832]'
+          ? 'cursor-pointer hover:border-slate-200 hover:bg-[#0e1832]'
           : ''
       }`}
     >
       <div className="flex items-center justify-between gap-3">
-        <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
           {title}
         </span>
         <div

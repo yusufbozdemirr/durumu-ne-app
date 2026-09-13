@@ -85,15 +85,15 @@ export const VehicleDetailPage: React.FC = () => {
 
   if (!vehicle) {
     return (
-      <div className="bg-[#0c152a] rounded-2xl border border-slate-800 p-8 text-center max-w-md mx-auto my-12 shadow-xl">
+      <div className="bg-white rounded-2xl border border-slate-200 p-8 text-center max-w-md mx-auto my-12 shadow-xl">
         <AlertCircle className="w-10 h-10 text-slate-500 mx-auto mb-3" />
-        <h3 className="text-base font-bold text-white">Araç Bulunamadı</h3>
-        <p className="text-xs text-slate-400 mt-1 mb-5">
+        <h3 className="text-base font-bold text-slate-900">Araç Bulunamadı</h3>
+        <p className="text-xs text-slate-500 mt-1 mb-5">
           Aradığınız araç kaydı silinmiş veya mevcut değil.
         </p>
         <button
           onClick={() => navigate('/vehicles')}
-          className="px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl transition-colors cursor-pointer"
+          className="px-4 py-2 text-xs font-bold text-white bg-teal-600 hover:bg-teal-500 rounded-xl transition-colors cursor-pointer"
         >
           Araç Listesine Dön
         </button>
@@ -148,12 +148,12 @@ export const VehicleDetailPage: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Header Card */}
-      <div className="bg-[#0c152a] rounded-2xl border border-slate-800 p-4 sm:p-6 shadow-xl">
+      <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-xl">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate('/vehicles')}
-              className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors cursor-pointer"
+              className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
               title="Araçlar Listesine Dön"
             >
               <ArrowLeft className="w-5 h-5" />
@@ -162,12 +162,12 @@ export const VehicleDetailPage: React.FC = () => {
             <div>
               <div className="flex items-center gap-2.5 flex-wrap">
                 <PlateDisplay plate={vehicle.plate} size="md" />
-                <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+                <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
                   {vehicle.brand} {vehicle.model}
                 </h2>
                 <StatusBadge status={vehicle.currentStatus} size="md" />
               </div>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-slate-500 mt-1">
                 Kayıt Tarihi:{' '}
                 {new Date(vehicle.createdAt).toLocaleDateString('tr-TR')} •{' '}
                 {vehicle.customerName || 'Müşteri belirtilmedi'}
@@ -181,9 +181,9 @@ export const VehicleDetailPage: React.FC = () => {
               type="button"
               id="btn-show-qr"
               onClick={() => openQRModal(vehicle)}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-200 bg-slate-800 hover:bg-slate-700 hover:text-white rounded-xl transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 hover:text-slate-900 rounded-xl transition-colors cursor-pointer"
             >
-              <QrCode className="w-4 h-4 text-emerald-400" />
+              <QrCode className="w-4 h-4 text-teal-600" />
               QR Kod Oluştur
             </button>
 
@@ -191,7 +191,7 @@ export const VehicleDetailPage: React.FC = () => {
               type="button"
               id="btn-whatsapp-notify"
               onClick={handleWhatsAppShare}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 rounded-xl transition-colors shadow-md shadow-emerald-600/30 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-white bg-[#25D366] hover:bg-[#20bd5a] active:bg-[#1da04b] rounded-xl transition-colors shadow-md shadow-[#25D366]/30 cursor-pointer"
             >
               <WhatsAppIcon className="w-4 h-4" />
               <span>WhatsApp Paylaş</span>
@@ -200,7 +200,7 @@ export const VehicleDetailPage: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate(`/vehicles/${vehicle.id}/edit`)}
-              className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-colors cursor-pointer"
+              className="p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
               title="Düzenle"
             >
               <Edit2 className="w-4 h-4" />
@@ -209,7 +209,7 @@ export const VehicleDetailPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowDeleteConfirm(true)}
-              className="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-950/40 rounded-xl transition-colors cursor-pointer"
+              className="p-2 text-slate-500 hover:text-rose-400 hover:bg-rose-950/40 rounded-xl transition-colors cursor-pointer"
               title="Araç Kaydını Sil"
             >
               <Trash2 className="w-4 h-4" />
@@ -223,19 +223,19 @@ export const VehicleDetailPage: React.FC = () => {
         {/* LEFT / MAIN AREA */}
         <div className="lg:col-span-2 space-y-6">
           {/* AŞAMA DURUMUNU GÜNCELLE */}
-          <div className="bg-[#0c152a] rounded-2xl border border-emerald-500/30 p-5 sm:p-6 shadow-xl relative overflow-hidden">
-            <div className="pb-4 border-b border-slate-800 mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="bg-white rounded-2xl border border-teal-500/30 p-5 sm:p-6 shadow-xl relative overflow-hidden">
+            <div className="pb-4 border-b border-slate-200 mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-teal-500 animate-pulse"></span>
                   Aşama Durumunu Güncelle
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-500 mt-0.5">
                   Yeni bir aşamaya geçin ve müşteriye anlık gösterilecek notu ekleyin.
                 </p>
               </div>
               <div className="flex items-center gap-1.5 self-start sm:self-auto">
-                <span className="text-[11px] text-slate-400 font-medium">
+                <span className="text-[11px] text-slate-500 font-medium">
                   Mevcut Durum:
                 </span>
                 <StatusBadge status={vehicle.currentStatus} size="sm" />
@@ -246,7 +246,7 @@ export const VehicleDetailPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Dropdown with standardized statuses */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-semibold text-slate-600 mb-1.5">
                     Yeni Aşama Seçin
                   </label>
                   <select
@@ -255,10 +255,10 @@ export const VehicleDetailPage: React.FC = () => {
                     onChange={(e) =>
                       setSelectedStatus(e.target.value as VehicleStatus)
                     }
-                    className="w-full px-3.5 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-xs font-bold text-white focus:outline-hidden focus:border-emerald-500 transition-colors"
+                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-hidden focus:border-teal-500 transition-colors"
                   >
                     {STATUS_LIST.map((s) => (
-                      <option key={s.key} value={s.key} className="bg-[#070d19] text-white">
+                      <option key={s.key} value={s.key} className="bg-slate-50 text-slate-900">
                         {s.label}
                       </option>
                     ))}
@@ -267,7 +267,7 @@ export const VehicleDetailPage: React.FC = () => {
 
                 {/* Status Note input */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-semibold text-slate-600 mb-1.5">
                     Aşama Notu{' '}
                     <span className="text-slate-500 font-normal">
                       (Müşteri ekranında görünür)
@@ -279,7 +279,7 @@ export const VehicleDetailPage: React.FC = () => {
                     placeholder={`Örn: ${getStatusConfig(selectedStatus).description}`}
                     value={statusNote}
                     onChange={(e) => setStatusNote(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-hidden focus:border-emerald-500 transition-colors"
+                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-500 focus:outline-hidden focus:border-teal-500 transition-colors"
                   />
                 </div>
               </div>
@@ -290,7 +290,7 @@ export const VehicleDetailPage: React.FC = () => {
                   type="submit"
                   id="btn-submit-status-update"
                   disabled={isUpdating}
-                  className="w-full sm:w-auto py-2.5 px-6 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 disabled:opacity-50 rounded-xl transition-colors shadow-md shadow-emerald-600/30 flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full sm:w-auto py-2.5 px-6 text-xs font-bold text-white bg-teal-600 hover:bg-teal-500 active:bg-emerald-700 disabled:opacity-50 rounded-xl transition-colors shadow-md shadow-emerald-600/30 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isUpdating && <Loader2 className="w-4 h-4 animate-spin" />}
                   <span>Aşamayı Kaydet ve Bildir</span>
@@ -302,31 +302,31 @@ export const VehicleDetailPage: React.FC = () => {
           {/* ARAÇ VE MÜŞTERİ BİLGİLERİ */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Vehicle Details Card */}
-            <div className="bg-[#0c152a] rounded-2xl border border-slate-800 p-5 shadow-xl">
-              <div className="flex items-center gap-2 pb-3 border-b border-slate-800 text-xs font-bold text-white uppercase tracking-wider">
-                <Car className="w-4 h-4 text-emerald-400" />
+            <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xl">
+              <div className="flex items-center gap-2 pb-3 border-b border-slate-200 text-xs font-bold text-slate-900 uppercase tracking-wider">
+                <Car className="w-4 h-4 text-teal-600" />
                 Araç Bilgileri
               </div>
               <dl className="mt-3 space-y-2 text-xs">
-                <div className="flex justify-between py-1 border-b border-slate-800/60">
-                  <dt className="text-slate-400">Plaka:</dt>
-                  <dd className="font-mono font-bold text-white">{vehicle.plate}</dd>
+                <div className="flex justify-between py-1 border-b border-slate-200/60">
+                  <dt className="text-slate-500">Plaka:</dt>
+                  <dd className="font-mono font-bold text-slate-900">{vehicle.plate}</dd>
                 </div>
-                <div className="flex justify-between py-1 border-b border-slate-800/60">
-                  <dt className="text-slate-400">Marka & Model:</dt>
-                  <dd className="font-semibold text-slate-200">
+                <div className="flex justify-between py-1 border-b border-slate-200/60">
+                  <dt className="text-slate-500">Marka & Model:</dt>
+                  <dd className="font-semibold text-slate-700">
                     {vehicle.brand} {vehicle.model}
                   </dd>
                 </div>
                 {vehicle.year && (
-                  <div className="flex justify-between py-1 border-b border-slate-800/60">
-                    <dt className="text-slate-400">Model Yılı:</dt>
-                    <dd className="font-semibold text-slate-200">{vehicle.year}</dd>
+                  <div className="flex justify-between py-1 border-b border-slate-200/60">
+                    <dt className="text-slate-500">Model Yılı:</dt>
+                    <dd className="font-semibold text-slate-700">{vehicle.year}</dd>
                   </div>
                 )}
                 <div className="flex justify-between py-1">
-                  <dt className="text-slate-400">Kayıt Tarihi:</dt>
-                  <dd className="font-semibold text-slate-200">
+                  <dt className="text-slate-500">Kayıt Tarihi:</dt>
+                  <dd className="font-semibold text-slate-700">
                     {new Date(vehicle.createdAt).toLocaleDateString('tr-TR')}
                   </dd>
                 </div>
@@ -334,35 +334,35 @@ export const VehicleDetailPage: React.FC = () => {
             </div>
 
             {/* Customer & Delivery Card */}
-            <div className="bg-[#0c152a] rounded-2xl border border-slate-800 p-5 shadow-xl">
-              <div className="flex items-center gap-2 pb-3 border-b border-slate-800 text-xs font-bold text-white uppercase tracking-wider">
-                <User className="w-4 h-4 text-emerald-400" />
+            <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xl">
+              <div className="flex items-center gap-2 pb-3 border-b border-slate-200 text-xs font-bold text-slate-900 uppercase tracking-wider">
+                <User className="w-4 h-4 text-teal-600" />
                 Müşteri & Teslimat
               </div>
               <dl className="mt-3 space-y-2 text-xs">
-                <div className="flex justify-between py-1 border-b border-slate-800/60">
-                  <dt className="text-slate-400">Müşteri Adı:</dt>
-                  <dd className="font-semibold text-slate-200">
+                <div className="flex justify-between py-1 border-b border-slate-200/60">
+                  <dt className="text-slate-500">Müşteri Adı:</dt>
+                  <dd className="font-semibold text-slate-700">
                     {vehicle.customerName || 'Belirtilmedi'}
                   </dd>
                 </div>
-                <div className="flex justify-between py-1 border-b border-slate-800/60">
-                  <dt className="text-slate-400">Telefon:</dt>
-                  <dd className="font-mono font-semibold text-slate-200 flex items-center gap-1">
-                    <Phone className="w-3 h-3 text-slate-400" />
+                <div className="flex justify-between py-1 border-b border-slate-200/60">
+                  <dt className="text-slate-500">Telefon:</dt>
+                  <dd className="font-mono font-semibold text-slate-700 flex items-center gap-1">
+                    <Phone className="w-3 h-3 text-slate-500" />
                     {vehicle.customerPhone}
                   </dd>
                 </div>
-                <div className="flex justify-between py-1 border-b border-slate-800/60">
-                  <dt className="text-slate-400">Tahmini Teslim:</dt>
-                  <dd className="font-semibold text-emerald-400 flex items-center gap-1">
-                    <Clock className="w-3 h-3 text-emerald-400" />
+                <div className="flex justify-between py-1 border-b border-slate-200/60">
+                  <dt className="text-slate-500">Tahmini Teslim:</dt>
+                  <dd className="font-semibold text-teal-600 flex items-center gap-1">
+                    <Clock className="w-3 h-3 text-teal-600" />
                     {vehicle.estimatedDelivery || 'Belirtilmedi'}
                   </dd>
                 </div>
                 <div className="flex justify-between py-1">
-                  <dt className="text-slate-400">Son Güncelleme:</dt>
-                  <dd className="font-semibold text-slate-200">
+                  <dt className="text-slate-500">Son Güncelleme:</dt>
+                  <dd className="font-semibold text-slate-700">
                     {formatTimeAgo(vehicle.updatedAt)}
                   </dd>
                 </div>
@@ -372,30 +372,30 @@ export const VehicleDetailPage: React.FC = () => {
 
           {/* Service Description Box */}
           {vehicle.serviceDescription && (
-            <div className="bg-[#0c152a] rounded-2xl border border-slate-800 p-5 shadow-xl">
-              <div className="flex items-center gap-2 pb-3 border-b border-slate-800 text-xs font-bold text-white uppercase tracking-wider">
-                <Wrench className="w-4 h-4 text-emerald-400" />
+            <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xl">
+              <div className="flex items-center gap-2 pb-3 border-b border-slate-200 text-xs font-bold text-slate-900 uppercase tracking-wider">
+                <Wrench className="w-4 h-4 text-teal-600" />
                 Servis İşlem Açıklaması
               </div>
-              <p className="mt-3 text-xs text-slate-300 leading-relaxed whitespace-pre-wrap">
+              <p className="mt-3 text-xs text-slate-600 leading-relaxed whitespace-pre-wrap">
                 {vehicle.serviceDescription}
               </p>
             </div>
           )}
 
           {/* Status Timeline Card */}
-          <div className="bg-[#0c152a] rounded-2xl border border-slate-800 p-5 sm:p-6 shadow-xl">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-800 mb-5">
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xl">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-5">
               <div>
-                <h3 className="text-sm font-bold text-white uppercase tracking-wide">
+                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">
                   Durum Zaman Çizelgesi
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-500">
                   Aracın başlangıç kabulünden teslime kadar olan süreç kaydı.
                 </p>
               </div>
               {loadingHistory && (
-                <div className="flex items-center gap-1 text-xs text-slate-400">
+                <div className="flex items-center gap-1 text-xs text-slate-500">
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   <span>Yükleniyor...</span>
                 </div>
@@ -412,29 +412,29 @@ export const VehicleDetailPage: React.FC = () => {
         {/* RIGHT / SECONDARY AREA */}
         <div className="space-y-6">
           {/* Customer Public Link Card */}
-          <div className="bg-[#0c152a] rounded-2xl border border-slate-800 p-5 shadow-xl space-y-4">
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xl space-y-4">
             <div className="flex items-center justify-between">
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider">
+              <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
                 Müşteri Takip Ekranı
               </h4>
-              <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-800/60">
+              <span className="text-[10px] font-semibold text-teal-600 bg-teal-50/60 px-2 py-0.5 rounded-full border border-teal-200/60">
                 Girişsiz Erişim
               </span>
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-xs text-slate-500 leading-relaxed">
               Müşteriniz aşağıdaki bağlantı üzerinden şifresiz olarak aracın durumunu canlı izleyebilir.
             </p>
 
-            <div className="p-2.5 bg-[#070d19] rounded-xl border border-slate-700 flex items-center justify-between text-xs">
-              <span className="font-mono text-slate-300 truncate mr-2">
+            <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+              <span className="font-mono text-slate-600 truncate mr-2">
                 /takip/{trackingToken}
               </span>
               <a
                 href={trackingUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="text-emerald-400 hover:text-emerald-300 p-1 font-semibold flex items-center gap-1 shrink-0"
+                className="text-teal-600 hover:text-teal-600 p-1 font-semibold flex items-center gap-1 shrink-0"
               >
                 <ExternalLink className="w-3.5 h-3.5" />
                 Aç
@@ -445,16 +445,16 @@ export const VehicleDetailPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => openQRModal(vehicle)}
-                className="w-full py-2.5 px-3 text-xs font-semibold text-slate-200 bg-slate-800 hover:bg-slate-700 hover:text-white rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                className="w-full py-2.5 px-3 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 hover:text-slate-900 rounded-xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
-                <QrCode className="w-4 h-4 text-emerald-400" />
+                <QrCode className="w-4 h-4 text-teal-600" />
                 QR Kod
               </button>
 
               <button
                 type="button"
                 onClick={handleWhatsAppShare}
-                className="w-full py-2.5 px-3 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 rounded-xl flex items-center justify-center gap-1.5 transition-colors shadow-md shadow-emerald-600/30 cursor-pointer"
+                className="w-full py-2.5 px-3 text-xs font-bold text-white bg-teal-600 hover:bg-teal-500 active:bg-emerald-700 rounded-xl flex items-center justify-center gap-1.5 transition-colors shadow-md shadow-emerald-600/30 cursor-pointer"
               >
                 <WhatsAppIcon className="w-4 h-4" />
                 <span>WhatsApp</span>

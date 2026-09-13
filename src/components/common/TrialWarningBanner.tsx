@@ -96,7 +96,7 @@ export const TrialWarningBanner: React.FC = () => {
             target="_blank"
             rel="noopener noreferrer"
             id="btn-trial-whatsapp-upgrade"
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 rounded-xl transition-all shadow-xs shrink-0"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-white bg-teal-600 hover:bg-emerald-700 active:bg-emerald-800 rounded-xl transition-all shadow-xs shrink-0"
           >
             <MessageCircle className="w-4 h-4 fill-white/20" />
             <span>Pro Paket Hakkında Bilgi Al</span>
@@ -106,7 +106,7 @@ export const TrialWarningBanner: React.FC = () => {
             type="button"
             onClick={handleDismiss}
             id="btn-dismiss-trial-banner"
-            className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-white/60 transition-colors absolute top-3 right-3 sm:static"
+            className="p-1.5 text-slate-500 hover:text-slate-700 rounded-lg hover:bg-white/60 transition-colors absolute top-3 right-3 sm:static"
             title="Bildirimi Kapat"
           >
             <X className="w-4 h-4" />

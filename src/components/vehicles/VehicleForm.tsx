@@ -227,7 +227,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           Geri Dön
@@ -235,17 +235,17 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
       </div>
 
       {/* 1. VEHICLE INFORMATION */}
-      <div className="bg-[#0c152a] rounded-2xl border border-slate-800 p-5 sm:p-6 shadow-xl">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-800 mb-5">
+      <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200 mb-5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-emerald-950/80 border border-emerald-800 text-emerald-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-teal-50/80 border border-teal-200 text-teal-600 flex items-center justify-center">
               <Car className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-white uppercase tracking-wide">
+              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">
                 Araç Bilgileri
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500">
                 Plaka, marka, model/motor ve model yılı.
               </p>
             </div>
@@ -264,18 +264,18 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
             }}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl border transition-colors cursor-pointer ${
               isManualVehicle
-                ? 'bg-emerald-950/70 text-emerald-300 border-emerald-700 hover:bg-emerald-900/60'
-                : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700 hover:text-white'
+                ? 'bg-teal-50/70 text-teal-600 border-teal-200 hover:bg-teal-100/60'
+                : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200 hover:text-slate-900'
             }`}
           >
             {isManualVehicle ? (
               <>
-                <ListFilter className="w-3.5 h-3.5 text-emerald-400" />
+                <ListFilter className="w-3.5 h-3.5 text-teal-600" />
                 <span>Kayıtlı Listeden Seç</span>
               </>
             ) : (
               <>
-                <Edit3 className="w-3.5 h-3.5 text-slate-400" />
+                <Edit3 className="w-3.5 h-3.5 text-slate-500" />
                 <span>Araç Listede Yok mu? (Elle Yaz)</span>
               </>
             )}
@@ -285,7 +285,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Plaka */}
           <div className="sm:col-span-2">
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-600 mb-1.5">
               Plaka <span className="text-rose-500">*</span>
             </label>
             <input
@@ -297,10 +297,10 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
                 setPlate(e.target.value.toUpperCase());
                 if (errors.plate) setErrors((prev) => ({ ...prev, plate: '' }));
               }}
-              className={`w-full px-3.5 py-2.5 bg-[#070d19] border rounded-xl text-sm font-mono font-bold tracking-wider uppercase text-white placeholder:text-slate-500 transition-colors focus:outline-hidden ${
+              className={`w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl text-sm font-mono font-bold tracking-wider uppercase text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden ${
                 errors.plate
                   ? 'border-rose-500'
-                  : 'border-slate-700 focus:border-emerald-500'
+                  : 'border-slate-200 focus:border-teal-500'
               }`}
             />
             {errors.plate && (
@@ -310,7 +310,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
 
           {/* Model Yılı */}
           <div className="sm:col-span-2">
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-600 mb-1.5">
               Model Yılı
             </label>
             {isManualVehicle ? (
@@ -322,17 +322,17 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
                 placeholder="Örn: 2022"
-                className="w-full px-3.5 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-sm text-white placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-emerald-500 font-mono"
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-teal-500 font-mono"
               />
             ) : (
               <select
                 id="select-model-year"
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-sm font-semibold text-white transition-colors focus:outline-hidden focus:border-emerald-500"
+                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-900 transition-colors focus:outline-hidden focus:border-teal-500"
               >
                 {YEAR_OPTIONS.map((y) => (
-                  <option key={y} value={y} className="bg-[#070d19] text-white">
+                  <option key={y} value={y} className="bg-slate-50 text-slate-900">
                     {y}
                   </option>
                 ))}
@@ -343,10 +343,10 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
           {/* Marka Selection */}
           <div className="sm:col-span-2">
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-semibold text-slate-300">
+              <label className="block text-xs font-semibold text-slate-600">
                 Marka <span className="text-rose-500">*</span>
               </label>
-              <span className="text-[11px] text-slate-400">
+              <span className="text-[11px] text-slate-500">
                 {isManualVehicle ? 'Manuel Giriş' : 'Kayıtlı Listeden'}
               </span>
             </div>
@@ -361,10 +361,10 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
                   setBrand(e.target.value);
                   if (errors.brand) setErrors((prev) => ({ ...prev, brand: '' }));
                 }}
-                className={`w-full px-3.5 py-2.5 bg-[#070d19] border rounded-xl text-sm text-white placeholder:text-slate-500 transition-colors focus:outline-hidden ${
+                className={`w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl text-sm text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden ${
                   errors.brand
                     ? 'border-rose-500'
-                    : 'border-slate-700 focus:border-emerald-500'
+                    : 'border-slate-200 focus:border-teal-500'
                 }`}
               />
             ) : (
@@ -373,17 +373,17 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
                   id="select-brand"
                   value={brand}
                   onChange={(e) => handleBrandChange(e.target.value)}
-                  className={`w-full px-3.5 py-2.5 bg-[#070d19] border rounded-xl text-sm font-semibold text-white transition-colors focus:outline-hidden ${
+                  className={`w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl text-sm font-semibold text-slate-900 transition-colors focus:outline-hidden ${
                     errors.brand
                       ? 'border-rose-500'
-                      : 'border-slate-700 focus:border-emerald-500'
+                      : 'border-slate-200 focus:border-teal-500'
                   }`}
                 >
-                  <option value="" disabled className="bg-[#070d19] text-white">
+                  <option value="" disabled className="bg-slate-50 text-slate-900">
                     -- Marka Seçiniz --
                   </option>
                   {POPULAR_CAR_DATABASE.map((item) => (
-                    <option key={item.brand} value={item.brand} className="bg-[#070d19] text-white">
+                    <option key={item.brand} value={item.brand} className="bg-slate-50 text-slate-900">
                       {item.brand}
                     </option>
                   ))}
@@ -399,8 +399,8 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
                         onClick={() => handleBrandChange(b)}
                         className={`text-[11px] px-2 py-0.5 rounded-lg transition-colors cursor-pointer ${
                           brand === b
-                            ? 'bg-emerald-600 text-white font-bold'
-                            : 'bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white'
+                            ? 'bg-teal-600 text-slate-900 font-bold'
+                            : 'bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-white'
                         }`}
                       >
                         {b}
@@ -419,10 +419,10 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
           {/* Model / Motor Selection */}
           <div className="sm:col-span-2">
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-semibold text-slate-300">
+              <label className="block text-xs font-semibold text-slate-600">
                 Model & Motor <span className="text-rose-500">*</span>
               </label>
-              <span className="text-[11px] text-slate-400">
+              <span className="text-[11px] text-slate-500">
                 {isManualVehicle ? 'Manuel Giriş' : 'Kayıtlı Listeden'}
               </span>
             </div>
@@ -437,10 +437,10 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
                   setModel(e.target.value);
                   if (errors.model) setErrors((prev) => ({ ...prev, model: '' }));
                 }}
-                className={`w-full px-3.5 py-2.5 bg-[#070d19] border rounded-xl text-sm text-white placeholder:text-slate-500 transition-colors focus:outline-hidden ${
+                className={`w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl text-sm text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden ${
                   errors.model
                     ? 'border-rose-500'
-                    : 'border-slate-700 focus:border-emerald-500'
+                    : 'border-slate-200 focus:border-teal-500'
                 }`}
               />
             ) : (
@@ -452,28 +452,28 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
                     setModel(e.target.value);
                     if (errors.model) setErrors((prev) => ({ ...prev, model: '' }));
                   }}
-                  className={`w-full px-3.5 py-2.5 bg-[#070d19] border rounded-xl text-sm font-semibold text-white transition-colors focus:outline-hidden ${
+                  className={`w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl text-sm font-semibold text-slate-900 transition-colors focus:outline-hidden ${
                     errors.model
                       ? 'border-rose-500'
-                      : 'border-slate-700 focus:border-emerald-500'
+                      : 'border-slate-200 focus:border-teal-500'
                   }`}
                 >
-                  <option value="" disabled className="bg-[#070d19] text-white">
+                  <option value="" disabled className="bg-slate-50 text-slate-900">
                     -- Model ve Motor Seçiniz --
                   </option>
                   {availableModels.map((m) => (
-                    <optgroup key={m.name} label={m.name} className="bg-[#0c152a] text-emerald-400">
+                    <optgroup key={m.name} label={m.name} className="bg-white text-teal-600">
                       {m.engines.length > 0 ? (
                         m.engines.map((eng) => {
                           const val = `${m.name} (${eng})`;
                           return (
-                            <option key={val} value={val} className="bg-[#070d19] text-white">
+                            <option key={val} value={val} className="bg-slate-50 text-slate-900">
                               {m.name} - {eng}
                             </option>
                           );
                         })
                       ) : (
-                        <option value={m.name} className="bg-[#070d19] text-white">
+                        <option value={m.name} className="bg-slate-50 text-slate-900">
                           {m.name}
                         </option>
                       )}
@@ -481,8 +481,8 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
                   ))}
                 </select>
 
-                <p className="text-[11px] text-slate-400 mt-1.5 flex items-center gap-1">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
+                <p className="text-[11px] text-slate-500 mt-1.5 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-teal-600 shrink-0" />
                   <span>{brand} markasına ait Türkiye modelleri ve motor seçenekleri listelenir.</span>
                 </p>
               </div>
@@ -496,16 +496,16 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
       </div>
 
       {/* 2. CUSTOMER INFORMATION */}
-      <div className="bg-[#0c152a] rounded-2xl border border-slate-800 p-5 sm:p-6 shadow-xl">
-        <div className="flex items-center gap-2.5 pb-4 border-b border-slate-800 mb-5">
-          <div className="w-8 h-8 rounded-xl bg-emerald-950/80 border border-emerald-800 text-emerald-400 flex items-center justify-center">
+      <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xl">
+        <div className="flex items-center gap-2.5 pb-4 border-b border-slate-200 mb-5">
+          <div className="w-8 h-8 rounded-xl bg-teal-50/80 border border-teal-200 text-teal-600 flex items-center justify-center">
             <User className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-white uppercase tracking-wide">
+            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">
               Müşteri İletişim Bilgileri
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500">
               Telefon numarası WhatsApp bildirimleri ve takip linki paylaşımı için gereklidir.
             </p>
           </div>
@@ -514,7 +514,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Müşteri Adı (Opsiyonel) */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-600 mb-1.5">
               Müşteri Adı Soyadı <span className="text-slate-500 font-normal">(Opsiyonel)</span>
             </label>
             <input
@@ -523,13 +523,13 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
               placeholder="Örn: Ahmet Yılmaz"
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-sm text-white placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-emerald-500"
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-teal-500"
             />
           </div>
 
           {/* Telefon (Zorunlu) */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-600 mb-1.5">
               Telefon Numarası <span className="text-rose-500">*</span>
             </label>
             <input
@@ -541,10 +541,10 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
                 setCustomerPhone(e.target.value);
                 if (errors.customerPhone) setErrors((prev) => ({ ...prev, customerPhone: '' }));
               }}
-              className={`w-full px-3.5 py-2.5 bg-[#070d19] border rounded-xl text-sm font-mono text-white placeholder:text-slate-500 transition-colors focus:outline-hidden ${
+              className={`w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl text-sm font-mono text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden ${
                 errors.customerPhone
                   ? 'border-rose-500'
-                  : 'border-slate-700 focus:border-emerald-500'
+                  : 'border-slate-200 focus:border-teal-500'
               }`}
             />
             {errors.customerPhone && (
@@ -555,16 +555,16 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
       </div>
 
       {/* 3. SERVICE INFORMATION & DELIVERY CALENDAR */}
-      <div className="bg-[#0c152a] rounded-2xl border border-slate-800 p-5 sm:p-6 shadow-xl">
-        <div className="flex items-center gap-2.5 pb-4 border-b border-slate-800 mb-5">
-          <div className="w-8 h-8 rounded-xl bg-emerald-950/80 border border-emerald-800 text-emerald-400 flex items-center justify-center">
+      <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xl">
+        <div className="flex items-center gap-2.5 pb-4 border-b border-slate-200 mb-5">
+          <div className="w-8 h-8 rounded-xl bg-teal-50/80 border border-teal-200 text-teal-600 flex items-center justify-center">
             <Wrench className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-white uppercase tracking-wide">
+            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide">
               Servis & Teslimat Detayları
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500">
               Yapılacak işlemler ve takvimden seçilecek tahmini teslim zamanı.
             </p>
           </div>
@@ -573,7 +573,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
         <div className="space-y-5">
           {/* Açıklama */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-600 mb-1.5">
               Servis Açıklaması / Talep Edilen İşlemler
             </label>
             <textarea
@@ -582,19 +582,19 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
               placeholder="Örn: 60.000 km periyodik bakım, ön fren balata değişimi ve klima gaz dolumu..."
               value={serviceDescription}
               onChange={(e) => setServiceDescription(e.target.value)}
-              className="w-full px-3.5 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-sm text-white placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-emerald-500 leading-relaxed"
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-teal-500 leading-relaxed"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {/* Tahmini Teslim - Takvim ve Saat Seçici */}
-            <div className="bg-[#070d19] p-4 rounded-xl border border-slate-700 space-y-3">
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
               <div className="flex items-center justify-between">
-                <label className="block text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                  <Calendar className="w-4 h-4 text-emerald-400" />
+                <label className="block text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                  <Calendar className="w-4 h-4 text-teal-600" />
                   <span>Tahmini Teslim Tarihi ve Saati</span>
                 </label>
-                <span className="text-[11px] font-semibold text-emerald-300 bg-emerald-950/70 border border-emerald-800/60 px-2 py-0.5 rounded-md">
+                <span className="text-[11px] font-semibold text-teal-600 bg-teal-50/70 border border-teal-200/60 px-2 py-0.5 rounded-md">
                   {estimatedDelivery}
                 </span>
               </div>
@@ -606,49 +606,49 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
                   id="input-delivery-datetime"
                   value={deliveryDateTime}
                   onChange={(e) => handleDateTimeChange(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-[#0c152a] border border-slate-700 rounded-xl text-sm font-mono text-white transition-colors focus:outline-hidden focus:border-emerald-500 cursor-pointer"
+                  className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-mono text-slate-900 transition-colors focus:outline-hidden focus:border-teal-500 cursor-pointer"
                 />
               </div>
 
               {/* Quick Preset Buttons */}
               <div>
-                <p className="text-[11px] text-slate-400 font-medium mb-1.5 flex items-center gap-1">
-                  <Clock className="w-3 h-3 text-slate-400" />
+                <p className="text-[11px] text-slate-500 font-medium mb-1.5 flex items-center gap-1">
+                  <Clock className="w-3 h-3 text-slate-500" />
                   <span>Hızlı Seçenekler:</span>
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                   <button
                     type="button"
                     onClick={() => setQuickDelivery('plus2')}
-                    className="text-[11px] px-2.5 py-1 rounded-lg bg-[#0c152a] hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                    className="text-[11px] px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
                   >
                     +2 Saat
                   </button>
                   <button
                     type="button"
                     onClick={() => setQuickDelivery('today18')}
-                    className="text-[11px] px-2.5 py-1 rounded-lg bg-[#0c152a] hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-colors font-medium cursor-pointer"
+                    className="text-[11px] px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 transition-colors font-medium cursor-pointer"
                   >
                     Bugün 18:00
                   </button>
                   <button
                     type="button"
                     onClick={() => setQuickDelivery('tomorrow12')}
-                    className="text-[11px] px-2.5 py-1 rounded-lg bg-[#0c152a] hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                    className="text-[11px] px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
                   >
                     Yarın 12:00
                   </button>
                   <button
                     type="button"
                     onClick={() => setQuickDelivery('tomorrow18')}
-                    className="text-[11px] px-2.5 py-1 rounded-lg bg-[#0c152a] hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                    className="text-[11px] px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
                   >
                     Yarın 18:00
                   </button>
                   <button
                     type="button"
                     onClick={() => setQuickDelivery('in2days')}
-                    className="text-[11px] px-2.5 py-1 rounded-lg bg-[#0c152a] hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer"
+                    className="text-[11px] px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
                   >
                     2 Gün Sonra
                   </button>
@@ -659,17 +659,17 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
             {/* Başlangıç Durumu */}
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-slate-600 mb-1.5">
                   {isEditing ? 'Mevcut Durum' : 'Başlangıç Aşaması'}
                 </label>
                 <select
                   id="select-current-status"
                   value={currentStatus}
                   onChange={(e) => setCurrentStatus(e.target.value as VehicleStatus)}
-                  className="w-full px-3.5 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-sm font-semibold text-white transition-colors focus:outline-hidden focus:border-emerald-500"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-900 transition-colors focus:outline-hidden focus:border-teal-500"
                 >
                   {STATUS_LIST.map((s) => (
-                    <option key={s.key} value={s.key} className="bg-[#070d19] text-white">
+                    <option key={s.key} value={s.key} className="bg-slate-50 text-slate-900">
                       {s.label}
                     </option>
                   ))}
@@ -678,7 +678,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
 
               {!isEditing && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <label className="block text-xs font-semibold text-slate-600 mb-1.5">
                     İlk Durum Açıklama Notu{' '}
                     <span className="text-slate-500 font-normal">(Opsiyonel)</span>
                   </label>
@@ -687,7 +687,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
                     placeholder="Örn: Araç servise kabul edildi ve kayıt açıldı."
                     value={initialNote}
                     onChange={(e) => setInitialNote(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-sm text-white placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-emerald-500"
+                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-500 transition-colors focus:outline-hidden focus:border-teal-500"
                   />
                 </div>
               )}
@@ -702,7 +702,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
           type="button"
           onClick={() => navigate(-1)}
           disabled={isSubmitting}
-          className="px-5 py-2.5 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl transition-colors cursor-pointer"
+          className="px-5 py-2.5 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
         >
           İptal
         </button>
@@ -710,7 +710,7 @@ export const VehicleForm: React.FC<VehicleFormProps> = ({
           type="submit"
           id="btn-submit-vehicle"
           disabled={isSubmitting}
-          className="px-6 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 disabled:opacity-50 rounded-xl transition-colors shadow-md shadow-emerald-600/30 inline-flex items-center gap-2 cursor-pointer"
+          className="px-6 py-2.5 text-xs font-bold text-white bg-teal-600 hover:bg-teal-500 active:bg-emerald-700 disabled:opacity-50 rounded-xl transition-colors shadow-md shadow-emerald-600/30 inline-flex items-center gap-2 cursor-pointer"
         >
           {isSubmitting && <Loader2 className="w-4 h-4 animate-spin" />}
           <span>{isEditing ? 'Değişiklikleri Kaydet' : 'Aracı Kaydet ve QR Oluştur'}</span>

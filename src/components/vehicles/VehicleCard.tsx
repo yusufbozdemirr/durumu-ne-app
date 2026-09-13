@@ -37,7 +37,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle: v }) => {
   return (
     <div
       onClick={() => navigate(`/vehicles/${v.id}`)}
-      className="bg-[#0c152a] rounded-xl border border-slate-800 p-4 shadow-md active:bg-[#0e1832] transition-colors cursor-pointer space-y-3"
+      className="bg-white rounded-xl border border-slate-200 p-4 shadow-md active:bg-[#0e1832] transition-colors cursor-pointer space-y-3"
     >
       {/* Top row: Plate and Status */}
       <div className="flex items-center justify-between gap-2">
@@ -47,25 +47,25 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle: v }) => {
 
       {/* Middle row: Vehicle brand/model and customer */}
       <div>
-        <h4 className="text-sm font-bold text-white">
+        <h4 className="text-sm font-bold text-slate-900">
           {v.brand} {v.model}
         </h4>
-        <div className="flex items-center justify-between text-xs text-slate-400 mt-1">
+        <div className="flex items-center justify-between text-xs text-slate-500 mt-1">
           <span>{v.customerName || 'Müşteri belirtilmedi'}</span>
-          <span className="font-mono text-slate-300">{v.customerPhone}</span>
+          <span className="font-mono text-slate-600">{v.customerPhone}</span>
         </div>
       </div>
 
       {/* Description preview */}
       {v.serviceDescription && (
-        <p className="text-xs text-slate-300 line-clamp-1 bg-[#070d19] rounded-lg p-2 border border-slate-800">
+        <p className="text-xs text-slate-600 line-clamp-1 bg-slate-50 rounded-lg p-2 border border-slate-200">
           {v.serviceDescription}
         </p>
       )}
 
       {/* Bottom info & actions */}
-      <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
-        <div className="flex items-center gap-1 text-slate-400 font-medium">
+      <div className="pt-2 border-t border-slate-200 flex items-center justify-between text-xs">
+        <div className="flex items-center gap-1 text-slate-500 font-medium">
           <Clock className="w-3.5 h-3.5 text-slate-500" />
           <span>{v.estimatedDelivery || 'Teslim tarihi belirtilmedi'}</span>
         </div>
@@ -77,7 +77,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle: v }) => {
           <button
             type="button"
             onClick={() => openQRModal(v)}
-            className="p-2 text-slate-400 hover:text-emerald-400 hover:bg-slate-800 rounded-lg transition-colors"
+            className="p-2 text-slate-500 hover:text-teal-600 hover:bg-slate-100 rounded-lg transition-colors"
             title="QR Kod"
           >
             <QrCode className="w-4 h-4" />
@@ -85,7 +85,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle: v }) => {
           <button
             type="button"
             onClick={handleWhatsAppNotify}
-            className="p-2 text-slate-400 hover:text-emerald-400 hover:bg-emerald-950/60 rounded-lg transition-colors"
+            className="p-2 text-slate-500 hover:text-[#25D366] hover:bg-[#25D366]/10 rounded-lg transition-colors"
             title="WhatsApp Bildir"
           >
             <WhatsAppIcon className="w-4 h-4" />
@@ -93,7 +93,7 @@ export const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle: v }) => {
           <button
             type="button"
             onClick={() => navigate(`/vehicles/${v.id}`)}
-            className="p-2 text-slate-400 hover:text-white rounded-lg"
+            className="p-2 text-slate-500 hover:text-slate-900 rounded-lg"
           >
             <ChevronRight className="w-4 h-4" />
           </button>

@@ -30,7 +30,7 @@ export const TermsPage: React.FC = () => {
             <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
               Kullanım Koşulları
             </h1>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-500 mt-1">
               Son Güncelleme: Mart 2026
             </p>
           </div>
@@ -74,7 +74,7 @@ export const TermsPage: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="py-6 border-t border-slate-200/80 bg-white text-center text-xs text-slate-400">
+      <footer className="py-6 border-t border-slate-200/80 bg-white text-center text-xs text-slate-500">
         <div className="flex items-center justify-center gap-1.5 text-[11px]">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
           <span>© 2026 Durumu Ne? Tüm hakları saklıdır.</span>

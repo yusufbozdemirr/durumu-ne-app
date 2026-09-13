@@ -100,9 +100,9 @@ export const LoginPage: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#070d19] text-slate-100 flex flex-col justify-between py-8 px-4 sm:px-6 lg:px-8 relative selection:bg-emerald-500/30 selection:text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col justify-between py-8 px-4 sm:px-6 lg:px-8 relative selection:bg-teal-500/30 selection:text-white">
       {/* Ambient background glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-80 bg-emerald-500/10 blur-3xl pointer-events-none rounded-full" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-80 bg-teal-500/10 blur-3xl pointer-events-none rounded-full" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-600/10 blur-[140px] pointer-events-none rounded-full" />
 
       {/* Top bar with back SVG button (NO "Servis Portalı" badge as requested) */}
@@ -110,7 +110,7 @@ export const LoginPage: React.FC = () => {
         <Link
           to="/"
           id="btn-login-back"
-          className="p-2.5 rounded-xl bg-[#0c152a] hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 shadow-md transition-colors inline-flex items-center gap-1.5 text-xs font-semibold"
+          className="p-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200 shadow-md transition-colors inline-flex items-center gap-1.5 text-xs font-semibold"
           title="Ana Sayfaya Dön"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -126,19 +126,19 @@ export const LoginPage: React.FC = () => {
             <img
               src="/favicon.png"
               alt="Durumu Ne? Logo"
-              className="w-16 h-16 rounded-2xl shadow-xl border border-slate-800 p-1.5 bg-[#0a1122] object-contain"
+              className="w-16 h-16 rounded-2xl shadow-xl border border-slate-200 p-1.5 bg-white object-contain"
             />
           </div>
-          <h2 className="text-2xl font-black text-white tracking-tight">
+          <h2 className="text-2xl font-black text-slate-900 tracking-tight">
             Bayi Girişi
           </h2>
-          <p className="mt-1 text-xs text-slate-400">
+          <p className="mt-1 text-xs text-slate-500">
             Servis yönetim panelinize erişmek için oturum açın
           </p>
         </div>
 
         {/* Login Card */}
-        <div className="bg-[#0c152a] py-8 px-6 sm:px-8 border border-slate-800 shadow-2xl rounded-2xl">
+        <div className="bg-white py-8 px-6 sm:px-8 border border-slate-200 shadow-2xl rounded-2xl">
           {error && (
             <div className="mb-4 p-3.5 bg-rose-950/60 border border-rose-800/80 rounded-xl text-xs text-rose-300 font-medium leading-relaxed">
               {error}
@@ -148,7 +148,7 @@ export const LoginPage: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email input */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+              <label className="block text-xs font-semibold text-slate-600 mb-1.5">
                 E-posta Adresi
               </label>
               <div className="relative">
@@ -163,7 +163,7 @@ export const LoginPage: React.FC = () => {
                     setEmail(e.target.value);
                     setError('');
                   }}
-                  className="w-full pl-9 pr-3 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 font-mono transition-colors focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                  className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-500 font-mono transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"
                 />
               </div>
             </div>
@@ -171,7 +171,7 @@ export const LoginPage: React.FC = () => {
             {/* Password input (Numeric Only PIN) */}
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-semibold text-slate-300">
+                <label className="block text-xs font-semibold text-slate-600">
                   Şifre (Sayısal PIN)
                 </label>
                 <span className="text-[10px] text-slate-500 font-mono">
@@ -189,12 +189,12 @@ export const LoginPage: React.FC = () => {
                   placeholder="••••••"
                   value={password}
                   onChange={handlePasswordChange}
-                  className="w-full pl-9 pr-10 py-2.5 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white placeholder:text-slate-500 font-mono tracking-widest transition-colors focus:outline-hidden focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
+                  className="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-500 font-mono tracking-widest transition-colors focus:outline-hidden focus:border-teal-500 focus:ring-1 focus:ring-emerald-500"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white p-0.5 rounded transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-900 p-0.5 rounded transition-colors"
                   title={showPassword ? 'Şifreyi Gizle' : 'Şifreyi Göster'}
                 >
                   {showPassword ? (
@@ -208,13 +208,13 @@ export const LoginPage: React.FC = () => {
 
             {/* Remember Me Option */}
             <div className="flex items-center justify-between py-1">
-              <label className="flex items-center gap-2 cursor-pointer select-none text-xs text-slate-300 font-medium hover:text-white transition-colors">
+              <label className="flex items-center gap-2 cursor-pointer select-none text-xs text-slate-600 font-medium hover:text-slate-900 transition-colors">
                 <input
                   type="checkbox"
                   id="checkbox-remember-me"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded text-emerald-600 border-slate-700 bg-[#070d19] focus:ring-emerald-600 focus:ring-offset-0 transition-colors cursor-pointer"
+                  className="w-4 h-4 rounded text-emerald-600 border-slate-200 bg-slate-50 focus:ring-emerald-600 focus:ring-offset-0 transition-colors cursor-pointer"
                 />
                 <span>Oturumu açık tut</span>
               </label>
@@ -223,9 +223,9 @@ export const LoginPage: React.FC = () => {
                 href={whatsappHelpUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[11px] text-emerald-400 hover:text-emerald-300 transition-colors inline-flex items-center gap-1 font-semibold"
+                className="text-[11px] text-teal-600 hover:text-teal-600 transition-colors inline-flex items-center gap-1 font-semibold"
               >
-                <WhatsAppIcon className="w-3.5 h-3.5 text-emerald-400" />
+                <WhatsAppIcon className="w-3.5 h-3.5 text-teal-600" />
                 <span>Yardım Al</span>
               </a>
             </div>
@@ -235,7 +235,7 @@ export const LoginPage: React.FC = () => {
               type="submit"
               id="btn-login-submit"
               disabled={isSubmitting}
-              className="w-full py-3 px-4 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 disabled:opacity-50 rounded-xl transition-colors shadow-md shadow-emerald-600/30 flex items-center justify-center gap-2 mt-3 cursor-pointer"
+              className="w-full py-3 px-4 text-xs font-bold text-white bg-teal-600 hover:bg-teal-500 active:bg-emerald-700 disabled:opacity-50 rounded-xl transition-colors shadow-md shadow-emerald-600/30 flex items-center justify-center gap-2 mt-3 cursor-pointer"
             >
               {isSubmitting ? (
                 <>
@@ -252,34 +252,34 @@ export const LoginPage: React.FC = () => {
           </form>
 
           {/* Trial Registration CTA */}
-          <div className="mt-6 pt-5 border-t border-slate-800 text-center">
-            <p className="text-xs text-slate-400">
+          <div className="mt-6 pt-5 border-t border-slate-200 text-center">
+            <p className="text-xs text-slate-500">
               Henüz servis hesabınız yok mu?
             </p>
             <Link
               to="/hosgeldiniz"
               id="link-login-to-register"
-              className="mt-2.5 inline-flex items-center justify-center gap-2 w-full py-2.5 px-3 text-xs font-bold text-emerald-400 bg-emerald-950/60 hover:bg-emerald-900/60 border border-emerald-800/80 rounded-xl transition-colors"
+              className="mt-2.5 inline-flex items-center justify-center gap-2 w-full py-2.5 px-3 text-xs font-bold text-teal-600 bg-teal-50/60 hover:bg-teal-100/60 border border-teal-200/80 rounded-xl transition-colors"
             >
-              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+              <Sparkles className="w-3.5 h-3.5 text-teal-600" />
               <span>7 Gün Ücretsiz Denemeyi Başlat</span>
             </Link>
           </div>
         </div>
 
         {/* Security assurance */}
-        <div className="text-center mt-6 flex items-center justify-center gap-1.5 text-[11px] text-slate-400">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+        <div className="text-center mt-6 flex items-center justify-center gap-1.5 text-[11px] text-slate-500">
+          <ShieldCheck className="w-3.5 h-3.5 text-teal-600" />
           <span>Güvenli Oturum • Durumu Ne? Servis Takip Platformu</span>
         </div>
       </div>
 
       {/* Subtle Footer */}
-      <footer className="text-center text-[11px] text-slate-400 mt-6 z-10 flex items-center justify-center gap-2">
-        <WhatsAppIcon className="w-3.5 h-3.5 text-emerald-400" />
+      <footer className="text-center text-[11px] text-slate-500 mt-6 z-10 flex items-center justify-center gap-2">
+        <WhatsAppIcon className="w-3.5 h-3.5 text-teal-600" />
         <span>
           Destek Hattı:{' '}
-          <span className="text-white font-semibold">
+          <span className="text-slate-900 font-semibold">
             {SUPPORT_PHONE_DISPLAY}
           </span>
         </span>

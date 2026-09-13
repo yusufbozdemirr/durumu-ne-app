@@ -439,14 +439,14 @@ export const AdminPage: React.FC = () => {
     <div className="space-y-6 max-w-7xl mx-auto">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-5 right-5 z-50 bg-emerald-600 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-2 text-xs font-bold animate-in slide-in-from-bottom-5">
+        <div className="fixed bottom-5 right-5 z-50 bg-teal-600 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-2 text-xs font-bold animate-in slide-in-from-bottom-5">
           <CheckCircle2 className="w-4 h-4" />
           <span>{toastMessage}</span>
         </div>
       )}
 
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#0a1122] p-5 rounded-2xl border border-slate-800 shadow-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-xl">
         <div>
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-950/80 text-amber-400 border border-amber-800">
@@ -454,10 +454,10 @@ export const AdminPage: React.FC = () => {
               Sistem Yöneticisi
             </span>
           </div>
-          <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight mt-1">
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mt-1">
             İşletme Yönetim Paneli
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
             Müşteri servis taleplerini onaylayın, kayıtlı araçları inceleyin ve Pro / Deneme sürelerini yönetin.
           </p>
         </div>
@@ -471,7 +471,7 @@ export const AdminPage: React.FC = () => {
               setFormError('');
               setShowCreateModal(true);
             }}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors shadow-md shadow-emerald-600/30 cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-teal-600 hover:bg-teal-500 active:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors shadow-md shadow-emerald-600/30 cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Yeni İşletme Ekle</span>
@@ -486,8 +486,8 @@ export const AdminPage: React.FC = () => {
           onClick={() => setActiveTab('all')}
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap flex items-center gap-2 ${
             activeTab === 'all'
-              ? 'bg-emerald-600 text-white shadow-sm'
-              : 'bg-[#0c152a] text-slate-400 hover:text-white border border-slate-800'
+              ? 'bg-teal-600 text-slate-900 shadow-sm'
+              : 'bg-white text-slate-500 hover:text-white border border-slate-200'
           }`}
         >
           <span>Tüm İşletmeler</span>
@@ -501,8 +501,8 @@ export const AdminPage: React.FC = () => {
           onClick={() => setActiveTab('requests')}
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap flex items-center gap-2 ${
             activeTab === 'requests'
-              ? 'bg-amber-600 text-white shadow-sm'
-              : 'bg-[#0c152a] text-slate-400 hover:text-amber-300 border border-slate-800'
+              ? 'bg-amber-600 text-slate-900 shadow-sm'
+              : 'bg-white text-slate-500 hover:text-amber-300 border border-slate-200'
           }`}
         >
           <span>Onay Bekleyen Talepler</span>
@@ -518,8 +518,8 @@ export const AdminPage: React.FC = () => {
           onClick={() => setActiveTab('pro')}
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap flex items-center gap-2 ${
             activeTab === 'pro'
-              ? 'bg-emerald-700 text-white shadow-sm'
-              : 'bg-[#0c152a] text-slate-400 hover:text-emerald-300 border border-slate-800'
+              ? 'bg-emerald-700 text-slate-900 shadow-sm'
+              : 'bg-white text-slate-500 hover:text-teal-600 border border-slate-200'
           }`}
         >
           <Crown className="w-3.5 h-3.5 text-amber-400" />
@@ -534,8 +534,8 @@ export const AdminPage: React.FC = () => {
           onClick={() => setActiveTab('trial')}
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap flex items-center gap-2 ${
             activeTab === 'trial'
-              ? 'bg-blue-600 text-white shadow-sm'
-              : 'bg-[#0c152a] text-slate-400 hover:text-blue-300 border border-slate-800'
+              ? 'bg-blue-600 text-slate-900 shadow-sm'
+              : 'bg-white text-slate-500 hover:text-blue-300 border border-slate-200'
           }`}
         >
           <Clock className="w-3.5 h-3.5" />
@@ -550,8 +550,8 @@ export const AdminPage: React.FC = () => {
           onClick={() => setActiveTab('expired')}
           className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors whitespace-nowrap flex items-center gap-2 ${
             activeTab === 'expired'
-              ? 'bg-rose-600 text-white shadow-sm'
-              : 'bg-[#0c152a] text-slate-400 hover:text-rose-300 border border-slate-800'
+              ? 'bg-rose-600 text-slate-900 shadow-sm'
+              : 'bg-white text-slate-500 hover:text-rose-300 border border-slate-200'
           }`}
         >
           <AlertTriangle className="w-3.5 h-3.5" />
@@ -570,29 +570,29 @@ export const AdminPage: React.FC = () => {
           placeholder="İşletme adı, yetkili adı, e-posta veya telefon ile ara..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full pl-10 pr-4 py-2.5 bg-[#0c152a] border border-slate-800 rounded-xl text-xs text-white placeholder:text-slate-500 focus:outline-hidden focus:border-emerald-500"
+          className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-500 focus:outline-hidden focus:border-teal-500"
         />
       </div>
 
       {/* Table of Businesses / Requests */}
-      <div className="bg-[#0c152a] rounded-2xl border border-slate-800 shadow-xl overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
         {isLoading ? (
-          <div className="p-12 text-center text-slate-400 flex flex-col items-center justify-center gap-3">
-            <Loader2 className="w-7 h-7 text-emerald-500 animate-spin" />
+          <div className="p-12 text-center text-slate-500 flex flex-col items-center justify-center gap-3">
+            <Loader2 className="w-7 h-7 text-teal-600 animate-spin" />
             <span className="text-xs font-semibold">İşletmeler yükleniyor...</span>
           </div>
         ) : filteredBusinesses.length === 0 ? (
-          <div className="p-12 text-center text-slate-400">
+          <div className="p-12 text-center text-slate-500">
             <Building2 className="w-10 h-10 text-slate-600 mx-auto mb-2" />
-            <p className="text-sm font-bold text-white">İşletme kaydı bulunamadı</p>
+            <p className="text-sm font-bold text-slate-900">İşletme kaydı bulunamadı</p>
             <p className="text-xs text-slate-500 mt-1">
               Arama kriterlerinizi değiştirebilir veya yeni işletme ekleyebilirsiniz.
             </p>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-[#070d19] border-b border-slate-800 text-slate-400 font-semibold uppercase text-[10px] tracking-wider">
+            <table className="w-full text-left text-xs text-slate-600">
+              <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[10px] tracking-wider">
                 <tr>
                   <th className="py-3.5 px-4">İşletme & Yetkili</th>
                   <th className="py-3.5 px-4">İletişim</th>
@@ -623,14 +623,14 @@ export const AdminPage: React.FC = () => {
                   return (
                     <tr
                       key={b.id}
-                      className="hover:bg-slate-800/40 transition-colors"
+                      className="hover:bg-slate-100/40 transition-colors"
                     >
                       {/* Business & Owner */}
                       <td className="py-3.5 px-4">
-                        <div className="font-bold text-white text-sm">
+                        <div className="font-bold text-slate-900 text-sm">
                           {b.name}
                         </div>
-                        <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-1.5">
+                        <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5">
                           <User className="w-3 h-3 text-slate-500" />
                           <span>{b.ownerName || 'Yetkili Belirtilmemiş'}</span>
                         </div>
@@ -644,12 +644,12 @@ export const AdminPage: React.FC = () => {
                       {/* Contact */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-2">
-                          <span className="font-mono text-slate-200">{b.phone}</span>
+                          <span className="font-mono text-slate-700">{b.phone}</span>
                           <a
                             href={getWhatsAppDirectUrl(`Merhaba ${b.name}, Durumu Ne? ekibinden ulaşıyorum.`)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="p-1 rounded-md bg-emerald-950/60 hover:bg-emerald-900 text-emerald-400 border border-emerald-800/60 transition-colors"
+                            className="p-1 rounded-md bg-teal-50/60 hover:bg-teal-100 text-teal-600 border border-teal-200/60 transition-colors"
                             title="WhatsApp Mesajı Aç"
                           >
                             <WhatsAppIcon className="w-3.5 h-3.5" />
@@ -665,7 +665,7 @@ export const AdminPage: React.FC = () => {
                             Onay Bekliyor
                           </span>
                         ) : isPro ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-gradient-to-r from-amber-500/20 to-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-gradient-to-r from-amber-500/20 to-emerald-500/20 text-teal-600 border border-teal-500/40">
                             <Crown className="w-3.5 h-3.5 text-amber-400" />
                             Pro Lisanslı
                           </span>
@@ -690,7 +690,7 @@ export const AdminPage: React.FC = () => {
                       </td>
 
                       {/* End Date */}
-                      <td className="py-3.5 px-4 text-xs font-mono text-slate-400">
+                      <td className="py-3.5 px-4 text-xs font-mono text-slate-500">
                         {rawEndDate
                           ? new Date(rawEndDate).toLocaleDateString('tr-TR', {
                               day: '2-digit',
@@ -708,7 +708,7 @@ export const AdminPage: React.FC = () => {
                               type="button"
                               onClick={() => handleApproveRequest(b)}
                               disabled={isSubmitting}
-                              className="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1 shadow-xs transition-colors"
+                              className="px-2.5 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs flex items-center gap-1 shadow-xs transition-colors"
                               title="Talebi Onayla ve Hoşgeldiniz E-postası Gönder"
                             >
                               <CheckCircle2 className="w-3.5 h-3.5" />
@@ -719,7 +719,7 @@ export const AdminPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => openVehiclesModal(b)}
-                            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
+                            className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 border border-slate-200 transition-colors"
                             title="Kayıtlı Araçları Gör"
                           >
                             <Car className="w-4 h-4" />
@@ -728,7 +728,7 @@ export const AdminPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => openEditModal(b)}
-                            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
+                            className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 border border-slate-200 transition-colors"
                             title="İşletmeyi Düzenle / Süre Uzat"
                           >
                             <Edit2 className="w-4 h-4" />
@@ -756,33 +756,33 @@ export const AdminPage: React.FC = () => {
       {/* MODAL 1: Registered Vehicles Modal */}
       {vehiclesModalBusiness && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-[#0c152a] border border-slate-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
               <div>
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <Car className="w-5 h-5 text-emerald-400" />
+                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                  <Car className="w-5 h-5 text-teal-600" />
                   <span>{vehiclesModalBusiness.name} - Kayıtlı Araçlar</span>
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-500 mt-0.5">
                   İşletmeye ait servisteki aktif ve geçmiş araç listesi.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setVehiclesModalBusiness(null)}
-                className="p-1 text-slate-400 hover:text-white rounded-lg transition-colors"
+                className="p-1 text-slate-500 hover:text-slate-900 rounded-lg transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {isLoadingVehicles ? (
-              <div className="py-12 text-center text-slate-400 flex items-center justify-center gap-2">
-                <Loader2 className="w-5 h-5 animate-spin text-emerald-400" />
+              <div className="py-12 text-center text-slate-500 flex items-center justify-center gap-2">
+                <Loader2 className="w-5 h-5 animate-spin text-teal-600" />
                 <span className="text-xs">Araçlar yükleniyor...</span>
               </div>
             ) : businessVehicles.length === 0 ? (
-              <div className="py-10 text-center text-slate-400">
+              <div className="py-10 text-center text-slate-500">
                 <Car className="w-8 h-8 mx-auto text-slate-600 mb-2" />
                 <p className="text-xs font-medium">Bu işletmeye henüz araç eklenmemiş.</p>
               </div>
@@ -791,15 +791,15 @@ export const AdminPage: React.FC = () => {
                 {businessVehicles.map((v) => (
                   <div
                     key={v.id}
-                    className="p-3 bg-[#070d19] border border-slate-800 rounded-xl flex items-center justify-between gap-3 text-xs"
+                    className="p-3 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between gap-3 text-xs"
                   >
                     <div className="flex items-center gap-3">
                       <PlateDisplay plate={v.plate} size="sm" />
                       <div>
-                        <div className="font-bold text-white">
+                        <div className="font-bold text-slate-900">
                           {v.brand} {v.model}
                         </div>
-                        <div className="text-[11px] text-slate-400">
+                        <div className="text-[11px] text-slate-500">
                           {v.customerName} • {v.customerPhone}
                         </div>
                       </div>
@@ -817,7 +817,7 @@ export const AdminPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setVehiclesModalBusiness(null)}
-                className="px-4 py-2 text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors"
+                className="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
               >
                 Kapat
               </button>
@@ -829,21 +829,21 @@ export const AdminPage: React.FC = () => {
       {/* MODAL 2: Edit Business & Extend License Modal */}
       {editingBusiness && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-[#0c152a] border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
               <div>
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <Edit2 className="w-4 h-4 text-emerald-400" />
+                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                  <Edit2 className="w-4 h-4 text-teal-600" />
                   <span>İşletme ve Lisans Düzenle</span>
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-500 mt-0.5">
                   {editingBusiness.name} işletmesinin detaylarını ve lisans süresini güncelleyin.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setEditingBusiness(null)}
-                className="p-1 text-slate-400 hover:text-white rounded-lg transition-colors"
+                className="p-1 text-slate-500 hover:text-slate-900 rounded-lg transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -856,8 +856,8 @@ export const AdminPage: React.FC = () => {
             )}
 
             {/* Quick Extension Buttons */}
-            <div className="p-3 bg-[#070d19] rounded-xl border border-slate-800 space-y-2">
-              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
                 Hızlı Lisans İşlemleri
               </span>
               <div className="grid grid-cols-3 gap-2">
@@ -871,7 +871,7 @@ export const AdminPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleQuickMakePro}
-                  className="py-2 px-2 text-[11px] font-bold text-emerald-300 bg-emerald-950/60 hover:bg-emerald-900/60 border border-emerald-800 rounded-lg transition-colors text-center"
+                  className="py-2 px-2 text-[11px] font-bold text-teal-600 bg-teal-50/60 hover:bg-teal-100/60 border border-teal-200 rounded-lg transition-colors text-center"
                 >
                   Pro Yap (+1 Yıl)
                 </button>
@@ -888,7 +888,7 @@ export const AdminPage: React.FC = () => {
             <form onSubmit={handleEditSubmit} className="space-y-3.5">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
                     İşletme Adı *
                   </label>
                   <input
@@ -898,12 +898,12 @@ export const AdminPage: React.FC = () => {
                     onChange={(e) =>
                       setEditForm({ ...editForm, name: e.target.value })
                     }
-                    className="w-full px-3 py-2 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white focus:outline-hidden focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-hidden focus:border-teal-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
                     Yetkili Adı Soyadı
                   </label>
                   <input
@@ -912,14 +912,14 @@ export const AdminPage: React.FC = () => {
                     onChange={(e) =>
                       setEditForm({ ...editForm, ownerName: e.target.value })
                     }
-                    className="w-full px-3 py-2 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white focus:outline-hidden focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-hidden focus:border-teal-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
                     Telefon *
                   </label>
                   <input
@@ -929,12 +929,12 @@ export const AdminPage: React.FC = () => {
                     onChange={(e) =>
                       setEditForm({ ...editForm, phone: e.target.value })
                     }
-                    className="w-full px-3 py-2 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white focus:outline-hidden focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-hidden focus:border-teal-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
                     Paket Türü * (Ücretsiz Kaldırıldı)
                   </label>
                   <select
@@ -945,7 +945,7 @@ export const AdminPage: React.FC = () => {
                         plan: e.target.value as 'pro' | 'trial',
                       })
                     }
-                    className="w-full px-3 py-2 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white focus:outline-hidden focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-hidden focus:border-teal-500"
                   >
                     <option value="trial">7 Günlük Deneme Sürümü</option>
                     <option value="pro">Pro Paket (Tam Yetki)</option>
@@ -955,7 +955,7 @@ export const AdminPage: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
                     Lisans / Deneme Bitiş Tarihi
                   </label>
                   <input
@@ -964,12 +964,12 @@ export const AdminPage: React.FC = () => {
                     onChange={(e) =>
                       setEditForm({ ...editForm, endDate: e.target.value })
                     }
-                    className="w-full px-3 py-2 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white font-mono focus:outline-hidden focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono focus:outline-hidden focus:border-teal-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
                     Hesap Durumu
                   </label>
                   <select
@@ -980,7 +980,7 @@ export const AdminPage: React.FC = () => {
                         accountStatus: e.target.value as any,
                       })
                     }
-                    className="w-full px-3 py-2 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white focus:outline-hidden focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-hidden focus:border-teal-500"
                   >
                     <option value="active">Aktif (Kullanabilir)</option>
                     <option value="trial_expired">Deneme Süresi Doldu</option>
@@ -990,7 +990,7 @@ export const AdminPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-slate-600 mb-1">
                   Adres
                 </label>
                 <input
@@ -999,22 +999,22 @@ export const AdminPage: React.FC = () => {
                   onChange={(e) =>
                     setEditForm({ ...editForm, address: e.target.value })
                   }
-                  className="w-full px-3 py-2 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white focus:outline-hidden focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-hidden focus:border-teal-500"
                 />
               </div>
 
-              <div className="pt-3 flex items-center justify-end gap-2 border-t border-slate-800">
+              <div className="pt-3 flex items-center justify-end gap-2 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setEditingBusiness(null)}
-                  className="px-4 py-2 text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors"
+                  className="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
                 >
                   İptal
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 rounded-xl transition-colors flex items-center gap-1.5 shadow-md shadow-emerald-600/30"
+                  className="px-4 py-2 text-xs font-bold text-white bg-teal-600 hover:bg-teal-500 active:bg-emerald-700 rounded-xl transition-colors flex items-center gap-1.5 shadow-md shadow-emerald-600/30"
                 >
                   {isSubmitting ? (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -1032,21 +1032,21 @@ export const AdminPage: React.FC = () => {
       {/* MODAL 3: Create Business Modal (No Free package, numeric password PIN) */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-[#0c152a] border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
               <div>
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <Building2 className="w-4 h-4 text-emerald-400" />
+                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                  <Building2 className="w-4 h-4 text-teal-600" />
                   <span>Yeni İşletme ve Bayi Tanımla</span>
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-500 mt-0.5">
                   Pro veya 7 Günlük Deneme paketi ile yeni bir oto servis açın.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setShowCreateModal(false)}
-                className="p-1 text-slate-400 hover:text-white rounded-lg transition-colors"
+                className="p-1 text-slate-500 hover:text-slate-900 rounded-lg transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1061,7 +1061,7 @@ export const AdminPage: React.FC = () => {
             <form onSubmit={handleCreateSubmit} className="space-y-3.5">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
                     İşletme Adı *
                   </label>
                   <input
@@ -1075,12 +1075,12 @@ export const AdminPage: React.FC = () => {
                         businessName: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white focus:outline-hidden focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-hidden focus:border-teal-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
                     Yetkili Adı Soyadı *
                   </label>
                   <input
@@ -1094,14 +1094,14 @@ export const AdminPage: React.FC = () => {
                         ownerName: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white focus:outline-hidden focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-hidden focus:border-teal-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
                     Telefon *
                   </label>
                   <input
@@ -1112,12 +1112,12 @@ export const AdminPage: React.FC = () => {
                     onChange={(e) =>
                       setCreateForm({ ...createForm, phone: e.target.value })
                     }
-                    className="w-full px-3 py-2 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white focus:outline-hidden focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-hidden focus:border-teal-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
                     E-posta *
                   </label>
                   <input
@@ -1128,7 +1128,7 @@ export const AdminPage: React.FC = () => {
                     onChange={(e) =>
                       setCreateForm({ ...createForm, email: e.target.value })
                     }
-                    className="w-full px-3 py-2 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white font-mono focus:outline-hidden focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono focus:outline-hidden focus:border-teal-500"
                   />
                 </div>
               </div>
@@ -1136,7 +1136,7 @@ export const AdminPage: React.FC = () => {
               {/* Numeric Password / PIN */}
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="block text-xs font-semibold text-slate-300">
+                  <label className="block text-xs font-semibold text-slate-600">
                     Şifre (Sayısal PIN) *
                   </label>
                   <span className="text-[10px] text-slate-500 font-mono">
@@ -1154,14 +1154,14 @@ export const AdminPage: React.FC = () => {
                     const digitsOnly = e.target.value.replace(/\D/g, '');
                     setCreateForm({ ...createForm, password: digitsOnly });
                   }}
-                  className="w-full px-3 py-2 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white font-mono tracking-widest focus:outline-hidden focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono tracking-widest focus:outline-hidden focus:border-teal-500"
                 />
               </div>
 
               {/* Package selection: Strictly Pro or 7 Days (Free package removed) */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
                     Paket Türü *
                   </label>
                   <select
@@ -1177,7 +1177,7 @@ export const AdminPage: React.FC = () => {
                           .substring(0, 10),
                       });
                     }}
-                    className="w-full px-3 py-2 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white focus:outline-hidden focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-hidden focus:border-teal-500"
                   >
                     <option value="trial">7 Günlük Deneme Sürümü</option>
                     <option value="pro">Pro Paket (1 Yıl)</option>
@@ -1185,7 +1185,7 @@ export const AdminPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
                     Bitiş Zamanı
                   </label>
                   <input
@@ -1194,13 +1194,13 @@ export const AdminPage: React.FC = () => {
                     onChange={(e) =>
                       setCreateForm({ ...createForm, endDate: e.target.value })
                     }
-                    className="w-full px-3 py-2 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white font-mono focus:outline-hidden focus:border-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 font-mono focus:outline-hidden focus:border-teal-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">
+                <label className="block text-xs font-semibold text-slate-600 mb-1">
                   Adres (Opsiyonel)
                 </label>
                 <input
@@ -1210,22 +1210,22 @@ export const AdminPage: React.FC = () => {
                   onChange={(e) =>
                     setCreateForm({ ...createForm, address: e.target.value })
                   }
-                  className="w-full px-3 py-2 bg-[#070d19] border border-slate-700 rounded-xl text-xs text-white focus:outline-hidden focus:border-emerald-500"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-hidden focus:border-teal-500"
                 />
               </div>
 
-              <div className="pt-3 flex items-center justify-end gap-2 border-t border-slate-800">
+              <div className="pt-3 flex items-center justify-end gap-2 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors"
+                  className="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
                 >
                   İptal
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 rounded-xl transition-colors flex items-center gap-1.5 shadow-md shadow-emerald-600/30"
+                  className="px-4 py-2 text-xs font-bold text-white bg-teal-600 hover:bg-teal-500 active:bg-emerald-700 rounded-xl transition-colors flex items-center gap-1.5 shadow-md shadow-emerald-600/30"
                 >
                   {isSubmitting ? (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -1243,17 +1243,17 @@ export const AdminPage: React.FC = () => {
       {/* MODAL 4: Delete Confirmation Modal */}
       {deletingBusiness && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-[#0c152a] border border-rose-900/60 rounded-2xl max-w-md w-full p-6 shadow-2xl text-center space-y-4">
+          <div className="bg-white border border-rose-900/60 rounded-2xl max-w-md w-full p-6 shadow-2xl text-center space-y-4">
             <div className="w-12 h-12 rounded-full bg-rose-950/80 text-rose-400 border border-rose-800 flex items-center justify-center mx-auto">
               <Trash2 className="w-6 h-6" />
             </div>
 
             <div>
-              <h3 className="text-base font-bold text-white">
+              <h3 className="text-base font-bold text-slate-900">
                 İşletmeyi Silmek İstiyor Musunuz?
               </h3>
-              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                <strong className="text-white">{deletingBusiness.name}</strong>{' '}
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                <strong className="text-slate-900">{deletingBusiness.name}</strong>{' '}
                 işletmesi ve veritabanı kaydı kalıcı olarak silinecektir. Bu işlem geri alınamaz.
               </p>
             </div>
@@ -1262,7 +1262,7 @@ export const AdminPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setDeletingBusiness(null)}
-                className="px-4 py-2 text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors"
+                className="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
               >
                 Vazgeç
               </button>
@@ -1270,7 +1270,7 @@ export const AdminPage: React.FC = () => {
                 type="button"
                 onClick={handleDeleteConfirm}
                 disabled={isSubmitting}
-                className="px-4 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-500 active:bg-rose-700 rounded-xl transition-colors flex items-center gap-1.5"
+                className="px-4 py-2 text-xs font-bold text-slate-900 bg-rose-600 hover:bg-rose-500 active:bg-rose-700 rounded-xl transition-colors flex items-center gap-1.5"
               >
                 {isSubmitting ? (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />

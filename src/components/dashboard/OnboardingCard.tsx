@@ -33,33 +33,33 @@ export const OnboardingCard: React.FC = () => {
   return (
     <div
       id="onboarding-welcome-card"
-      className="mb-6 p-5 sm:p-6 bg-gradient-to-r from-[#0c152a] via-[#0e1b36] to-[#0c152a] border border-emerald-500/40 rounded-2xl shadow-xl relative overflow-hidden text-white"
+      className="mb-6 p-5 sm:p-6 bg-gradient-to-r from-[#0c152a] via-[#0e1b36] to-[#0c152a] border border-teal-500/40 rounded-2xl shadow-xl relative overflow-hidden text-slate-900"
     >
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
         <div className="flex items-start gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-lg shadow-emerald-600/30">
+          <div className="w-12 h-12 rounded-2xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-lg shadow-emerald-600/30">
             <Sparkles className="w-6 h-6" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-base font-bold text-white tracking-tight">
+              <h3 className="text-base font-bold text-slate-900 tracking-tight">
                 Hoş geldiniz {displayName} 👋
               </h3>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-600 border border-teal-200">
                 7 Gün Ücretsiz Deneme
               </span>
             </div>
-            <p className="text-xs text-slate-300 mt-1 max-w-xl leading-relaxed">
+            <p className="text-xs text-slate-600 mt-1 max-w-xl leading-relaxed">
               7 günlük ücretsiz denemeniz başladı! Servisteki ilk aracınızı ve
               müşterinizi sisteme ekleyerek canlı durum takip bağlantısını
               WhatsApp üzerinden hemen paylaşabilirsiniz.
             </p>
-            <div className="flex items-center gap-4 mt-3 text-[11px] text-slate-400 font-medium">
-              <span className="inline-flex items-center gap-1.5 text-emerald-400">
+            <div className="flex items-center gap-4 mt-3 text-[11px] text-slate-500 font-medium">
+              <span className="inline-flex items-center gap-1.5 text-teal-600">
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 Kolay araç kaydı
               </span>
-              <span className="inline-flex items-center gap-1.5 text-emerald-400">
+              <span className="inline-flex items-center gap-1.5 text-teal-600">
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 WhatsApp tek tıkla paylaşım
               </span>
@@ -72,7 +72,7 @@ export const OnboardingCard: React.FC = () => {
             type="button"
             id="btn-onboarding-add-first-vehicle"
             onClick={() => navigate('/vehicles/new')}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 rounded-xl transition-colors shadow-md shadow-emerald-600/30 cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-white bg-teal-600 hover:bg-teal-500 active:bg-emerald-700 rounded-xl transition-colors shadow-md shadow-emerald-600/30 cursor-pointer"
           >
             <PlusCircle className="w-4 h-4" />
             <span>İlk Aracımı Ekle</span>
@@ -82,7 +82,7 @@ export const OnboardingCard: React.FC = () => {
             type="button"
             onClick={handleDismiss}
             id="btn-dismiss-onboarding"
-            className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors absolute top-3 right-3 sm:static"
+            className="p-1.5 text-slate-500 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors absolute top-3 right-3 sm:static"
             title="Kapat"
           >
             <X className="w-4 h-4" />
