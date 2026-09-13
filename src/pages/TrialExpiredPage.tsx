@@ -22,6 +22,8 @@ export const TrialExpiredPage: React.FC = () => {
     planStatus.isPro ? `Merhaba, ${businessName} adına Pro paket aboneliğimiz sona erdi. Aboneliğimizi yenilemek istiyoruz.` : `Merhaba, ${businessName} adına 7 günlük deneme süremiz sona erdi. Pro pakete geçiş yapmak ve araç takibine kesintisiz devam etmek istiyoruz.`
   );
 
+  const isSuspended = planStatus.accountStatus === 'suspended';
+
   const handleLogout = async () => {
     await logout();
     navigate('/login');
@@ -57,11 +59,11 @@ export const TrialExpiredPage: React.FC = () => {
               Süre Doldu
             </span>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              {planStatus.isPro ? 'Pro Lisansınızı Yenileyin' : 'Deneme Süreniz Doldu'}
+              {isSuspended ? 'Hesabınız Askıya Alındı' : planStatus.isPro ? 'Pro Lisansınızı Yenileyin' : 'Deneme Süreniz Doldu'}
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed">
               <strong className="text-slate-700">{businessName}</strong> için
-              tanımlanan {planStatus.isPro ? 'Pro paket abonelik süresi' : '7 günlük ücretsiz deneme süresi'} sona ermiştir.
+              tanımlanan {planStatus.isPro ? 'Pro paket abonelik süresi' : '7 günlük ücretsiz deneme süresi'} {isSuspended ? 'geçici olarak durdurulmuştur (Askıya Alındı).' : 'sona ermiştir.'}
             </p>
           </div>
 
@@ -72,9 +74,7 @@ export const TrialExpiredPage: React.FC = () => {
               Verileriniz Güvende!
             </h4>
             <p className="text-xs text-slate-500 leading-relaxed">
-              Kayıtlı tüm araçlarınız, servis notlarınız ve müşteri geçmişiniz
-              silinmemiştir. {planStatus.isPro ? 'Aboneliğinizi yenilediğiniz anda' : 'Pro pakete geçiş yaptığınız anda'} sisteminiz kaldığı
-              yerden anında aktif olacaktır.
+              Kayıtlı tüm araçlarınız, servis notlarınız ve müşteri geçmişiniz silinmemiştir. {isSuspended ? 'Hesabınızın durumu hakkında bilgi almak için lütfen destek ekibimizle iletişime geçin.' : (planStatus.isPro ? 'Aboneliğinizi yenilediğiniz anda' : 'Pro pakete geçiş yaptığınız anda') + ' sisteminiz kaldığı yerden anında aktif olacaktır.'}
             </p>
             <div className="pt-2 border-t border-slate-200/80 space-y-1.5 text-[11px] text-slate-600">
               <div className="flex items-center gap-2">
@@ -102,7 +102,7 @@ export const TrialExpiredPage: React.FC = () => {
               className="w-full py-3.5 px-4 rounded-xl text-xs font-bold text-white bg-teal-600 hover:bg-teal-500 active:bg-emerald-700 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 cursor-pointer"
             >
               <WhatsAppIcon className="w-4 h-4" />
-              <span>{planStatus.isPro ? 'WhatsApp ile Aboneliği Yenile' : 'WhatsApp ile Şimdi Pro\'ya Geç'}</span>
+              <span>{isSuspended ? 'WhatsApp Destek Hattı' : planStatus.isPro ? 'WhatsApp ile Aboneliği Yenile' : 'WhatsApp ile Şimdi Pro\'ya Geç'}</span>
               <ArrowRight className="w-4 h-4 ml-1" />
             </a>
 

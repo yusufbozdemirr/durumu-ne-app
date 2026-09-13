@@ -16,7 +16,7 @@ import {
   Send,
   RefreshCw,
   QrCode,
-  MessageCircle,
+  
   PhoneCall,
   Check,
   Layers,

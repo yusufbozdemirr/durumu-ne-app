@@ -75,7 +75,7 @@ export interface Business {
   denemeBitisTarihi?: string | null;
   proBaslangicTarihi?: string | null;
   proBitisTarihi?: string | null;
-  accountStatus?: 'active' | 'trial_expired' | 'suspended' | 'pending_approval';
+  accountStatus?: 'active' | 'trial_expired' | 'pro_expired' | 'suspended' | 'pending_approval';
   trialStartDate?: string | null;
   trialEndDate?: string | null;
   proStartDate?: string | null;
@@ -101,7 +101,7 @@ export interface UserProfile {
 
 export interface PlanStatus {
   plan: 'free' | 'pro' | 'trial';
-  accountStatus: 'active' | 'trial_expired' | 'suspended' | 'pending_approval';
+  accountStatus: 'active' | 'trial_expired' | 'pro_expired' | 'suspended' | 'pending_approval';
   isTrial: boolean;
   isPro: boolean;
   isExpired: boolean;

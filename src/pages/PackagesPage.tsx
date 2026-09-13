@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { BrandLogo } from '../components/common/BrandLogo';
 import {
-  MessageCircle,
+  
   ShieldCheck,
   CheckCircle2,
   ArrowRight,
@@ -240,7 +240,7 @@ export const PackagesPage: React.FC = () => {
                 id="btn-packages-whatsapp-upgrade"
                 className="w-full py-3.5 px-6 text-sm font-bold text-white bg-teal-600 hover:bg-teal-500 rounded-2xl transition-all shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2.5 text-center group cursor-pointer"
               >
-                <MessageCircle className="w-5 h-5 fill-white group-hover:scale-110 transition-transform" />
+                <WhatsAppIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 <span>Pro Paket İçin WhatsApp'tan İletişime Geç</span>
               </a>
             ) : (
@@ -260,7 +260,7 @@ export const PackagesPage: React.FC = () => {
                   id="btn-packages-whatsapp-info"
                   className="py-3 px-4 text-xs sm:text-sm font-bold text-teal-600 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <MessageCircle className="w-4 h-4 text-teal-600" />
+                  <WhatsAppIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
                   <span>WhatsApp ile Bilgi Al</span>
                 </a>
               </div>
@@ -280,7 +280,7 @@ export const PackagesPage: React.FC = () => {
             rel="noopener noreferrer"
             className="font-bold text-teal-600 hover:underline inline-flex items-center gap-1 ml-1"
           >
-            <MessageCircle className="w-3.5 h-3.5 text-teal-600" />
+            <WhatsAppIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
             <span>{SUPPORT_PHONE_DISPLAY}</span>
           </a>
         </div>

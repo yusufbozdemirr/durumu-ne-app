@@ -19,7 +19,7 @@ import {
   ArrowLeft,
   Smartphone,
   Check,
-  MessageCircle,
+  
 } from 'lucide-react';
 import {
   SUPPORT_PHONE_DISPLAY,

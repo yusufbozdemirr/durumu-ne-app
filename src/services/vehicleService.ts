@@ -19,10 +19,14 @@ import { publicTrackingService } from './publicTrackingService';
  * Generate a cryptographically secure, random, non-sequential token for public tracking
  */
 function generateSecurePublicToken(): string {
-  const array = new Uint8Array(12);
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  const array = new Uint8Array(6);
   crypto.getRandomValues(array);
-  const randomHex = Array.from(array, (byte) => byte.toString(16).padStart(2, '0')).join('');
-  return `${Date.now().toString(36)}${randomHex}`;
+  for (let i = 0; i < 6; i++) {
+    result += chars[array[i] % chars.length];
+  }
+  return result;
 }
 
 /**

@@ -87,6 +87,7 @@ export const AdminPage: React.FC = () => {
     accountStatus: 'active' as 'active' | 'trial_expired' | 'suspended',
     active: true,
     endDate: '',
+    startDate: '',
   });
 
   useEffect(() => {
@@ -253,11 +254,14 @@ export const AdminPage: React.FC = () => {
       accountStatus:
         b.accountStatus === 'trial_expired'
           ? 'trial_expired'
+          : b.accountStatus === 'pro_expired'
+          ? 'pro_expired'
           : b.active === false || b.accountStatus === 'suspended'
           ? 'suspended'
           : 'active',
       active: b.active !== false,
       endDate: rawEndDate ? rawEndDate.substring(0, 10) : '',
+      startDate: (b.proStartDate || b.proBaslangicTarihi || b.trialStartDate || b.denemeBaslangicTarihi || b.createdAt || '').substring(0, 10),
     });
     setFormError('');
   };
@@ -958,7 +962,18 @@ export const AdminPage: React.FC = () => {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-slate-600 mb-1">
-                    Lisans / Deneme Bitiş Tarihi
+                    Başlangıç Tarihi
+                  </label>
+                  <input
+                    type="date"
+                    value={editForm.startDate}
+                    readOnly
+                    className="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-xs text-slate-500 font-mono focus:outline-hidden opacity-70"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
+                    Bitiş Tarihi
                   </label>
                   <input
                     type="date"
@@ -986,6 +1001,7 @@ export const AdminPage: React.FC = () => {
                   >
                     <option value="active">Aktif (Kullanabilir)</option>
                     <option value="trial_expired">Deneme Süresi Doldu</option>
+                    <option value="pro_expired">Pro Sürümü Doldu</option>
                     <option value="suspended">Askıya Alındı</option>
                   </select>
                 </div>

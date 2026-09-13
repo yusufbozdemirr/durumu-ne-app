@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
-import { Clock, AlertTriangle, MessageCircle, X } from 'lucide-react';
+import { Clock, AlertTriangle, X } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
 import { getTrialWarningWhatsAppUrl } from '../../utils/constants';
 
 export const TrialWarningBanner: React.FC = () => {
@@ -101,7 +102,7 @@ export const TrialWarningBanner: React.FC = () => {
             id="btn-trial-whatsapp-upgrade"
             className="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-white bg-teal-600 hover:bg-emerald-700 active:bg-emerald-800 rounded-xl transition-all shadow-xs shrink-0"
           >
-            <MessageCircle className="w-4 h-4 fill-white/20" />
+            <WhatsAppIcon className="w-4 h-4" />
             <span>{planStatus.isPro ? 'Aboneliği Yenile' : 'Pro Paket Hakkında Bilgi Al'}</span>
           </a>
           <button
