@@ -33,8 +33,7 @@ export default function App() {
 
           {/* Public customer tracking routes (NO authentication required) */}
           <Route path="/t/:publicToken" element={<TrackVehiclePage />} />
-          
-          
+          <Route path="/takip/:publicToken" element={<TrackVehiclePage />} />
 
           {/* Public SaaS & Pricing pages */}
           <Route path="/paketler" element={<PackagesPage />} />

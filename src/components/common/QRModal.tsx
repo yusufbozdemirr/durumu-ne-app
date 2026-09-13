@@ -20,7 +20,7 @@ export const QRModal: React.FC<QRModalProps> = ({ vehicle, onClose }) => {
 
   const token = vehicle.publicToken || (vehicle as any).token;
   const origin = window.location.origin;
-  const trackingPath = `/takip/${token}`;
+  const trackingPath = `/t/${token}`;
   const fullTrackingUrl = `${origin}${trackingPath}`;
 
   const handleCopyLink = async () => {

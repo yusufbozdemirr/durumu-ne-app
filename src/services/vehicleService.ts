@@ -41,6 +41,51 @@ export function normalizePlate(plate: string): string {
 
 export const vehicleService = {
   /**
+   * Migrate old vehicles to use publicVehicles collection
+   */
+  async runPublicTrackingMigration(businessId: string): Promise<void> {
+    try {
+      const col = collection(db, 'vehicles');
+      const q = query(col, where('businessId', '==', businessId));
+      const snapshot = await getDocs(q);
+      
+      const promises = snapshot.docs.map(async (d) => {
+        const data = d.data();
+        let token = data.publicToken || data.token;
+        let needsUpdate = false;
+        
+        if (!token) {
+          token = generateSecurePublicToken();
+          needsUpdate = true;
+        } else if (!data.publicToken) {
+          needsUpdate = true;
+        }
+
+        if (needsUpdate) {
+          await updateDoc(doc(db, 'vehicles', d.id), { publicToken: token });
+        }
+
+        // Always sync to ensure publicVehicles document exists
+        const history = await statusHistoryService.getStatusHistory(d.id);
+        await publicTrackingService.syncPublicVehicle(token, businessId, {
+          plate: data.plate,
+          brand: data.brand,
+          model: data.model,
+          year: data.year ? String(data.year) : '',
+          currentStatus: data.currentStatus || 'received',
+          estimatedDelivery: data.estimatedDelivery || '',
+          serviceDescription: data.serviceDescription || '',
+          statusHistory: history,
+        });
+      });
+
+      await Promise.all(promises);
+    } catch (error) {
+      console.error('Migration error:', error);
+    }
+  },
+
+  /**
    * Load vehicles belonging ONLY to the user's business
    */
   async getVehiclesByBusiness(businessId: string): Promise<Vehicle[]> {

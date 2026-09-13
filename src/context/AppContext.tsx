@@ -196,6 +196,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             // Fetch vehicles
             const vList = await vehicleService.getVehiclesByBusiness(profile.businessId);
             setVehicles(vList);
+
+            // Auto-migrate missing tracking records
+            vehicleService.runPublicTrackingMigration(profile.businessId).catch(console.error);
           } else {
             // User exists in Auth but has no business/user profile in Firestore
             console.warn('User has no valid Firestore profile. Terminating orphaned session.');
@@ -240,6 +243,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             ]);
             setBusiness(biz);
             setVehicles(vList);
+            vehicleService.runPublicTrackingMigration(profile.businessId).catch(console.error);
           }
           showToast('Giriş başarılı. Hoş geldiniz!', 'success');
         }
